@@ -1,0 +1,3 @@
+Script para crear material id con blender internal.
+Crea una escena clonada de la escena en la que te encuentres y configura lo necesario para que tu solo le indiques el output render y el formato y tires el render. 
+
