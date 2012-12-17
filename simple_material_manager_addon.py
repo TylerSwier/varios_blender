@@ -141,7 +141,7 @@ class execButonAction1(bpy.types.Operator):
 class execButonAction2(bpy.types.Operator):
     bl_idname = "smat.smat"
     bl_label = "Single material for all"
-    bl_description = "Assing single material for all in current scene"
+    bl_description = "Assign single material for all in current scene"
     def execute(self, context):
         onematerialforall()
         return{'FINISHED'}
