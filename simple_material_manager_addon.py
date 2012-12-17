@@ -126,12 +126,12 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
         col = row.column()
         col.alignment = 'EXPAND'
 
-        col.operator("rmat.rmat", text='Remove all materials')
-        col.operator("rmsat.rmsat", text='Single material for all')
-        col.operator("rmuat.rmuat", text='Remove materials unused')
+        col.operator("rma.rma", text='Remove all materials')
+        col.operator("smat.smat", text='Single material for all')
+        col.operator("rmumat.rmumat", text='Remove materials unused')
 
 class execButonAction1(bpy.types.Operator):
-    bl_idname = "rmat.rmat"
+    bl_idname = "rma.rma"
     bl_label = "Remove materials"
     bl_description = "This remove all materials in current scene"
     def execute(self, context):
@@ -139,7 +139,7 @@ class execButonAction1(bpy.types.Operator):
         return{'FINISHED'}
 
 class execButonAction2(bpy.types.Operator):
-    bl_idname = "rmsat.rmsat"
+    bl_idname = "smat.smat"
     bl_label = "Single material for all"
     bl_description = "Assing single material for all in current scene"
     def execute(self, context):
@@ -147,7 +147,7 @@ class execButonAction2(bpy.types.Operator):
         return{'FINISHED'}
 
 class execButonAction3(bpy.types.Operator):
-    bl_idname = "rmuat.rmuat"
+    bl_idname = "rmumat.rmumat"
     bl_label = "Remove materials unused"
     bl_description = "This remove all materials unused"
     def execute(self, context):
