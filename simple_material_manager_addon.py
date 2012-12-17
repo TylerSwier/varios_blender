@@ -128,7 +128,7 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
 
         col.operator("rma.rma", text='Remove all materials')
         col.operator("smat.smat", text='Single material for all')
-        col.operator("rmumat.rmumat", text='Remove materials unused')
+        col.operator("rmumat.rmumat", text='Remove unused materials')
 
 class execButonAction1(bpy.types.Operator):
     bl_idname = "rma.rma"
@@ -148,8 +148,8 @@ class execButonAction2(bpy.types.Operator):
 
 class execButonAction3(bpy.types.Operator):
     bl_idname = "rmumat.rmumat"
-    bl_label = "Remove materials unused"
-    bl_description = "This remove all materials unused"
+    bl_label = "Remove unused materials"
+    bl_description = "This remove all unused materials"
     def execute(self, context):
         rmmaterialsunused()
         return{'FINISHED'}
