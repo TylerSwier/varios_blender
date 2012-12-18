@@ -32,53 +32,57 @@ bl_info = {
 import bpy
 
 def deleteallmaterials():
-    scn = bpy.context.scene 
+    scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
-    for ob in bpy.data.scenes[scn.name].objects: 
-        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META': 
+    for ob in bpy.data.scenes[scn.name].objects:
+        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
             if len(bpy.context.selected_objects) == 0:
                 scn.objects.active = bpy.data.objects[str(ob.name)]
                 myobject = bpy.data.objects[str(ob.name)]
                 myobject.select = True
-#                scn.objects.active = ob
-#                ob.select = True
+# scn.objects.active = ob
+# ob.select = True
                 if len(bpy.context.selected_objects) != 0:
-                    for i in range(len(bpy.context.selected_objects)):                
-                        cuantos=len(bpy.context.selected_objects[i].material_slots)                    
+                    for i in range(len(bpy.context.selected_objects)):
+                        cuantos=len(bpy.context.selected_objects[i].material_slots)
                         for i in range(cuantos):
                             bpy.ops.object.material_slot_remove()
             ob.select = False
             bpy.ops.object.select_all(action='DESELECT')
             
-    for m in bpy.data.materials: 
-        if m.use_fake_user == True: 
+    for m in bpy.data.materials:
+        if m.use_fake_user == True:
             m.use_fake_user = False
 
-    for m in bpy.data.materials: 
-        if m.users == 0: 
+    for m in bpy.data.materials:
+        if m.users == 0:
             bpy.data.materials.remove(m)
 
 
 def onematerialforall():
-    scn = bpy.context.scene   
-    bpy.ops.object.select_all(action='DESELECT')  
+    scn = bpy.context.scene
+    bpy.ops.object.select_all(action='DESELECT')
 
-    if "Material" not in bpy.data.materials:  
-        mat = bpy.data.materials.new("Material")  
-    else: 
-        mat = bpy.data.materials['Material'] 
+    if "Material" not in bpy.data.materials:
+        mat = bpy.data.materials.new("Material")
+    else:
+        mat = bpy.data.materials['Material']
 
-    for ob in bpy.data.scenes[scn.name].objects:   
-        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':   
-            if len(bpy.context.selected_objects) == 0:  
-                #scn.objects.active = bpy.data.objects[str(ob.name)]  
-                #myobject = bpy.data.objects[str(ob.name)]  
-                #myobject.select = True  
-                scn.objects.active = ob  
-                ob.select = True   
-                  
-                bpy.ops.object.material_slot_add()  
-                ob.material_slots[0].material = mat  
+    for ob in bpy.data.scenes[scn.name].objects:
+        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
+            if len(bpy.context.selected_objects) == 0:
+                #scn.objects.active = bpy.data.objects[str(ob.name)]
+                #myobject = bpy.data.objects[str(ob.name)]
+                #myobject.select = True
+                scn.objects.active = ob
+                ob.select = True
+                
+                if len(ob.material_slots) <= 0:
+                    bpy.ops.object.material_slot_add()
+                    ob.material_slots[0].material = mat
+                else:
+                    for i in range(len(ob.material_slots)):
+                        ob.material_slots[i].material = mat
 
                 bpy.ops.object.select_all(action='DESELECT')
                 
@@ -92,7 +96,7 @@ def rmmaterialsunused():
             # si es de tipo objeto entonces
             if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
                 if ob.data.materials == '' or len(ob.material_slots.items()) != 0:
-                    # si no esta vacio o tiene mas de 0 slots entonces me lo recorro y 
+                    # si no esta vacio o tiene mas de 0 slots entonces me lo recorro y
                     # voy agregando los materiales al array
                     for ms in ob.material_slots:
                         mat_list.append(ms.material)
