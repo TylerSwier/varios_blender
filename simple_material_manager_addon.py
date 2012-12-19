@@ -87,7 +87,25 @@ def onematerialforall():
                         ob.material_slots[i].material = mat
 
                 bpy.ops.object.select_all(action='DESELECT')
-                
+
+def desligar():
+    scn = bpy.context.scene
+    ob = bpy.context.selected_objects
+    bpy.ops.object.select_all(action='DESELECT')
+    if ob:
+        #if len(bpy.context.selected_objects) != 0:
+        for i in range(len(ob)):
+            if ob[i].type == 'MESH' or ob[i].type == 'SURFACE' or ob[i].type == 'META' or ob[i].type == 'CURVE' or ob[i].type == 'FONT':
+                myobject = bpy.data.objects[str(ob[i].name)]
+                myobject.select = True
+                scn.objects.active = ob[i]
+
+                cuantos=len(ob[i].material_slots)
+                for i in range(cuantos):
+                    bpy.ops.object.material_slot_remove()
+                ob[i].select = False
+            bpy.ops.object.select_all(action='DESELECT')
+
 
 def rmmaterialsunused():
     mat_list = []
@@ -134,7 +152,9 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
 
         col.operator("rma.rma", text='Remove all materials')
         col.operator("smat.smat", text='Single material for all')
+        col.operator("dsm.dsm", text='Untie mats from sel objcts')
         col.operator("rmumat.rmumat", text='Remove unused materials')
+
 
 class execButonAction1(bpy.types.Operator):
     bl_idname = "rma.rma"
@@ -153,6 +173,14 @@ class execButonAction2(bpy.types.Operator):
         return{'FINISHED'}
 
 class execButonAction3(bpy.types.Operator):
+    bl_idname = "dsm.dsm"
+    bl_label = "Untie mats from sel objcts"
+    bl_description = "Untie materials from selected objects"
+    def execute(self, context):
+        desligar()
+        return{'FINISHED'}
+
+class execButonAction4(bpy.types.Operator):
     bl_idname = "rmumat.rmumat"
     bl_label = "Remove unused materials"
     bl_description = "This remove all unused materials"
