@@ -31,7 +31,7 @@ bl_info = {
 
 import bpy
 
-def deleteallmaterials(opcion):
+def deleteallmaterials(opcion1,opcion2):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
     for ob in bpy.data.scenes[scn.name].objects:
@@ -48,11 +48,13 @@ def deleteallmaterials(opcion):
                             bpy.ops.object.material_slot_remove()
             ob.select = False
             bpy.ops.object.select_all(action='DESELECT')
-            
-    for m in bpy.data.materials:
-        if m.use_fake_user == True:
-            m.use_fake_user = False
-    if opcion == "borrando":
+
+    if opcion2 != "respetando":
+        for m in bpy.data.materials:
+            if m.use_fake_user == True:
+                m.use_fake_user = False
+
+    if opcion1 == "borrando":
         for m in bpy.data.materials:
             if m.users == 0:
                 bpy.data.materials.remove(m)
@@ -65,7 +67,7 @@ def onematerialforall():
     if "Material" not in bpy.data.materials:
         mat = bpy.data.materials.new("Material")
     else:
-        deleteallmaterials("")
+        deleteallmaterials("","respetando")
         mat = bpy.data.materials.new("Material")
         
     for ob in bpy.data.scenes[scn.name].objects:
@@ -139,7 +141,7 @@ class execButonAction1(bpy.types.Operator):
     bl_label = "Remove materials"
     bl_description = "This remove all materials in current scene"
     def execute(self, context):
-        deleteallmaterials("borrando")
+        deleteallmaterials("borrando","")
         return{'FINISHED'}
 
 class execButonAction2(bpy.types.Operator):
