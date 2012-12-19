@@ -31,7 +31,7 @@ bl_info = {
 
 import bpy
 
-def deleteallmaterials():
+def deleteallmaterials(opcion):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
     for ob in bpy.data.scenes[scn.name].objects:
@@ -40,8 +40,7 @@ def deleteallmaterials():
                 scn.objects.active = bpy.data.objects[str(ob.name)]
                 myobject = bpy.data.objects[str(ob.name)]
                 myobject.select = True
-# scn.objects.active = ob
-# ob.select = True
+
                 if len(bpy.context.selected_objects) != 0:
                     for i in range(len(bpy.context.selected_objects)):
                         cuantos=len(bpy.context.selected_objects[i].material_slots)
@@ -53,10 +52,10 @@ def deleteallmaterials():
     for m in bpy.data.materials:
         if m.use_fake_user == True:
             m.use_fake_user = False
-
-    for m in bpy.data.materials:
-        if m.users == 0:
-            bpy.data.materials.remove(m)
+    if opcion == "borrando":
+        for m in bpy.data.materials:
+            if m.users == 0:
+                bpy.data.materials.remove(m)
 
 
 def onematerialforall():
@@ -66,8 +65,9 @@ def onematerialforall():
     if "Material" not in bpy.data.materials:
         mat = bpy.data.materials.new("Material")
     else:
-        mat = bpy.data.materials['Material']
-
+        deleteallmaterials("")
+        mat = bpy.data.materials.new("Material")
+        
     for ob in bpy.data.scenes[scn.name].objects:
         if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
             if len(bpy.context.selected_objects) == 0:
@@ -139,7 +139,7 @@ class execButonAction1(bpy.types.Operator):
     bl_label = "Remove materials"
     bl_description = "This remove all materials in current scene"
     def execute(self, context):
-        deleteallmaterials()
+        deleteallmaterials("borrando")
         return{'FINISHED'}
 
 class execButonAction2(bpy.types.Operator):
