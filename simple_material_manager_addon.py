@@ -35,7 +35,7 @@ def deleteallmaterials(opcion1,opcion2):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
     for ob in bpy.data.scenes[scn.name].objects:
-        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
+        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
             if len(bpy.context.selected_objects) == 0:
                 scn.objects.active = bpy.data.objects[str(ob.name)]
                 myobject = bpy.data.objects[str(ob.name)]
@@ -71,7 +71,7 @@ def onematerialforall():
         mat = bpy.data.materials.new("Material")
         
     for ob in bpy.data.scenes[scn.name].objects:
-        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
+        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
             if len(bpy.context.selected_objects) == 0:
                 #scn.objects.active = bpy.data.objects[str(ob.name)]
                 #myobject = bpy.data.objects[str(ob.name)]
@@ -96,7 +96,7 @@ def rmmaterialsunused():
     for i in range(len(escenas)):
         for ob in escenas[i].objects:
             # si es de tipo objeto entonces
-            if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META':
+            if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
                 if ob.data.materials == '' or len(ob.material_slots.items()) != 0:
                     # si no esta vacio o tiene mas de 0 slots entonces me lo recorro y
                     # voy agregando los materiales al array
