@@ -56,9 +56,12 @@ def deleteallmaterials(opcion1,opcion2):
                             bpy.ops.object.material_slot_remove()
             ob.select = False
             bpy.ops.object.select_all(action='DESELECT')
-
+            
+    # si es true se setea como respetando:
     if scn['Respect']:
         opcion2 = "respetando"
+    else:
+        opcion2 = ""
 
     if opcion2 != "respetando":
         for m in bpy.data.materials:
@@ -148,6 +151,7 @@ def desligar():
 
 def rmmaterialsunused():
     mat_list = []
+    scn = bpy.context.scene
     escenas = bpy.data.scenes
     # recorriendo todas las escenas en busca de materiales usados:
     for i in range(len(escenas)):
@@ -171,10 +175,19 @@ def rmmaterialsunused():
     for m in bpy.data.materials:
         # si no estan en mi lista es que no estan siendo usados, por lo tanto los elimino:
         if m not in mat_list:
+            # si es true se setea como respetando:
+            if scn['Respect']:
+                opcion1 = "respetando"
+            else:
+                opcion1 = ""
+                
+            if opcion1 != "respetando":
+                if m.use_fake_user == True:
+                    m.use_fake_user = False
+                
             if m.use_fake_user == False: # respetaremos los fake
                 m.user_clear()
                 bpy.data.materials.remove(m)
-
 
 class rmAllUnUsedMaterials(bpy.types.Panel):
     bl_label = "Simple Material Manager"
