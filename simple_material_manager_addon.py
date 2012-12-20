@@ -194,7 +194,7 @@ class execButonAction1(bpy.types.Operator):
 
 class execButonAction2(bpy.types.Operator):
     bl_idname = "dsm.dsm"
-    bl_label = "Untie mats from sel objcts"
+    bl_label = "Untie mataterials slots"
     bl_description = "Untie materials from all objects (or selected objects)"
     def execute(self, context):
         desligar()
