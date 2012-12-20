@@ -211,7 +211,7 @@ class execButonAction3(bpy.types.Operator):
 class execButonAction4(bpy.types.Operator):
     bl_idname = "rmumat.rmumat"
     bl_label = "Remove unused materials"
-    bl_description = "This remove all unused materials"
+    bl_description = "This remove all unused materials in all scenes"
     def execute(self, context):
         rmmaterialsunused()
         return{'FINISHED'}
