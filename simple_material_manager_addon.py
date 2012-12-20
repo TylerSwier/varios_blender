@@ -62,31 +62,45 @@ def deleteallmaterials(opcion1,opcion2):
 
 def onematerialforall():
     scn = bpy.context.scene
-    bpy.ops.object.select_all(action='DESELECT')
-
-    if "Material" not in bpy.data.materials:
-        mat = bpy.data.materials.new("Material")
+    objetos = bpy.context.selected_objects
+    if len(objetos) != 0:
+        seleccionados = True
     else:
-        deleteallmaterials("","respetando")
-        mat = bpy.data.materials.new("Material")
-        
-    for ob in bpy.data.scenes[scn.name].objects:
-        if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
-            if len(bpy.context.selected_objects) == 0:
-                #scn.objects.active = bpy.data.objects[str(ob.name)]
-                #myobject = bpy.data.objects[str(ob.name)]
-                #myobject.select = True
-                scn.objects.active = ob
-                ob.select = True
-                
-                if len(ob.material_slots) <= 0:
-                    bpy.ops.object.material_slot_add()
-                    ob.material_slots[0].material = mat
-                else:
-                    for i in range(len(ob.material_slots)):
-                        ob.material_slots[i].material = mat
+        seleccionados = False
 
+    mat = bpy.data.materials.new("Material")
+    if seleccionados:
+
+        for ob in objetos:
+            if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
                 bpy.ops.object.select_all(action='DESELECT')
+                if len(bpy.context.selected_objects) == 0:
+                    scn.objects.active = ob
+                    ob.select = True
+                    
+                    if len(ob.material_slots) == 0:
+                        bpy.ops.object.material_slot_add()
+                        ob.material_slots[0].material = mat
+                    else:
+                        for i in range(len(ob.material_slots)):
+                            ob.material_slots[i].material = mat
+
+                    bpy.ops.object.select_all(action='DESELECT')
+    else:        
+        for ob in bpy.data.scenes[scn.name].objects:
+            if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
+                if len(bpy.context.selected_objects) == 0:
+                    scn.objects.active = ob
+                    ob.select = True
+           
+                    if len(ob.material_slots) <= 0:
+                        bpy.ops.object.material_slot_add()
+                        ob.material_slots[0].material = mat
+                    else:
+                        for i in range(len(ob.material_slots)):
+                            ob.material_slots[i].material = mat
+
+                    bpy.ops.object.select_all(action='DESELECT')
 
 def desligar():
     scn = bpy.context.scene
@@ -101,6 +115,19 @@ def desligar():
                 scn.objects.active = ob[i]
                 
                 cuantos=len(ob[i].material_slots)
+                for i in range(cuantos):
+                    bpy.ops.object.material_slot_remove()
+                myobject.select = False
+
+            bpy.ops.object.select_all(action='DESELECT')
+    else:
+        for ob in bpy.data.scenes[scn.name].objects:
+            if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
+                myobject = bpy.data.objects[str(ob.name)]
+                myobject.select = True
+                scn.objects.active = ob
+                
+                cuantos=len(ob.material_slots)
                 for i in range(cuantos):
                     bpy.ops.object.material_slot_remove()
                 myobject.select = False
@@ -152,33 +179,33 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
         col.alignment = 'EXPAND'
 
         col.operator("rma.rma", text='Remove all materials')
-        col.operator("smat.smat", text='Single material for all')
         col.operator("dsm.dsm", text='Untie mats from sel objcts')
+        col.operator("smats.smats", text='Single material')
         col.operator("rmumat.rmumat", text='Remove unused materials')
 
 
 class execButonAction1(bpy.types.Operator):
     bl_idname = "rma.rma"
-    bl_label = "Remove materials"
+    bl_label = "Remove materials" # el label que sale en el boton es el de col no este
     bl_description = "This remove all materials in current scene"
     def execute(self, context):
         deleteallmaterials("borrando","")
         return{'FINISHED'}
 
 class execButonAction2(bpy.types.Operator):
-    bl_idname = "smat.smat"
-    bl_label = "Single material for all"
-    bl_description = "Assign single material for all in current scene"
+    bl_idname = "dsm.dsm"
+    bl_label = "Untie mats from sel objcts"
+    bl_description = "Untie materials from all objects (or selected objects)"
     def execute(self, context):
-        onematerialforall()
+        desligar()
         return{'FINISHED'}
 
 class execButonAction3(bpy.types.Operator):
-    bl_idname = "dsm.dsm"
-    bl_label = "Untie mats from sel objcts"
-    bl_description = "Untie materials from selected objects"
+    bl_idname = "smats.smats"
+    bl_label = "Single material"
+    bl_description = "Single material for all objects (or selected objects)"
     def execute(self, context):
-        desligar()
+        onematerialforall()
         return{'FINISHED'}
 
 class execButonAction4(bpy.types.Operator):
