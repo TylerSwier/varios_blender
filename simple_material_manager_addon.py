@@ -33,7 +33,7 @@ import bpy
 from bpy.props import *
 
 def mySceneProperties(scn):
-    bpy.types.Scene.Respect = BoolProperty( name = "Respect Fake User in remove all", description = "Respect Fake User, for Remove all materials button")
+    bpy.types.Scene.Respect = BoolProperty( name = "Respect Fake User", description = "Respect Fake User, for Remove all materials button")
     scn['Respect'] = False
 
 mySceneProperties(bpy.context.scene)
