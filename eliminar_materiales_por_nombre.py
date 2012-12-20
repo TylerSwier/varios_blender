@@ -1,6 +1,6 @@
 import bpy
 
-def rm_material_by_name(nombre):
+def rm_material_by_name(nombre,opcion1):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
     objetos_c = [] # objetos que objeto contienen el material:
@@ -14,7 +14,8 @@ def rm_material_by_name(nombre):
                 print(ob.name)
                 for ms in ob.material_slots:
                     if ms.name == nombre:
-                       objetos_c.append(ob)
+                        if opcion1 != "respetando":
+                            objetos_c.append(ob)
                 ob.select = False
                 bpy.ops.object.select_all(action='DESELECT')
 
@@ -29,9 +30,10 @@ def rm_material_by_name(nombre):
             if x.material_slots[i].name == nombre:
                 pos.append(i)
         for mat in bpy.data.materials: # lo buscamos para desactivarle el fake user:
-            if mat.name == nombre:
-                if mat.use_fake_user == True:
-                    m.use_fake_user = False
+            if opcion1 != "respetando":
+                if mat.name == nombre:
+                    if mat.use_fake_user == True:
+                        mat.use_fake_user = False
         for i in range(len(x.material_slots)): # por cada slot de materiales del objeto:
             # apuntar a que posicion de slot afectara el borrado:
             # bpy.data.objects['Cube.001'].active_material_index = 1
@@ -47,4 +49,6 @@ def rm_material_by_name(nombre):
         ob.select = False
         bpy.ops.object.select_all(action='DESELECT')
 
-rm_material_by_name("verde")
+respeto = ""
+#respeto = "respetando"
+rm_material_by_name("verde",respeto)
