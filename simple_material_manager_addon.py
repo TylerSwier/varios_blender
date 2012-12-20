@@ -30,6 +30,14 @@ bl_info = {
 
 
 import bpy
+from bpy.props import *
+
+def mySceneProperties(scn):
+    bpy.types.Scene.Respect = BoolProperty( name = "Respect Fake User", description = "Respect Fake User, for Remove all materials button")
+    scn['Respect'] = False
+
+mySceneProperties(bpy.context.scene)
+
 
 def deleteallmaterials(opcion1,opcion2):
     scn = bpy.context.scene
@@ -48,6 +56,9 @@ def deleteallmaterials(opcion1,opcion2):
                             bpy.ops.object.material_slot_remove()
             ob.select = False
             bpy.ops.object.select_all(action='DESELECT')
+
+    if scn['Respect']:
+        opcion2 = "respetando"
 
     if opcion2 != "respetando":
         for m in bpy.data.materials:
@@ -86,7 +97,7 @@ def onematerialforall():
                             ob.material_slots[i].material = mat
 
                     bpy.ops.object.select_all(action='DESELECT')
-    else:        
+    else:
         for ob in bpy.data.scenes[scn.name].objects:
             if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
                 if len(bpy.context.selected_objects) == 0:
@@ -178,6 +189,7 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
         col = row.column()
         col.alignment = 'EXPAND'
 
+        col.prop(scn, 'Respect')
         col.operator("rma.rma", text='Remove all materials')
         col.operator("dsm.dsm", text='Untie mataterials slots')
         col.operator("smats.smats", text='Single material')
