@@ -42,26 +42,27 @@ mySceneProperties(bpy.context.scene)
 def deleteallmaterials(opcion1,opcion2):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
+
+    # si es true se setea como respetando:
+    if scn['Respect']:
+        opcion2 = "respetando"
+    else:
+        opcion2 = ""
+
     for ob in bpy.data.scenes[scn.name].objects:
         if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
             if len(bpy.context.selected_objects) == 0:
                 scn.objects.active = bpy.data.objects[str(ob.name)]
                 myobject = bpy.data.objects[str(ob.name)]
                 myobject.select = True
-
                 if len(bpy.context.selected_objects) != 0:
                     for i in range(len(bpy.context.selected_objects)):
-                        cuantos=len(bpy.context.selected_objects[i].material_slots)
-                        for i in range(cuantos):
-                            bpy.ops.object.material_slot_remove()
+                        for mat in ob.material_slots: #<-- comprobamos antes de desconectar si son fake user
+                            if bpy.data.materials[mat.name].use_fake_user != True or opcion2 != "respetando":
+                                bpy.ops.object.material_slot_remove()
             ob.select = False
             bpy.ops.object.select_all(action='DESELECT')
             
-    # si es true se setea como respetando:
-    if scn['Respect']:
-        opcion2 = "respetando"
-    else:
-        opcion2 = ""
 
     if opcion2 != "respetando":
         for m in bpy.data.materials:
@@ -189,6 +190,37 @@ def rmmaterialsunused():
                 m.user_clear()
                 bpy.data.materials.remove(m)
 
+
+def makefakeuser():
+    scn = bpy.context.scene
+    ob = bpy.context.selected_objects
+    bpy.ops.object.select_all(action='DESELECT')
+    if ob:
+        for i in range(len(ob)):
+            if ob[i].type == 'MESH' or ob[i].type == 'SURFACE' or ob[i].type == 'META' or ob[i].type == 'CURVE' or ob[i].type == 'FONT':
+                myobject = bpy.data.objects[str(ob[i].name)]
+                myobject.select = True
+                scn.objects.active = ob[i]
+                for mat in ob[i].material_slots:
+                    bpy.data.materials[mat.name].use_fake_user = True
+                myobject.select = False
+            bpy.ops.object.select_all(action='DESELECT')
+
+def demakefakeuser():
+    scn = bpy.context.scene
+    ob = bpy.context.selected_objects
+    bpy.ops.object.select_all(action='DESELECT')
+    if ob:
+        for i in range(len(ob)):
+            if ob[i].type == 'MESH' or ob[i].type == 'SURFACE' or ob[i].type == 'META' or ob[i].type == 'CURVE' or ob[i].type == 'FONT':
+                myobject = bpy.data.objects[str(ob[i].name)]
+                myobject.select = True
+                scn.objects.active = ob[i]
+                for mat in ob[i].material_slots:
+                    bpy.data.materials[mat.name].use_fake_user = False
+                myobject.select = False
+            bpy.ops.object.select_all(action='DESELECT')
+
 class rmAllUnUsedMaterials(bpy.types.Panel):
     bl_label = "Simple Material Manager"
     bl_space_type = "VIEW_3D"
@@ -204,9 +236,13 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
 
         col.prop(scn, 'Respect')
         col.operator("rma.rma", text='Remove all materials')
-        col.operator("dsm.dsm", text='Untie mataterials slots')
         col.operator("smats.smats", text='Single material')
-        col.operator("rmumat.rmumat", text='Remove unused materials')
+        col.operator("dsm.dsm", text='Untie mataterials slots')        
+        subrow = col.row(align=True)
+        subrow.operator("mfu.mfu", text='Make Fake User')
+        subrow.operator("umfu.umfu", text='Unmake Fake User')
+        col.operator("rmumat.rmumat", text='Remove unused materials')        
+        
 
 
 class execButonAction1(bpy.types.Operator):
@@ -226,6 +262,22 @@ class execButonAction2(bpy.types.Operator):
         return{'FINISHED'}
 
 class execButonAction3(bpy.types.Operator):
+    bl_idname = "mfu.mfu"
+    bl_label = "Make Fake User" # el label que sale en el boton es el de col no este
+    bl_description = "Make Fake User"
+    def execute(self, context):
+        makefakeuser()
+        return{'FINISHED'}
+
+class execButonAction4(bpy.types.Operator):
+    bl_idname = "umfu.umfu"
+    bl_label = "Unmake Fake User" # el label que sale en el boton es el de col no este
+    bl_description = "Unmake Fake User"
+    def execute(self, context):
+        demakefakeuser()
+        return{'FINISHED'}
+
+class execButonAction5(bpy.types.Operator):
     bl_idname = "smats.smats"
     bl_label = "Single material"
     bl_description = "Single material for all objects (or selected objects)"
@@ -233,7 +285,7 @@ class execButonAction3(bpy.types.Operator):
         onematerialforall()
         return{'FINISHED'}
 
-class execButonAction4(bpy.types.Operator):
+class execButonAction6(bpy.types.Operator):
     bl_idname = "rmumat.rmumat"
     bl_label = "Remove unused materials"
     bl_description = "This remove all unused materials in all scenes"
