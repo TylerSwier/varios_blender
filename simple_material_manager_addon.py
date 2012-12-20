@@ -221,6 +221,18 @@ def demakefakeuser():
                 myobject.select = False
             bpy.ops.object.select_all(action='DESELECT')
 
+def selectfakeuser():
+    scn = bpy.context.scene
+    obs = bpy.data.scenes[scn.name].objects
+    bpy.ops.object.select_all(action='DESELECT')
+    for i in range(len(obs)):
+        for mat in obs[i].material_slots:
+            if bpy.data.materials[mat.name].use_fake_user == True:
+                myobject = bpy.data.objects[str(obs[i].name)]
+                myobject.select = True
+                scn.objects.active = obs[i]
+
+
 class rmAllUnUsedMaterials(bpy.types.Panel):
     bl_label = "Simple Material Manager"
     bl_space_type = "VIEW_3D"
@@ -241,7 +253,8 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
         subrow = col.row(align=True)
         subrow.operator("mfu.mfu", text='Make Fake User')
         subrow.operator("umfu.umfu", text='Unmake Fake User')
-        col.operator("rmumat.rmumat", text='Remove unused materials')        
+        col.operator("sfu.sfu", text='Select Fake Users')
+        col.operator("rmumat.rmumat", text='Remove unused materials')
         
 
 
@@ -286,6 +299,14 @@ class execButonAction5(bpy.types.Operator):
         return{'FINISHED'}
 
 class execButonAction6(bpy.types.Operator):
+    bl_idname = "sfu.sfu"
+    bl_label = "Select Fake Users"
+    bl_description = "Select Fake Users"
+    def execute(self, context):
+        selectfakeuser()
+        return{'FINISHED'}
+
+class execButonAction7(bpy.types.Operator):
     bl_idname = "rmumat.rmumat"
     bl_label = "Remove unused materials"
     bl_description = "This remove all unused materials in all scenes"
