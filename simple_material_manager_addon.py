@@ -179,7 +179,7 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
         col.alignment = 'EXPAND'
 
         col.operator("rma.rma", text='Remove all materials')
-        col.operator("dsm.dsm", text='Untie mats from sel objcts')
+        col.operator("dsm.dsm", text='Untie mataterials slots')
         col.operator("smats.smats", text='Single material')
         col.operator("rmumat.rmumat", text='Remove unused materials')
 
