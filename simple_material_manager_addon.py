@@ -132,6 +132,7 @@ def desligar():
                 cuantos=len(ob[i].material_slots)
                 for i in range(cuantos):
                     bpy.ops.object.material_slot_remove()
+                    bpy.data.materials[ob[i].name].user_clear()
                 myobject.select = False
 
             bpy.ops.object.select_all(action='DESELECT')
