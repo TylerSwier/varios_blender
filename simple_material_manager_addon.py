@@ -39,15 +39,48 @@ def mySceneProperties(scn):
 mySceneProperties(bpy.context.scene)
 
 
-def deleteallmaterials(opcion1,opcion2):
+
+# optener listado de materiales de objetos
+def obtenermateriales(opcion1):
+    mat_list = []
+    if opcion1 == "local":
+        sel = bpy.context.selected_objects
+        if len(sel) == 0:
+            for os in bpy.context.scene.objects:
+                for slot in os.material_slots:
+                    mat_list.append(slot)
+        else:
+            for os in sel:
+                for slot in os.material_slots:
+                    mat_list.append(slot)
+    else:
+        sel = bpy.context.selected_objects
+        for escena in bpy.data.scenes:
+            for os in bpy.data.scenes[escena.name].objects:
+                if len(sel) == 0:
+                    for slot in os.material_slots:
+                        mat_list.append(slot)
+                else:
+                    for so in sel:
+                        for slot in so.material_slots:
+                            mat_list.append(slot)
+    # limpiando lista de repetidos:
+    preparando = list(set(mat_list))
+    mat_list = preparando
+    return mat_list
+
+# Nota: si no es en "local" y si es con algo seleccionado, evidentemente
+# saldran solo los de los objetos deleccionados de la escena actual, ya
+# que los full copy scene cambian de nombre los objetos y son "unicos"
+#mat = obtenermateriales("local")
+#for i in mat:
+#    print(i.name)
+
+
+def rm_material_by_name(nombre,opcion1):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
-
-    # si es true se setea como respetando:
-    if scn['Respect']:
-        opcion2 = "respetando"
-    else:
-        opcion2 = ""
+    objetos_c = [] # objetos que objeto contienen el material:
 
     for ob in bpy.data.scenes[scn.name].objects:
         if ob.type == 'MESH' or ob.type == 'SURFACE' or ob.type == 'META' or ob.type == 'CURVE' or ob.type == 'FONT':
@@ -55,24 +88,58 @@ def deleteallmaterials(opcion1,opcion2):
                 scn.objects.active = bpy.data.objects[str(ob.name)]
                 myobject = bpy.data.objects[str(ob.name)]
                 myobject.select = True
-                if len(bpy.context.selected_objects) != 0:
-                    for i in range(len(bpy.context.selected_objects)):
-                        for mat in ob.material_slots: #<-- comprobamos antes de desconectar si son fake user
-                            if bpy.data.materials[mat.name].use_fake_user != True or opcion2 != "respetando":
-                                bpy.ops.object.material_slot_remove()
-            ob.select = False
-            bpy.ops.object.select_all(action='DESELECT')
-            
+                print(ob.name)
+                for ms in ob.material_slots:
+                    if ms.name == nombre:
+                        if ms.material.use_fake_user != True:
+                            objetos_c.append(ob)
+                ob.select = False
+                bpy.ops.object.select_all(action='DESELECT')
 
-    if opcion2 != "respetando":
-        for m in bpy.data.materials:
-            if m.use_fake_user == True:
-                m.use_fake_user = False
+    for x in objetos_c:
+        scn.objects.active = bpy.data.objects[str(x.name)]
+        sobject = bpy.data.objects[str(ob.name)]
+        sobject.select = True
+        # obteniendo posiciones de los slots que contengan el material:
+        pos = []
+        # buscamos en que slots esta:
+        for i in range(len(x.material_slots)):
+            if x.material_slots[i].name == nombre:
+                pos.append(i)
+        for mat in bpy.data.materials: # lo buscamos para desactivarle el fake user:
+            if opcion1 != "respetando":
+                if mat.name == nombre:
+                    if mat.use_fake_user == True:
+                        mat.use_fake_user = False
+        for i in range(len(x.material_slots)): # por cada slot de materiales del objeto:
+            # apuntar a que posicion de slot afectara el borrado:
+            # bpy.data.objects['Cube.001'].active_material_index = 1
+            if i < len(pos):
+                x.active_material_index = pos[i]
+                # y borandolo:
+                bpy.ops.object.material_slot_remove() # esto borra el slot para dejarlo en users = 0
+        x.user_clear()
+        try:
+            bpy.data.materials.remove(bpy.data.materials[nombre])
+        except:
+            pass
+        ob.select = False
+        bpy.ops.object.select_all(action='DESELECT')
 
-    if opcion1 == "borrando":
-        for m in bpy.data.materials:
-            if m.users == 0:
-                bpy.data.materials.remove(m)
+#respeto = ""
+#respeto = "respetando"
+#rm_material_by_name("verde",respeto)
+
+
+def deleteallmaterials():
+    scn = bpy.context.scene
+    if scn['Respect']:
+        opcion1 = "respetando"
+    else:
+        opcion1 = ""
+    materiales = obtenermateriales("local")
+    for i in materiales:
+        rm_material_by_name(i.name,opcion1)
 
 
 def onematerialforall():
@@ -253,7 +320,7 @@ class rmAllUnUsedMaterials(bpy.types.Panel):
         col.prop(scn, 'Respect')
         col.operator("rma.rma", text='Remove all materials')
         col.operator("smats.smats", text='Single material')
-        col.operator("dsm.dsm", text='Untie mataterials slots')        
+        col.operator("dsm.dsm", text='Untie mataterials slots')
         subrow = col.row(align=True)
         subrow.operator("mfu.mfu", text='Make Fake User')
         subrow.operator("umfu.umfu", text='Unmake Fake User')
@@ -267,7 +334,7 @@ class execButonAction1(bpy.types.Operator):
     bl_label = "Remove materials" # el label que sale en el boton es el de col no este
     bl_description = "This remove all materials in current scene"
     def execute(self, context):
-        deleteallmaterials("borrando","")
+        deleteallmaterials()
         return{'FINISHED'}
 
 class execButonAction2(bpy.types.Operator):
