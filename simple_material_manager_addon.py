@@ -123,17 +123,20 @@ def desligar():
     bpy.ops.object.select_all(action='DESELECT')
     #if len(bpy.context.selected_objects) != 0:
     if ob: #<-- una manera mas elegante de hacer la misma comprobacion que arriba
-        for i in range(len(ob)):
-            if ob[i].type == 'MESH' or ob[i].type == 'SURFACE' or ob[i].type == 'META' or ob[i].type == 'CURVE' or ob[i].type == 'FONT':
-                myobject = bpy.data.objects[str(ob[i].name)]
-                myobject.select = True
-                scn.objects.active = ob[i]
-                
-                cuantos=len(ob[i].material_slots)
-                for i in range(cuantos):
+        for i in ob:
+            myobject = bpy.data.objects[str(i.name)]
+            myobject.select = True
+            scn.objects.active = i
+            
+            if len(i.material_slots) > 0:
+                for sl in range(len(i.material_slots)):
+                    i.user_clear()
                     bpy.ops.object.material_slot_remove()
-                    bpy.data.materials[ob[i].name].user_clear()
-                myobject.select = False
+                else:
+                    for sl in i.material_slots:
+                        i.user_clear()
+                        bpy.ops.object.material_slot_remove()
+            myobject.select = False
 
             bpy.ops.object.select_all(action='DESELECT')
     else:
