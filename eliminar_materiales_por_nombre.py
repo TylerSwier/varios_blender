@@ -14,7 +14,7 @@ def rm_material_by_name(nombre,opcion1):
                 print(ob.name)
                 for ms in ob.material_slots:
                     if ms.name == nombre:
-                        if opcion1 != "respetando":
+                        if ms.material.use_fake_user != True:
                             objetos_c.append(ob)
                 ob.select = False
                 bpy.ops.object.select_all(action='DESELECT')
