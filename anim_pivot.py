@@ -93,8 +93,9 @@ def obtenercursor():
     pose_bone2 = bpy.data.objects['mi_armature_g'].pose.bones["Offset"]
     #vec = Vector((1, 0, 0))
     vec = bpy.context.scene.cursor_location
+    ovec = bpy.data.objects['mi_armature_g'].pose.bones["Offset"].vector
     pose_bone1.location = armature.matrix_world.inverted() * pose_bone1.bone.matrix_local.inverted() * vec 
-    pose_bone2.location = armature.matrix_world.inverted() * pose_bone2.bone.matrix_local.inverted() * vec
+    pose_bone2.location = armature.matrix_world.inverted() * pose_bone2.bone.matrix_local.inverted() * ovec
 
 def asignandorig():
     # emparentar mi rig al objeto seleccionado:
