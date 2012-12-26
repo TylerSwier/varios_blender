@@ -86,14 +86,15 @@ def creandorig():
     #bpy.ops.object.mode_set(mode='OBJECT')
     
 def obtenercursor():
-    armature = bpy.context.active_object
+    armature = bpy.data.objects['mi_armature_g']
+    #armature = bpy.context.active_object
     #pose_bone = bpy.context.active_pose_bone
     pose_bone1 = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
     pose_bone2 = bpy.data.objects['mi_armature_g'].pose.bones["Offset"]
     #vec = Vector((1, 0, 0))
     vec = bpy.context.scene.cursor_location
     pose_bone1.location = armature.matrix_world.inverted() * pose_bone1.bone.matrix_local.inverted() * vec 
-    pose_bone2.location = armature.matrix_world.inverted() * pose_bone2.bone.matrix_local.inverted() * vec 
+    pose_bone2.location = armature.matrix_world.inverted() * pose_bone2.bone.matrix_local.inverted() * vec
 
 def asignandorig():
     # emparentar mi rig al objeto seleccionado:
