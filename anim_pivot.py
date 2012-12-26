@@ -94,12 +94,12 @@ def obtenercursor():
     #oy=float(bpy.data.objects['mi_armature_g'].pose.bones['Offset'].location.y)
 
     # pillamos el primer hijo para tener las coordenadas del objeto respecto al mundo para poder luego setear el offset:
-    #mob = bpy.data.objects['mi_armature_g'].children[0].matrix_world #<-- no va...
-    obm = bpy.data.objects['mi_armature_g'].matrix_world
+    obm = bpy.data.objects['mi_armature_g'].children[0].matrix_world #<-- no va...
+    #obm = bpy.data.objects['mi_armature_g'].matrix_world
     #mob = bpy.context.object.matrix_world
         
     # seteando Pivote:
-    bpy.ops.view3d.snap_selected_to_cursor()                                                                # x        z           y
+    bpy.ops.view3d.snap_selected_to_cursor()
     # seteando Offset:    
     bpy.context.object.pose.bones['Offset'].matrix = obm
 
