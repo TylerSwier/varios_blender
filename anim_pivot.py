@@ -86,22 +86,14 @@ def creandorig():
     #bpy.ops.object.mode_set(mode='OBJECT')
     
 def obtenercursor():
-    #cx = float(bpy.context.scene.cursor_location.x)
-    #cz = float(bpy.context.scene.cursor_location.z)
-    #cy = float(bpy.context.scene.cursor_location.y)    
-    #ox=float(bpy.data.objects['mi_armature_g'].pose.bones['Offset'].location.x)
-    #oz=float(bpy.data.objects['mi_armature_g'].pose.bones['Offset'].location.z)
-    #oy=float(bpy.data.objects['mi_armature_g'].pose.bones['Offset'].location.y)
-
-    # pillamos el primer hijo para tener las coordenadas del objeto respecto al mundo para poder luego setear el offset:
-    obm = bpy.data.objects['mi_armature_g'].children[0].matrix_world #<-- no va...
-    #obm = bpy.data.objects['mi_armature_g'].matrix_world
-    #mob = bpy.context.object.matrix_world
-        
-    # seteando Pivote:
-    bpy.ops.view3d.snap_selected_to_cursor()
-    # seteando Offset:    
-    bpy.context.object.pose.bones['Offset'].matrix = obm
+    armature = bpy.context.active_object
+    #pose_bone = bpy.context.active_pose_bone
+    pose_bone1 = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
+    pose_bone2 = bpy.data.objects['mi_armature_g'].pose.bones["Offset"]
+    #vec = Vector((1, 0, 0))
+    vec = bpy.context.scene.cursor_location
+    pose_bone1.location = armature.matrix_world.inverted() * pose_bone1.bone.matrix_local.inverted() * vec 
+    pose_bone2.location = armature.matrix_world.inverted() * pose_bone2.bone.matrix_local.inverted() * vec 
 
 def asignandorig():
     # emparentar mi rig al objeto seleccionado:
