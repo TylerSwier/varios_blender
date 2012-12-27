@@ -334,7 +334,8 @@ class execButonAction1(bpy.types.Operator):
     bl_label = "Remove materials" # el label que sale en el boton es el de col no este
     bl_description = "This remove all materials in current scene"
     def execute(self, context):
-        deleteallmaterials()
+        if bpy.context.mode == 'OBJECT':
+            deleteallmaterials()
         return{'FINISHED'}
 
 class execButonAction2(bpy.types.Operator):
@@ -342,7 +343,8 @@ class execButonAction2(bpy.types.Operator):
     bl_label = "Untie mataterials slots"
     bl_description = "Untie materials from all objects (or selected objects)"
     def execute(self, context):
-        desligar()
+        if bpy.context.mode == 'OBJECT':
+            desligar()
         return{'FINISHED'}
 
 class execButonAction3(bpy.types.Operator):
@@ -350,7 +352,8 @@ class execButonAction3(bpy.types.Operator):
     bl_label = "Make Fake User" # el label que sale en el boton es el de col no este
     bl_description = "Make Fake User"
     def execute(self, context):
-        makefakeuser()
+        if bpy.context.mode == 'OBJECT':
+            makefakeuser()
         return{'FINISHED'}
 
 class execButonAction4(bpy.types.Operator):
@@ -358,7 +361,8 @@ class execButonAction4(bpy.types.Operator):
     bl_label = "Unmake Fake User" # el label que sale en el boton es el de col no este
     bl_description = "Unmake Fake User"
     def execute(self, context):
-        demakefakeuser()
+        if bpy.context.mode == 'OBJECT':
+            demakefakeuser()
         return{'FINISHED'}
 
 class execButonAction5(bpy.types.Operator):
@@ -366,7 +370,8 @@ class execButonAction5(bpy.types.Operator):
     bl_label = "Single material"
     bl_description = "Single material for all objects (or selected objects)"
     def execute(self, context):
-        onematerialforall()
+        if bpy.context.mode == 'OBJECT':
+            onematerialforall()
         return{'FINISHED'}
 
 class execButonAction6(bpy.types.Operator):
@@ -374,7 +379,8 @@ class execButonAction6(bpy.types.Operator):
     bl_label = "Select Fake Users"
     bl_description = "Select Fake Users"
     def execute(self, context):
-        selectfakeuser()
+        if bpy.context.mode == 'OBJECT':
+            selectfakeuser()
         return{'FINISHED'}
 
 class execButonAction7(bpy.types.Operator):
@@ -382,7 +388,8 @@ class execButonAction7(bpy.types.Operator):
     bl_label = "Remove unused materials"
     bl_description = "This remove all unused materials in all scenes"
     def execute(self, context):
-        rmmaterialsunused()
+        if bpy.context.mode == 'OBJECT':
+            rmmaterialsunused()
         return{'FINISHED'}
 
 
