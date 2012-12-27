@@ -33,26 +33,17 @@ import bpy
 def creandorig():
     #creando el rig:
     bpy.ops.object.add(type='EMPTY', view_align=False,
-    enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0),
-    layers=(False, False, False, False, False, False, False, False, False,
-    False, False, False, False, False, False, False, False, False, False,
-    True))
+    enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True))
     bpy.context.object.name = "e_pivot"
     bpy.context.object.empty_draw_type = 'SPHERE'
     bpy.data.objects['e_pivot'].scale = [0.5,0.5,0.5]
 
     bpy.ops.object.add(type='EMPTY', view_align=False,
-    enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0),
-    layers=(False, False, False, False, False, False, False, False, False,
-    False, False, False, False, False, False, False, False, False, False,
-    True))
+    enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True))
     bpy.context.object.name = "e_offset"
     bpy.data.objects['e_offset'].scale = [0.5,0.5,0.5]
 
-    bpy.ops.object.armature_add(view_align=False, enter_editmode=False,
-    location=(0, 0, 0), rotation=(0, 0, 0), layers=(True, False, False,
-    False, False, False, False, False, False, False, False, False, False,
-    False, False, False, False, False, False, False))
+    bpy.ops.object.armature_add(view_align=False, enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
     bpy.context.selected_objects[0].name = "mi_armature_g"
     bpy.context.selected_objects[0].data.name = "mi_armature"
 
@@ -94,7 +85,7 @@ def obtenercursor():
     cvec = bpy.context.scene.cursor_location
     ovec =  cvec - pose_bone2.vector
     # orden x        z        y
-    #ovec = [-ovec[0],-ovec[1],ovec[1]]
+    #ovec = [-ovec[0],-ovec[1],-ovec[2]]
     pose_bone1.location = armature.matrix_world.inverted() * pose_bone1.bone.matrix_local.inverted() * cvec
     pose_bone2.location = ovec
 
