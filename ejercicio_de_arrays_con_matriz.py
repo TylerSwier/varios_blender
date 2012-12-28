@@ -16,9 +16,9 @@ matriz[1] = [0,2,0]
 matriz[2] = [0,0,2]
 
 #settings:
-veces = 3
-ob = "Cubo" 
-repeticiones_cubo = 5
+veces = 3 #<-- 3 veces por que hay 3 slots que son las 3 coordenadas de las 3 dimensiones
+ob = "Cubo" #<-- objeto de nombre Cubo 
+repeticiones_cubo = 5 #<-- el numero de cubos por cada dimension que tendra el array
 
 # primero creo los 3 arrays y seteo los valores compartidos:
 def creadordearrays(ob,veces,bloques):
