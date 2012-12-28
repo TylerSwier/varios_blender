@@ -32,7 +32,7 @@ creadordearrays(ob,veces,repeticiones_cubo)
 # por cada vez que se ejecuta, se ejecuta a un modificador distinto con settings distintos cada uno:
 def setteo(ob,cual):
     for i in range(3): #<-- por cada uno de los numeros de slots (a setear) de relative offset displace:
-        bpy.data.objects[ob].modifiers[cual].relative_offset_displace[i-1] = matriz[i-1][cual]
+        bpy.data.objects[ob].modifiers[cual].relative_offset_displace[i-1] = matriz[i-1][cual-1]#<-- usamos -1 ya que las listas la primera posicion es 0 y no 1
 
 # ejecuto el setteo el numero de veces tanto como numero de modificadores tiene:
 for i in range(len(bpy.data.objects[ob].modifiers)):
