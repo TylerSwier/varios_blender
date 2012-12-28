@@ -6,7 +6,7 @@ bpy.data.objects["Cube"].name='Cubo' # cambiamos el nombre por defecto Cube por 
 
 # creamos una lista que contiene 3 listas con 3 numeros 0 dentro de cada una:
 def create_matrix(n, m):
-    return [[0 for j in range(n)] for i in range(m)]
+    return [[0 for j in range(m)] for i in range(n)]
 
 matriz = create_matrix(3,3)
 # ya tenemos nuestra lista=[ [0,0,0],[0,0,0],[0,0,0] ]
