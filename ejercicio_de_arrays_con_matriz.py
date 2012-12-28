@@ -30,7 +30,7 @@ def creadordearrays(ob,veces,bloques):
 creadordearrays(ob,veces,repeticiones_cubo)
 
 # por cada vez que se ejecuta, se ejecuta a un modificador distinto con settings distintos cada uno:
-def setteo(ob,cual): # uso cual para obtener el iterador externo que le pasamos abajo llamado i
+def setteo(ob,cual): # uso cual para obtener el iterador externo que le pasamos abajo llamado i en la linea 39
     for i in range(3): #<-- por cada uno de los numeros de slots (a setear) de relative offset displace:
         bpy.data.objects[ob].modifiers[cual].relative_offset_displace[i-1] = matriz[i-1][cual-1]#<-- usamos -1 ya que las listas la primera posicion es 0 y no 1
 
