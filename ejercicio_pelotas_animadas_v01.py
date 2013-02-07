@@ -10,14 +10,14 @@ for i in range(6):
     
     ob = bpy.context.active_object
     scn = bpy.context.scene
-    de_diez_en_diez = 1 #<- iterador de diez en diez
+    de_diez_en_diez = 0 #<- iterador de diez en diez
     
     if i == 0: #<- para la primera posicion
-        scn.frame_set(de_diez_en_diez) #<- indicamos el frame
+        scn.frame_set(de_diez_en_diez+1) #<- indicamos el frame
         ob.location = first_pos #<- lo movemos a su posicion
         ob.keyframe_insert(data_path="location", index=-1) #<- insertamos keyframe
     else: #<- si no es primera posicion:
-        scn.frame_set(de_diez_en_diez) #<- indicamos el frame
+        scn.frame_set(de_diez_en_diez+1) #<- indicamos el frame
         ob.location.x = i #<- lo movemos a su posicion
         ob.keyframe_insert(data_path="location", index=-1) #<- insertamos keyframe
     
