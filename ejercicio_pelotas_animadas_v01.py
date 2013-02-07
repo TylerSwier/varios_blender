@@ -26,7 +26,7 @@ for i in range(6):
         if p != 0: #<- para la primera posicion no hacemos nada, para el resto:
             ob.location.y = ob.location.y + 0.5 #<- lo movemos a su posicion
             ob.location.z = random.random() #<- lo movemos a su posicion
-        ob.keyframe_insert(data_path="location", index=-1) #<- insertamos keyframe
+            ob.keyframe_insert(data_path="location", index=-1) #<- insertamos keyframe
         de_diez_en_diez = de_diez_en_diez+10 #<- iteramos de diez en diez
         
 bpy.ops.screen.frame_jump() #<- rebobinamos hasta el frame 1
