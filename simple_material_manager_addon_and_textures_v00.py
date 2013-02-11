@@ -33,7 +33,7 @@ import bpy
 from bpy.props import *
 
 def mySceneProperties(scn):
-    bpy.types.Scene.ITextures = BoolProperty( name = "Include textures", description = "Include textures")
+    bpy.types.Scene.ITextures = BoolProperty( name = "Include textures", description = "Include textures (only in first button and last)")
     scn['ITextures'] = False
     bpy.types.Scene.Respect = BoolProperty( name = "Respect Fake User", description = "Respect Fake User, for all remove actions")
     scn['Respect'] = True
