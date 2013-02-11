@@ -110,10 +110,18 @@ def obtenermateriales(opcion1):
 #for i in mat:
 #    print(i.name)
 
-def rm_texture_by_name(nombre,opcion1):
-    if opcion1 == "rtexture":
+def rm_texture_by_name(nombre):
+    if scn['Respect']:
+        if bpy.data.textures[nombre].use_fake_user == False:
+            try:
+                bpy.data.textures[nombre].user_clear()
+                bpy.data.textures.remove(bpy.data.textures[nombre])
+            except:
+                pass
+    else:
         try:
             bpy.data.textures[nombre].user_clear()
+            bpy.data.textures[nombre].use_fake_user == True
             bpy.data.textures.remove(bpy.data.textures[nombre])
         except:
             pass
@@ -125,11 +133,12 @@ def rm_texture_unused():
             if t.users == 0 and t.use_fake_user == False:
                 bpy.data.textures.remove(bpy.data.textures[t.name])
     else:
-        if t.users == 0:
-            for t in bpy.data.textures:
-                if t.use_fake_user == True:
-                    t.use_fake_user = False
-                    bpy.data.textures.remove(bpy.data.textures[t.name])
+        for t in bpy.data.textures:
+            if t.users == 0:
+                for t in bpy.data.textures:
+                    if t.use_fake_user == True:
+                        t.use_fake_user = False
+                        bpy.data.textures.remove(bpy.data.textures[t.name])
     
 def rm_material_by_name(nombre,opcion1):
     scn = bpy.context.scene
@@ -192,15 +201,10 @@ def deleteallmaterials():
     else:
         opcion1 = ""
         
-    if scn['ITextures']:
-        opcion1 = "rtexture"
-    else:
-        opcion1 = ""
-        
     texturas = obtenertexturas("local")
     for i in texturas:
         try:
-            rm_texture_by_name(i.name,opcion1)
+            rm_texture_by_name(i.name)
         except:
             pass
             
