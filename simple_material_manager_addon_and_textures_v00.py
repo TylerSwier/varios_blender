@@ -134,7 +134,7 @@ def rm_texture_unused():
                 bpy.data.textures.remove(bpy.data.textures[t.name])
     else:
         for t in bpy.data.textures:
-            if t.users == 0:
+            if t.users <= 1: # si es fakeado vale 1 aun k nadie lo use
                 for t in bpy.data.textures:
                     if t.use_fake_user == True:
                         t.use_fake_user = False
