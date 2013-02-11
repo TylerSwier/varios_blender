@@ -119,10 +119,17 @@ def rm_texture_by_name(nombre,opcion1):
             pass
             
 def rm_texture_unused():
-    for t in bpy.data.textures:
-        if t.users == 0:
-            bpy.data.textures.remove(bpy.data.textures[t.name])
-            
+    scn = bpy.context.scene
+    if scn['Respect']:
+        for t in bpy.data.textures:
+            if t.users == 0 and t.use_fake_user != True:
+                bpy.data.textures.remove(bpy.data.textures[t.name])
+    else:
+        for t in bpy.data.textures:
+            if t.use_fake_user == True:
+                t.use_fake_user = False
+                bpy.data.textures.remove(bpy.data.textures[t.name])
+    
 def rm_material_by_name(nombre,opcion1):
     scn = bpy.context.scene
     bpy.ops.object.select_all(action='DESELECT')
