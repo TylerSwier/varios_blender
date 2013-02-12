@@ -211,8 +211,9 @@ def deleteallmaterials():
     materiales = obtenermateriales("local")
     for i in materiales:
         rm_material_by_name(i.name,opcion1)
-        
-    rm_texture_unused()
+
+    if scn['ITextures']:
+        rm_texture_unused()
 
 
 def onematerialforall():
