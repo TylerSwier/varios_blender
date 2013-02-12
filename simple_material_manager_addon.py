@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     "name": "Material Manager",
     "description": "This script is a simple material Manager.",
-    "author": "Jorge Hernandez - Melenedez",
+    "author": "Jorge Hernandez - Melendez",
     "version": (0,1),
     "blender": (2, 65, 0),
     "location": "",
