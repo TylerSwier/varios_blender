@@ -27,9 +27,9 @@ for i in range(0, filas * columnas):
     bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
     
     # esalamos los cubos:
-    bpy.context.active_object.scale.x = 0.5 # escalo a la mitad para que exista espacio entre los cubos
-    bpy.context.active_object.scale.y = 0.5 # escalo a la mitad para que exista espacio entre los cubos
-    bpy.context.active_object.scale.z = 5
+    bpy.context.active_object.scale.x = 0.5 # escalo para que exista espacio entre los cubos (es el size de los cubos en x)
+    bpy.context.active_object.scale.y = 0.5 # escalo para que exista espacio entre los cubos (es el size de los cubos en y)
+    bpy.context.active_object.scale.z = 5 # <- (es el size de los cubos en z) este delimitara la altura maxima tambien
     # aplicamos las transformaciones:
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 
