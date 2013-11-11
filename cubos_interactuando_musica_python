@@ -1,0 +1,53 @@
+import bpy
+
+# en el video sequence editor importamos el audio mp3 y lo ponemos para que empiece al principio
+# asi al darle a play sonara al mismo tiempo que el script.
+
+filas = 5
+columnas = 5
+
+f = 0 # filas
+c = 0 # columnas
+
+for i in range(0, filas * columnas):
+    if c == columnas: 
+        f += 1 
+        c = 0
+        
+    # creamos los cubos:
+    bpy.ops.mesh.primitive_cube_add(location = (f*2, c*2, 0))
+    
+    # centramos el cursor en el objeto activo (el recien creado):
+    bpy.context.scene.cursor_location = bpy.context.active_object.location
+    
+    # le restamos una posicion en x para que el cursor este en la base del cubo:
+    bpy.context.scene.cursor_location.z -= 1
+    # Seteamos el origin en la base del cubo (donde tenemos el cursor):
+    bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+    
+    # esalamos los cubos:
+    bpy.context.active_object.scale.x = 0.5 # escalo a la mitad para que exista espacio entre los cubos
+    bpy.context.active_object.scale.y = 0.5 # escalo a la mitad para que exista espacio entre los cubos
+    bpy.context.active_object.scale.z = 5
+    # aplicamos las transformaciones:
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+    # creamos un primer keyframe en scale:
+    bpy.ops.anim.keyframe_insert_menu(type='Scaling')
+    
+    # le indicamos en que area de trabajo haremos las acciones siguientes:
+    bpy.context.area.type = 'GRAPH_EDITOR'
+    
+    # bloqueamos los ejes x e y del graph editor:
+    bpy.context.active_object.animation_data.action.fcurves[0].lock = True
+    bpy.context.active_object.animation_data.action.fcurves[1].lock = True
+    
+    # la linea de step no estoy muy seguro de para que sirve
+    step = 20000 / (filas * columnas)
+    # importamos el audio y se lo pasamos al graph editor para animar la escala en z y con el i*tal tal es para que cada cubo sea de un minimo a un mazximo de altura:
+    bpy.ops.graph.sound_bake(filepath="/home/zebus/8-bit lagerfeuer/02 take me to the bonuslevel because i need an extralife.mp3", low=i*step, high=i*step+step)
+    
+    # una vez terminamos con el lo bloqueamos tambien:
+    bpy.context.active_object.animation_data.action.fcurves[2].lock = True
+    
+    c += 1
