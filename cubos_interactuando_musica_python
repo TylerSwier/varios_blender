@@ -1,6 +1,7 @@
 import bpy
 
 # en el video sequence editor importamos el audio mp3 y lo ponemos para que empiece al principio
+# revisar antes de ejecutar el script que en el timeline estemos tambien al principio del tiempo (shift+ctrl+down)
 # asi al darle a play sonara al mismo tiempo que el script.
 
 filas = 5
