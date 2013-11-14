@@ -14,10 +14,10 @@ y = diametro
 altura = 8
 
 def laminas2D(x,y,z):
-    for v in range(y):
-        for h in range(x):
-            # a las posiciones h,v les voy sumando z para que se vayan centrando...
-            bpy.ops.mesh.primitive_cube_add(view_align=False,location=(h*2+z, v*2+z, z*2))
+    for v in range(-x,x): # -x es un -8,-7,-6,etc... y x es 8,7,6,etc...
+        for h in range(-y,y):
+            # a las posiciones h,v les resto de offset x,y para que se centren sobre si mismas
+            bpy.ops.mesh.primitive_cube_add(view_align=False,location=(v*2, h*2, z*2))
         
 # para darle la profundidad en z:
 for i in range(altura):
