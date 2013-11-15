@@ -36,43 +36,42 @@ def creandorig():
     bpy.context.object.name = "e_pivot"
     bpy.context.object.empty_draw_type = 'SPHERE'
     bpy.data.objects['e_pivot'].scale = [0.5,0.5,0.5]
-
+    
     bpy.ops.object.add(type='EMPTY', view_align=False, enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True))
     bpy.context.object.name = "e_offset"
     bpy.data.objects['e_offset'].scale = [0.5,0.5,0.5]
-
+    
     bpy.ops.object.armature_add(view_align=False, enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
     bpy.context.selected_objects[0].name = "mi_armature_g"
     bpy.context.selected_objects[0].data.name = "mi_armature"
-
+    
     bpy.ops.object.editmode_toggle()
     bpy.ops.armature.select_all(action='DESELECT')
     bpy.ops.armature.select_all(action='SELECT')
     bpy.ops.armature.delete()
-
+    
     bpy.ops.armature.bone_primitive_add(name="Offset")
     bpy.ops.armature.bone_primitive_add(name="Pivot")
-
-    #bpy.ops.object.mode_set(mode='EDIT')
-    #bpy.data.armatures['mi_armature'].edit_bones['Offset'].select = True #<-- en edit object
+    
+    # seleccionando primero uno y luego el otro:
     bpy.ops.object.mode_set(mode='POSE')
     bpy.data.armatures['mi_armature'].bones['Offset'].select = True
     bpy.ops.object.mode_set(mode='OBJECT')
     bpy.data.armatures['mi_armature'].bones.active = bpy.data.armatures['mi_armature'].bones['Offset']
-    #bpy.ops.object.mode_set(mode='EDIT')
-    #bpy.data.armatures['mi_armature'].edit_bones['Pivot'].select = True
+    # sumamos la seleccion:
     bpy.ops.object.mode_set(mode='POSE')
     bpy.data.armatures['mi_armature'].bones['Pivot'].select = True        
     bpy.ops.object.mode_set(mode='OBJECT') 
     bpy.data.armatures['mi_armature'].bones.active = bpy.data.armatures['mi_armature'].bones['Pivot']
-    #bpy.data.armatures[2].bones['Offset'].select = True #<-- en pose bone
+    
+    # emparentamos:
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.armature.parent_set(type='OFFSET')
     bpy.ops.object.mode_set(mode='POSE')
-
+    
+    # shapes:
     bpy.data.objects['mi_armature_g'].pose.bones['Pivot'].custom_shape = bpy.data.objects['e_pivot']
     bpy.data.objects['mi_armature_g'].pose.bones['Offset'].custom_shape = bpy.data.objects['e_offset']
-    #bpy.ops.object.mode_set(mode='OBJECT')
     
 def obtenercursor():
     pivot = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
