@@ -83,7 +83,7 @@ def obtenercursor():
     pos_ini_o = offset.location
     #pivot.location = bpy.context.scene.cursor_location
     bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
-    bpy.context.object.pose.bones["Offset"].location -= (pos_ini + pos_ini_o)
+    offset.location -= (pivot.location - pos_ini)
     #bpy.ops.pose.armature_apply()
 
     
