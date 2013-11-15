@@ -77,15 +77,10 @@ def creandorig():
 def obtenercursor():
     pivot = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
     offset = bpy.data.objects['mi_armature_g'].pose.bones["Offset"]
-    #bpy.context.scene.objects.active = bpy.data.objects['mi_armature_g'].pose.bones['Pivot']
-    #pivot.select = True
-    pos_ini = pivot.location
-    pos_ini_o = offset.location
-    #pivot.location = bpy.context.scene.cursor_location
+    pm = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"].matrix.to_translation()
+    om = bpy.data.objects['mi_armature_g'].pose.bones["Offset"].matrix.to_translation()
     bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
-    offset.location = ((pivot.location - pos_ini) + pos_ini_o)
-    #bpy.ops.pose.armature_apply()
-
+    offset.location = om + pivot.location
     
 def asignandorig():
     # emparentar mi rig al objeto seleccionado:
