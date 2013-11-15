@@ -80,9 +80,10 @@ def obtenercursor():
     #bpy.context.scene.objects.active = bpy.data.objects['mi_armature_g'].pose.bones['Pivot']
     #pivot.select = True
     pos_ini = pivot.location
+    pos_ini_o = offset.location
     #pivot.location = bpy.context.scene.cursor_location
     bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
-    bpy.context.object.pose.bones["Offset"].location -= pos_ini
+    bpy.context.object.pose.bones["Offset"].location -= (pos_ini + pos_ini_o)
     #bpy.ops.pose.armature_apply()
 
     
