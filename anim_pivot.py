@@ -75,10 +75,9 @@ def creandorig():
     #bpy.ops.object.mode_set(mode='OBJECT')
     
 def obtenercursor():
-    bpy.ops.armature.select_all(action='DESELECT')
-    pivot = bpy.context.object.pose.bones["Pivot"]
-    bpy.context.scene.objects.active = pivot
-    pivot.select = True
+    pivot = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
+    #bpy.context.scene.objects.active = bpy.data.objects['mi_armature_g'].pose.bones['Pivot']
+    #pivot.select = True
     pos_ini = pivot.location
     #pivot.location = bpy.context.scene.cursor_location
     bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
