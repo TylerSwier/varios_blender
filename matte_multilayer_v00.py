@@ -18,15 +18,14 @@ for window in bpy.context.window_manager.windows:
                 posicion[i] = True # indico el layer
                 bpy.ops.object.move_to_layer(layers=(posicion)) # lo seteo
                 posicion[i] = False # dejo el layer como estaba
-                # por cada objeto creo un render layer
+            # por cada objeto creo un render layer
+            cuantos = len(objetos)
+            for i in range(cuantos-1):
                 bpy.ops.scene.render_layer_add()
 
 # y configuro las render layers:
 for ln1 in range(len(bpy.context.scene.render.layers)):
     for li in range(len(bpy.context.scene.render.layers[ln1].layers)):
         bpy.context.scene.render.layers[ln1].layers[li] = False
-    # primero pongo todos en false y luego en true el que me interesa    
     bpy.context.scene.render.layers[ln1].layers[ln1] = True
-    # despues quito un true residual que se queda, creo que es de haber puesto antes todos a false
-    # blender pone uno a true si o si y en este caso es el ultimo, por eso lo quito a mano:
     bpy.context.scene.render.layers[ln1].layers[len(bpy.context.scene.render.layers[ln1].layers)-1] = False
