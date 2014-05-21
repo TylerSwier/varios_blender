@@ -13,7 +13,7 @@ if len(objetos) <= 20:
     bpy.data.materials[matName].node_tree.nodes.new(type='ShaderNodeEmission')
     inp = bpy.data.materials[matName].node_tree.nodes['Material Output'].inputs['Surface']
     outp = bpy.data.materials[matName].node_tree.nodes['Emission'].outputs[0]
-    bpy.data.materials[matName].node_tree.nodes['Emission'].inputs[1].default_value = 5
+    bpy.data.materials[matName].node_tree.nodes['Emission'].inputs[1].default_value = 1.25
     bpy.data.materials[matName].node_tree.links.new(inp,outp)
     # en el area de view 3d:
     for window in bpy.context.window_manager.windows:
