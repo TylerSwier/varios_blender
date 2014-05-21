@@ -13,6 +13,7 @@ if len(objetos) <= 20:
     bpy.data.materials[matName].node_tree.nodes.new(type='ShaderNodeEmission')
     inp = bpy.data.materials[matName].node_tree.nodes['Material Output'].inputs['Surface']
     outp = bpy.data.materials[matName].node_tree.nodes['Emission'].outputs[0]
+    bpy.data.materials[matName].node_tree.nodes['Emission'].inputs[1].default_value = 5
     bpy.data.materials[matName].node_tree.links.new(inp,outp)
     # en el area de view 3d:
     for window in bpy.context.window_manager.windows:
@@ -41,7 +42,6 @@ if len(objetos) <= 20:
                 cuantos = len(objetos)
                 for i in range(cuantos-1):
                     bpy.ops.scene.render_layer_add()
-
     # y configuro las render layers:
     for ln1 in range(len(bpy.context.scene.render.layers)):
         for li in range(len(bpy.context.scene.render.layers[ln1].layers)):
