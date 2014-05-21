@@ -69,7 +69,7 @@ if len(objetos) <= 20:
                     # aplicandole el material:
                     #ultimomat = bpy.data.materials[len(bpy.data.materials)-1]
                     #bpy.context.selected_objects[0].material_slots[0].material = ultimomat
-                    nshader = 'nmio'
+                    nshader = 'shadeless_mt'
                     crear_shader_shadeless(nshader,'Blanco')
                     objetos[i].active_material = bpy.data.materials[nshader]
                     #objetos[i].material_slots[0].material =bpy.data.materials[matName]                
