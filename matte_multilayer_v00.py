@@ -44,7 +44,7 @@ def crear_shader_shadeless(nombre,color):
         ep = buscador_posicion(bpy.data.materials[nombre].node_tree.nodes,'Emission')
         bpy.data.materials[nombre].node_tree.nodes[ep].inputs[0].default_value = color
         # si sale muy mal el AA poner 1 en lugar de 1.25:
-        bpy.data.materials[nombre].node_tree.nodes[ep].inputs[1].default_value = 1.25
+        bpy.data.materials[nombre].node_tree.nodes[ep].inputs[1].default_value = 1
         bpy.data.materials[nombre].node_tree.links.new(inp,outp)
         #
         # los contextos se ven asi: 
