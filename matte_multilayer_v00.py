@@ -19,6 +19,11 @@ def contexto(accion, contexto):
             if area.type == contexto:
                 accion                
 
+def onlyselect(ob):
+    bpy.ops.object.select_all(action='DESELECT')
+    scn.objects.active = ob
+    ob.select = True
+
 def cuantos_materiales_tiene(ob):
     return len(ob.material_slots)
 
@@ -68,21 +73,34 @@ def aplicar_shader(ob,nombre):
 def layers():
     # hago la accion de poner todos y cada uno de los objetos seleccionados en un layer distinto:
     posicion = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
-    for i in range(len(objetos)):
-        bpy.ops.object.select_all(action='DESELECT')
-        scn.objects.active = objetos[i]
-        objetos[i].select = True
-        # desactivo un par de cosas para q los shaders emission no emitan luz y solo sean shadeless:
-        objetos[i].cycles_visibility.diffuse = False
-        objetos[i].cycles_visibility.transmission = False
-        # poniendo cada objeto seleccionado en un layer:
-        posicion[i] = True # indico el layer
-        bpy.ops.object.move_to_layer(layers=(posicion)) # lo seteo
-        posicion[i] = False # dejo el layer como estaba                
-        # creando y aplicando shader
-        nombre = 'shaderless_mt'
-        crear_shader_shadeless(nombre,'Rojo')
-        aplicar_shader(objetos[i],nombre)
+    # creando y aplicando shader
+    #nombre = 'shaderless_mt'
+    #crear_shader_shadeless(nombre,'Rojo')
+    #aplicar_shader(objetos[i],nombre)
+    # de 3 en 3:
+    todo = []
+    c = 0
+    while c <= len(objetos):
+        grupo = []
+        try:
+            for g in range(3):
+                ob = objetos[c]
+                onlyselect(ob)
+                ob.cycles_visibility.diffuse = False
+                ob.cycles_visibility.transmission = False
+                grupo.append(ob)
+                c = c +1
+        except:
+            c = len(objetos)+1
+        todo.append(grupo)
+    for l in range(len(todo)):
+        for ob in todo[l]:
+            cuantos = cuantos_materiales_tiene(ob)
+            if cuantos == 1:
+                posicion[l] = True
+                onlyselect(ob)
+                bpy.ops.object.move_to_layer(layers=(posicion))
+                posicion[l] = False
 
 def renderlayers():
     # por cada objeto creo un render layer
