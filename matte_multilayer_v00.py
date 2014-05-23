@@ -11,43 +11,12 @@ def buscar_en_q_layer_esta_ob(ob): #<- tiene que recibir solo un objeto
         if ob.layers[l]:
             return l
 
-# relleno de la representacion de las layers:    
-rlayers = []
-for rl in range(20):
-    rlayers.append('#')
-
-aopl = [] # creo un array con # equivalente al numero de objetos que hay 
-for n in range(len(objetos)):
-    aopl.append('#')
-
-c = 0
-while c < len(objetos):
-    ob = objetos[c]
-    p = buscar_en_q_layer_esta_ob(ob)
-    try:
-        for g in range(len(objetos)):
-            ob = objetos[c]
-            aopl[g] = ob.name
-            c = c +1
-        rlayers[p] = aopl
-    except:
-        c = len(objetos)+5
-
-print(rlayers)
-
 # para buscar los index:
 def buscador_posicion(tupla,busqueda):
     for i in range(len(tupla)):
         if tupla[i].name == busqueda:
             return i
     return '-1'
-
-def contexto(accion, contexto):
-    for window in bpy.context.window_manager.windows:
-        screen = window.screen
-        for area in screen.areas:
-            if area.type == contexto:
-                accion                
 
 def select_only_by_name_ob(obn):
     ob = bpy.data.objects[obn]
@@ -99,39 +68,67 @@ def crear_shader_shadeless(nombre,color):
 
 def aplicar_shader(ob,nombre):
     ob.active_material = bpy.data.materials[nombre]
-    #objetos[i].material_slots[0].material =bpy.data.materials[nombre] 
 
 def layers():
-    # hago la accion de poner todos y cada uno de los objetos seleccionados en un layer distinto:
-    posicion = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
-    # creando y aplicando shader
-    #nombre = 'shaderless_mt'
-    #crear_shader_shadeless(nombre,'Rojo')
-    #aplicar_shader(objetos[i],nombre)
-    # de 3 en 3:
-    todo = []
+    # relleno de la representacion de las layers:    
+    rlayers = []
+    for rl in range(20):
+        rlayers.append('#')
+    aopl = [] # creo un array con # equivalente al numero de objetos que hay 
+    for n in range(len(objetos)):
+        aopl.append('#')
     c = 0
     while c < len(objetos):
+        ob = objetos[c]
+        p = buscar_en_q_layer_esta_ob(ob)
+        try:
+            for g in range(len(objetos)):
+                ob = objetos[c]
+                aopl[g] = ob.name
+                c = c +1
+            rlayers[p] = aopl
+        except:
+            c = len(objetos)+5
+    print(rlayers)
+    posicion = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+    monomats = []
+    for l in rlayers:
+        for obn in l:
+            if obn != "#":
+                select_only_by_name_ob(obn)
+                ob = scn.objects.active
+                cuantos = cuantos_materiales_tiene(ob)
+                if cuantos == 1:
+                    monomats.append(obn)                
+    rlordenadito = []
+    canales = ['Rojo','Verde','Azul','Blanco']
+    c = 0
+    while c < len(monomats):
         grupo = []
         try:
             for g in range(3):
-                ob = objetos[c]
-                select_only_by_name_ob(ob.name)
+                obn = monomats[c]
+                select_only_by_name_ob(obn)
+                ob = scn.objects.active
                 ob.cycles_visibility.diffuse = False
                 ob.cycles_visibility.transmission = False
-                grupo.append(ob)
+                crear_shader_shadeless('monomaterial'+str(g),canales[g])
+                aplicar_shader(ob,'monomaterial'+str(g))
+                grupo.append(ob.name)
                 c = c +1
         except:
-            c = len(objetos)+1
-        todo.append(grupo)
-    for l in range(len(todo)):
-        for ob in todo[l]:
-            cuantos = cuantos_materiales_tiene(ob)
-            if cuantos == 1:
-                posicion[l] = True
-                select_only_by_name_ob(ob.name)
-                bpy.ops.object.move_to_layer(layers=(posicion))
-                posicion[l] = False
+            c = len(objetos)+1        
+        rlordenadito.append(grupo)
+        for l in range(len(rlordenadito)):
+            for obn in rlordenadito[l]:
+                select_only_by_name_ob(obn)
+                ob = scn.objects.active
+                cuantos = cuantos_materiales_tiene(ob)
+                if cuantos == 1:
+                    posicion[l] = True
+                    select_only_by_name_ob(ob.name)
+                    bpy.ops.object.move_to_layer(layers=(posicion))
+                    posicion[l] = False
 
 def renderlayers():
     # por cada objeto creo un render layer
@@ -145,9 +142,5 @@ def renderlayers():
         bpy.context.scene.render.layers[ln1].layers[ln1] = True
         bpy.context.scene.render.layers[ln1].layers[len(bpy.context.scene.render.layers[ln1].layers)-1] = False
 
-# en el area de view 3d:
-def startmain():
-    contexto(layers(),'VIEW_3D')
-    renderlayers()
-
-startmain()
+layers()
+renderlayers()
