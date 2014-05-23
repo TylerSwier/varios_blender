@@ -11,6 +11,30 @@ def buscar_en_q_layer_esta_ob(ob): #<- tiene que recibir solo un objeto
         if ob.layers[l]:
             return l
 
+# relleno de la representacion de las layers:    
+rlayers = []
+for rl in range(20):
+    rlayers.append('#')
+
+aopl = [] # creo un array con # equivalente al numero de objetos que hay 
+for n in range(len(objetos)):
+    aopl.append('#')
+
+c = 0
+while c < len(objetos):
+    ob = objetos[c]
+    p = buscar_en_q_layer_esta_ob(ob)
+    try:
+        for g in range(len(objetos)):
+            ob = objetos[c]
+            aopl[g] = ob.name
+            c = c +1
+        rlayers[p] = aopl
+    except:
+        c = len(objetos)+5
+
+print(rlayers)
+
 # para buscar los index:
 def buscador_posicion(tupla,busqueda):
     for i in range(len(tupla)):
