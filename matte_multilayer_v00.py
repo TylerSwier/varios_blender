@@ -5,6 +5,12 @@
 import bpy
 objetos = bpy.context.selected_objects
 scn = bpy.context.scene
+
+def buscar_en_q_layer_esta_ob(ob): #<- tiene que recibir solo un objeto
+    for l in range(len(ob.layers)):
+        if ob.layers[l]:
+            return l
+
 # para buscar los index:
 def buscador_posicion(tupla,busqueda):
     for i in range(len(tupla)):
@@ -19,7 +25,8 @@ def contexto(accion, contexto):
             if area.type == contexto:
                 accion                
 
-def onlyselect(ob):
+def select_only_by_name_ob(obn):
+    ob = bpy.data.objects[obn]
     bpy.ops.object.select_all(action='DESELECT')
     scn.objects.active = ob
     ob.select = True
@@ -29,7 +36,7 @@ def cuantos_materiales_tiene(ob):
 
 def crear_shader_shadeless(nombre,color):
     # solo lo creamos si no existe previamente:
-    if buscador_posicion(bpy.data.materials, 'shaderless_mt') == '-1':
+    if buscador_posicion(bpy.data.materials, nombre) == '-1':
         bpy.data.materials.new(nombre)
         bpy.data.materials[nombre].use_nodes = True
         bpy.data.materials[nombre].node_tree.nodes.new(type='ShaderNodeEmission')
@@ -85,7 +92,7 @@ def layers():
         try:
             for g in range(3):
                 ob = objetos[c]
-                onlyselect(ob)
+                select_only_by_name_ob(ob.name)
                 ob.cycles_visibility.diffuse = False
                 ob.cycles_visibility.transmission = False
                 grupo.append(ob)
@@ -98,7 +105,7 @@ def layers():
             cuantos = cuantos_materiales_tiene(ob)
             if cuantos == 1:
                 posicion[l] = True
-                onlyselect(ob)
+                select_only_by_name_ob(ob.name)
                 bpy.ops.object.move_to_layer(layers=(posicion))
                 posicion[l] = False
 
