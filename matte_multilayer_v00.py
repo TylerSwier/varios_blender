@@ -111,7 +111,7 @@ def layers():
     # de 3 en 3:
     todo = []
     c = 0
-    while c <= len(objetos):
+    while c < len(objetos):
         grupo = []
         try:
             for g in range(3):
