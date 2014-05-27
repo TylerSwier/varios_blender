@@ -73,10 +73,10 @@ def layers():
     # relleno de la representacion de las layers:    
     rlayers = []
     for rl in range(20):
-        rlayers.append('#')
+        rlayers.append([])
     aopl = [] # creo un array con # equivalente al numero de objetos que hay 
     for n in range(len(objetos)):
-        aopl.append('#')
+        aopl.append([])
     c = 0
     while c < len(objetos):
         ob = objetos[c]
@@ -94,7 +94,7 @@ def layers():
     monomats = []
     for l in rlayers:
         for obn in l:
-            if obn != "#":
+            if len(l) != 0:
                 select_only_by_name_ob(obn)
                 ob = scn.objects.active
                 cuantos = cuantos_materiales_tiene(ob)
