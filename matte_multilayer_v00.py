@@ -98,7 +98,7 @@ def layers():
                 select_only_by_name_ob(obn)
                 ob = scn.objects.active
                 cuantos = cuantos_materiales_tiene(ob)
-                if cuantos == 1:
+                if cuantos <= 1:  #<-- si no tiene o tiene 1
                     monomats.append(obn)                
     rlordenadito = []
     canales = ['Rojo','Verde','Azul','Blanco']
