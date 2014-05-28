@@ -136,12 +136,13 @@ def layers():
     print(rlordenadito)
     return rlordenadito
 
-def renderlayers(rlayers):
+def renderlayers(rlayerso):
     # por cada objeto creo un render layer
-    cuantos = len(objetos)
-    for i in range(cuantos-1):
-        
-        bpy.ops.scene.render_layer_add()            
+    c = 0
+    for chkv in rlayerso:
+        if len(chkv) != 0 and c != 0:    
+            bpy.ops.scene.render_layer_add()
+        c += 1
     # y configuro las render layers:
     for ln1 in range(len(bpy.context.scene.render.layers)):
         for li in range(len(bpy.context.scene.render.layers[ln1].layers)):
@@ -149,8 +150,8 @@ def renderlayers(rlayers):
         bpy.context.scene.render.layers[ln1].layers[ln1] = True
         bpy.context.scene.render.layers[ln1].layers[len(bpy.context.scene.render.layers[ln1].layers)-1] = False
 
-rlayers = layers()
-renderlayers(rlayers)
+rlayerso = layers()
+renderlayers(rlayerso)
 
 # seteo el clap para que luego me den valor de 1;
 scn.cycles.sample_clamp_direct = 0.3333
