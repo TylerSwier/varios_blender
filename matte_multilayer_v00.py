@@ -134,7 +134,7 @@ def layers():
         for i in range(cuantos):
             rlordenadito.append([])
     print(rlordenadito)
-    return rlayers
+    return rlordenadito
 
 def renderlayers(rlayers):
     # por cada objeto creo un render layer
