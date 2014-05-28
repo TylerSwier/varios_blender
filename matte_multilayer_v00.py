@@ -157,7 +157,7 @@ renderlayers(rlayerso)
 scn.cycles.sample_clamp_direct = 0.3333
 scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
 scn.cycles.use_square_sample = True
-scn.cycles.samples = 10
+scn.cycles.samples = 4
 scn.cycles.aa_samples = 4
 scn.render.image_settings.file_format = 'OPEN_EXR_MULTILAYER'
 
