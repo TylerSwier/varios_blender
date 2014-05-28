@@ -151,7 +151,7 @@ scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
 scn.cycles.use_square_sample = True
 scn.cycles.samples = 10
 scn.cycles.aa_samples = 4
-scn.render.file_format = 'OPEN_EXR_MULTILAYER'
+scn.render.image_settings.file_format = 'OPEN_EXR_MULTILAYER'
 
 # pongo el fondo en negro:
 #bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
