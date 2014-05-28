@@ -143,4 +143,11 @@ def renderlayers():
         bpy.context.scene.render.layers[ln1].layers[len(bpy.context.scene.render.layers[ln1].layers)-1] = False
 
 layers()
-renderlayers()
+#renderlayers()
+
+# seteo el clap para que luego me den valor de 1;
+scn.cycles.sample_clamp_direct = 0.3333
+scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
+
+# pongo el fondo en negro:
+bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
