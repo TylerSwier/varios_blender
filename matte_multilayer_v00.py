@@ -39,13 +39,13 @@ def crear_shader_shadeless(nombre,color):
         moinput = buscador_posicion(bpy.data.materials[nombre].node_tree.nodes[materialoutput].inputs,'Surface')
         inp = bpy.data.materials[nombre].node_tree.nodes[materialoutput].inputs[moinput]
         if color == 'Rojo':
-            color = 255,0,0,1
+            color = 1,0,0,1
         if color == 'Verde':
-            color = 0,255,0,1
+            color = 0,1,0,1
         if color == 'Azul':
-            color = 0,0,255,1
+            color = 0,0,1,1
         if color == 'Blanco':
-            color = 255,255,255,1
+            color = 1,1,1,1
         ep = buscador_posicion(bpy.data.materials[nombre].node_tree.nodes,'Emission')
         bpy.data.materials[nombre].node_tree.nodes[ep].inputs[0].default_value = color
         # si sale muy mal el AA poner 1 en lugar de 1.25:
@@ -154,8 +154,8 @@ rlayerso = layers()
 renderlayers(rlayerso)
 
 # seteo el clap para que luego me den valor de 1;
-scn.cycles.sample_clamp_direct = 0.3333
-scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
+#scn.cycles.sample_clamp_direct = 0.3333
+#scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
 scn.cycles.use_square_sample = True
 scn.cycles.samples = 4
 scn.cycles.aa_samples = 4
