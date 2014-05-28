@@ -148,6 +148,8 @@ layers()
 # seteo el clap para que luego me den valor de 1;
 scn.cycles.sample_clamp_direct = 0.3333
 scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
+scn.cycles.use_square_sample = True
 
 # pongo el fondo en negro:
-bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
+#bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
+bpy.data.worlds['World'].node_tree.nodes['Background'].inputs['Color'].default_value = 0,0,0,1
