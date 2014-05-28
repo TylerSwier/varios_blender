@@ -112,6 +112,8 @@ def layers():
                 ob = scn.objects.active
                 ob.cycles_visibility.diffuse = False
                 ob.cycles_visibility.transmission = False
+                ob.cycles_visibility.glossy = False
+                ob.cycles_visibility.shadow = False
                 crear_shader_shadeless('monomaterial'+str(g),canales[g])
                 aplicar_shader(ob,'monomaterial'+str(g))
                 grupo.append(ob.name)
