@@ -8,21 +8,22 @@ ancho = 8
 
 # Ladrillo estandar en centimetros:            
 # 40cm 6cm 11.5cm:
-lancho=40
-lato=6
-llargo=11.5
+# no se por que me los esta multiplicando por 2 asi que /2
+lancho=14/2 # x
+lalto=6/2 # z
+llargo=11.5/2 # y
 # conversion a cm:
-cm_lancho=lancho/2
-cm_lalto=lato/2
-cm_llargo=llargo/2
+cm_lancho=lancho/100
+cm_lalto=lalto/100
+cm_llargo=llargo/100
 
 # offset de nacimiento vertical
 # lo pongo en su sitio con el suelo Z:
 nv_offset = cm_llargo
 nh_offset = 0
 # individual offsets (donde iria el cemento):
-h_offset=lancho
-v_offset=llargo
+h_offset=cm_lancho*2 # los offset me esta dando la mitad del ladrillo por eso tengo q multipliarlos por 2
+v_offset=cm_llargo*2 # los offset me esta dando la mitad del ladrillo por eso tengo q multipliarlos por 2
 
 for v in range(alto):
     y=v
@@ -39,5 +40,5 @@ for v in range(alto):
             ob.location.x += x*h_offset+nh_offset+cm_lancho
             ob.location.z = y*v_offset+nv_offset
         else:     
-            ob.location.x = x*h_offset+nh_offset 
+            ob.location.x = x*h_offset+nh_offset
             ob.location.z = y*v_offset+nv_offset
