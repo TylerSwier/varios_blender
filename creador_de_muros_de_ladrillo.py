@@ -67,6 +67,7 @@ for v in range(alto):
                     ob.location.x -= x*h_offset+nh_offset+cm_lancho/2
                     ob.location.z = y*v_offset+nv_offset
                     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+                    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
                 if h == ancho-1:
                     ob = bpy.data.objects[str(actual)]
                     ob.select = True            
@@ -77,14 +78,17 @@ for v in range(alto):
                     ob.location.x += x*h_offset+nh_offset+cm_lancho+cm_lancho/2
                     ob.location.z = y*v_offset+nv_offset+v_offset
                     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+                    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
             bpy.ops.object.select_all(action='DESELECT')
             ob = bpy.data.objects[str(anterior)]
             ob.select = True            
             ob.location.x += x*h_offset+nh_offset+cm_lancho
             ob.location.z = y*v_offset+nv_offset
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+            bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
         else:     
             ob.location.x = x*h_offset+nh_offset
             ob.location.z = y*v_offset+nv_offset
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+            bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
 
