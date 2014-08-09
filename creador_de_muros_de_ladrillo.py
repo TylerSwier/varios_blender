@@ -7,15 +7,16 @@ alto = 10
 ancho = 8
 
 # Ladrillo estandar en centimetros:            
-# 40cm 6cm 11.5cm:
+# 24cm 11.5cm 6cm:
 # no se por que me los esta multiplicando por 2 asi que /2
-lancho=14/2 # x
-lalto=6/2 # z
-llargo=11.5/2 # y
+lancho=24 # x el numero mas alto
+lalto=11.5 # z
+llargo=6 # y <-- profundidad
 # conversion a cm:
-cm_lancho=lancho/100
-cm_lalto=lalto/100
-cm_llargo=llargo/100
+# no se por que me los esta multiplicando por 2 asi que /2
+cm_lancho=lancho/2/100
+cm_lalto=lalto/2/100
+cm_llargo=llargo/2/100
 
 # offset de nacimiento vertical
 # lo pongo en su sitio con el suelo Z:
