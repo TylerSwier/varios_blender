@@ -18,6 +18,10 @@ lancho=24 # x el numero mas alto
 lalto=11.5 # z
 llargo=6 # y <-- profundidad
 
+def creandoLadrillo(nombre):
+    bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+    bpy.context.object.name = nombre
+        
 if en_cm:
     # conversion a cm:
     # no se por que me los esta multiplicando por 2 asi que /2
@@ -43,8 +47,7 @@ for v in range(alto):
     y=v
     for h in range(ancho):
         x=h
-        bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-        bpy.context.object.name = "ladrillo"
+        creandoLadrillo("ladrillo")
         ob = bpy.context.object
         ob.scale.x = cm_lancho
         ob.scale.y = cm_lalto
@@ -52,12 +55,13 @@ for v in range(alto):
         if y%2 == 0:
             #anterior = bpy.context.selected_objects[0].name
             anterior=ob.name
-            bpy.ops.object.select_all(action='DESELECT')
-            bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-            bpy.context.object.name = "ladrillo_bordes"
-            actual = bpy.context.selected_objects[0].name
+
             if fill_esquinas:
                 if h == 0:
+                    bpy.ops.object.select_all(action='DESELECT')
+                    creandoLadrillo("ladrillo_bordes")
+                    actual = bpy.context.selected_objects[0].name
+                    
                     ob = bpy.data.objects[str(actual)]
                     ob.select = True            
                     ob = bpy.context.object
@@ -68,7 +72,11 @@ for v in range(alto):
                     ob.location.z = y*v_offset+nv_offset
                     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
                     bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
-                if h == ancho-1:
+                if (h == ancho-1):
+                    bpy.ops.object.select_all(action='DESELECT')
+                    creandoLadrillo("ladrillo_bordes")
+                    actual = bpy.context.selected_objects[0].name
+
                     ob = bpy.data.objects[str(actual)]
                     ob.select = True            
                     ob = bpy.context.object
@@ -91,4 +99,3 @@ for v in range(alto):
             ob.location.z = y*v_offset+nv_offset
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
             bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
-
