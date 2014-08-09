@@ -6,7 +6,9 @@ alto = 20 # numero de ladrillos en vertical
 ancho = 20 # numero de ladrillos en horizontal
 en_cm = False # si lo quiero en metros o en centimetros los ladrillos
 
-# parece que un muro a escala real en cm las fisicas de blender es mas inestable el muro
+# Parece que un muro a escala real en cm las fisicas de blender es mas inestable el muro
+# si luego lo queremos escalar podemos ir a la pestaña de Physics en el toolbar y le hacemos Bake To Keyframes
+# creamos un empty y eparentamos los ladrillos al empty y escalamos el empty y listo! :)
 
 # Ladrillo estandar en centimetros:            
 # 24cm 11.5cm 6cm:
