@@ -1,25 +1,27 @@
 import bpy
 from bpy.props import *
- 
-# default settings:
-#alto = 20 # numero de ladrillos en vertical
-#ancho = 15 # numero de ladrillos en horizontal
-#en_cm = False # si lo quiero en metros o en centimetros los ladrillos
-#fill_esquinas=True # si queremos que rellene los huecos de los cantos
 
-# ladrillo estandar:
-#lancho = 24
-#lalto = 11.5
-#llargo = 6 # <- profundidad
+'''
+Copyright (c) 2012 Jorge Hernandez - Melendez
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+'''
 
-# funciones varias:
 def creandoLadrillo(nombre):
     bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
     bpy.context.object.name = nombre
 
 class DialogOperator(bpy.types.Operator):
     bl_idname = "object.zebus_dialog"
-    bl_label = "Creador de ladrillos v01"
+    bl_label = "Wall Bricks Creator v01"
     my_alto = IntProperty(name="alto", min=0, max=100, default=20)
     my_ancho = IntProperty(name="ancho", min=0, max=100, default=15)
     my_m_o_c = BoolProperty(name="Centimeters", default=False)
