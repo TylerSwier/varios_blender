@@ -3,8 +3,8 @@ bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 bpy.context.scene.unit_settings.system = 'METRIC'
 
-alto = 10
-ancho = 8
+alto = 20
+ancho = 20
 
 # Ladrillo estandar en centimetros:            
 # 24cm 11.5cm 6cm:
@@ -40,6 +40,9 @@ for v in range(alto):
         if y%2 == 0:
             ob.location.x += x*h_offset+nh_offset+cm_lancho
             ob.location.z = y*v_offset+nv_offset
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
         else:     
             ob.location.x = x*h_offset+nh_offset
             ob.location.z = y*v_offset+nv_offset
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
