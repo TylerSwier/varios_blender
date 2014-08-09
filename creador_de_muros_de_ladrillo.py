@@ -1,10 +1,12 @@
 import bpy
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
-bpy.context.scene.unit_settings.system = 'METRIC'
 
-alto = 20
-ancho = 20
+alto = 20 # numero de ladrillos en vertical
+ancho = 20 # numero de ladrillos en horizontal
+en_cm = False # si lo quiero en metros o en centimetros los ladrillos
+
+# parece que un muro a escala real en cm las fisicas de blender es mas inestable el muro
 
 # Ladrillo estandar en centimetros:            
 # 24cm 11.5cm 6cm:
@@ -12,11 +14,19 @@ ancho = 20
 lancho=24 # x el numero mas alto
 lalto=11.5 # z
 llargo=6 # y <-- profundidad
-# conversion a cm:
-# no se por que me los esta multiplicando por 2 asi que /2
-cm_lancho=lancho/2/100
-cm_lalto=lalto/2/100
-cm_llargo=llargo/2/100
+
+if en_cm:
+    # conversion a cm:
+    # no se por que me los esta multiplicando por 2 asi que /2
+    bpy.context.scene.unit_settings.system = 'METRIC'
+    cm_lancho=lancho/2/100
+    cm_lalto=lalto/2/100
+    cm_llargo=llargo/2/100
+else:
+    bpy.context.scene.unit_settings.system = 'METRIC'
+    cm_lancho=lancho/2
+    cm_lalto=lalto/2
+    cm_llargo=llargo/2
 
 # offset de nacimiento vertical
 # lo pongo en su sitio con el suelo Z:
