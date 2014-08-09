@@ -12,7 +12,7 @@ class DialogOperator(bpy.types.Operator):
     bl_label = "Creador de ladrillos v01"
     my_alto = IntProperty(name="alto", min=0, max=100, default=20)
     my_ancho = IntProperty(name="ancho", min=0, max=100, default=15)
-    my_m_o_c = BoolProperty(name="Meters or Centimeters", default=False)
+    my_m_o_c = BoolProperty(name="Centimeters", default=False)
     my_fillb = BoolProperty(name="Fill Boundaryes", default=True)
     def execute(self,context):
         print("kk")
