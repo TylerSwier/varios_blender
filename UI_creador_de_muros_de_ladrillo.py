@@ -126,17 +126,18 @@ class DialogOperator(bpy.types.Operator):
         layout = self.layout
         box = layout.box()
         col = box.column()
+        col.label("Wall Settings:")
         rowsub0 = col.row()
-        rowsub0.prop(self, "my_alto")
-        rowsub0.prop(self, "my_ancho")
-        
-        rowsub1 = col.row()
-        rowsub1.prop(self, "my_lancho")
-        rowsub1.prop(self, "my_lalto")
-        rowsub1.prop(self, "my_llargo")
-
+        rowsub0.prop(self, "my_alto", text='Alto')
+        rowsub0.prop(self, "my_ancho", text='Ancho')
+        col.label("Brick Settings:")
+        col.prop(self, "my_lancho", text='Alto')
+        col.prop(self, "my_lalto", text='Ancho')
+        col.prop(self, "my_llargo", text='Largo')
+        col.label("Units Settings:")
         col = box.column()
         col.prop(self, "my_m_o_c")
+        col.label("Fill Settings:")
         col.prop(self, "my_fillb")
             
 bpy.utils.register_class(DialogOperator)
