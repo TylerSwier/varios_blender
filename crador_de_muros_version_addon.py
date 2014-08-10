@@ -29,7 +29,8 @@ bl_info = {
 
 def mover(nombre, x, y):
     ob = bpy.data.objects[str(nombre)]
-    # en metros un cubo de escala 1 1 1 equivale a 2 metros x 2 metros x 2 metros..
+    # en cuanto a coordenadas
+    # en metros un cubo de 1x1x1 equivale a 2x2x2 metros..
     # por lo tanto :
     x = x*2
     y = y*2
@@ -67,11 +68,13 @@ class DialogOperator(bpy.types.Operator):
     muro_alto = IntProperty(name="alto", min=0, max=100, default=4)
     muro_ancho = IntProperty(name="ancho", min=0, max=100, default=4)
        
-    ladrillo_ancho = FloatProperty(name="ladrillo_ancho", min=0, max=100, default=1)
-    ladrillo_alto = FloatProperty(name="ladrillo_alto", min=0, max=100, default=1)
-    ladrillo_largo = FloatProperty(name="ladrillo_largo", min=0, max=100, default=1)
+    ladrillo_alto = FloatProperty(name="ladrillo_alto", min=0, max=100, default=5)
+    ladrillo_ancho = FloatProperty(name="ladrillo_ancho", min=0, max=100, default=11)
+    ladrillo_largo = FloatProperty(name="ladrillo_largo", min=0, max=100, default=24)
     cemento = FloatProperty(name="cemento", min=0, max=1.8, default=0)
     
+    centimetros = BoolProperty(name="centimetros", default=False)
+    fillb = BoolProperty(name="fillb", default=True)
     
     def execute(self,context):
         
@@ -87,6 +90,12 @@ class DialogOperator(bpy.types.Operator):
         ladrillo_largo = self.ladrillo_largo
         
         cemento = self.cemento
+        fillb = self.fillb
+        
+        # no se por que me multiplica el size *2 entonces: /2
+        ladrillo_alto = ladrillo_alto/2
+        ladrillo_ancho = ladrillo_ancho/2
+        ladrillo_largo = ladrillo_largo/2
         
         # array 2 dimensiones
         for v in range(muro_alto):
@@ -95,12 +104,36 @@ class DialogOperator(bpy.types.Operator):
                 creandoLadrillo("ladrillo", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
                 ob = bpy.context.object
                 
-                ## si son pares:
+                # si son pares:    
                 if v%2 == 0:
-                    #anterior=ob.name
-                    #desseleccionarTodo()                    
-                    #selecccionarPorNombre(anterior)
-                    x = h * ladrillo_largo * (cemento+1) + (ladrillo_ancho/2)
+                    anterior=ob.name
+                    
+                    # rellenado de bordes:
+                    #if fillb:
+                        #if h == 0:
+                            #desseleccionarTodo()
+                            #creandoLadrillo("ladrillo_bordes", ladrillo_largo/2, ladrillo_ancho, ladrillo_alto)
+                            #ob = bpy.context.object
+                            
+                            #x = h * ladrillo_largo * (cemento+1) + (ladrillo_ancho/2) * (ob.location.x*2)
+                            #y = v * ladrillo_alto * (cemento+1)
+                            #mover(ob.name, x, y)
+                            #freezer()
+                            
+                        #if (h == muro_ancho-1):
+                            #desseleccionarTodo()
+                            #creandoLadrillo("ladrillo_bordes", ladrillo_largo/2, ladrillo_ancho, ladrillo_alto)
+                            #ob = bpy.context.object
+                            
+                            #x = h * ladrillo_largo * (cemento+1) + (ladrillo_ancho/2) - (ob.location.x*2)
+                            #y = v * ladrillo_alto * (cemento+1)
+                            #mover(ob.name, x, y)
+                            #freezer()        
+                            
+                    desseleccionarTodo()
+                    selecccionarPorNombre(anterior)
+                    
+                    x = h * ladrillo_largo * (cemento+1) + (ladrillo_ancho)
                     y = v * ladrillo_alto * (cemento+1)
                     mover(ob.name, x, y)
                     freezer()
@@ -136,10 +169,10 @@ class DialogOperator(bpy.types.Operator):
         
         col.label("Units Settings:")
         col = box.column()
-        col.prop(self, "my_m_o_c")
+        col.prop(self, "centimetros")
         
         col.label("Fill Settings:")
-        col.prop(self, "my_fillb")
+        col.prop(self, "fillb")
             
 bpy.utils.register_class(DialogOperator)
 
