@@ -27,8 +27,8 @@ class DialogOperator(bpy.types.Operator):
     my_m_o_c = BoolProperty(name="Centimeters", default=False)
     my_fillb = BoolProperty(name="Fill Boundaryes", default=True)
     my_lancho = FloatProperty(name="lancho", min=0, max=100, default=24)
-    my_lalto = FloatProperty(name="lalto", min=0, max=100, default=11.5)
-    my_llargo = FloatProperty(name="llargo", min=0, max=100, default=6)
+    my_lalto = FloatProperty(name="lalto", min=0, max=100, default=11.2)
+    my_llargo = FloatProperty(name="llargo", min=0, max=100, default=5)
     
     def execute(self,context):
         alto = self.my_alto
