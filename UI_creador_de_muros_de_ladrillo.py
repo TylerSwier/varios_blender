@@ -15,6 +15,18 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+bl_info = {
+    "name": "Wall Creator",
+    "description": "Wall Creator",
+    "author": "Jorge Hernandez - Melenedez",
+    "version": (0, 1),
+    "blender": (2, 71, 0),
+    "location": "Left Toolbar > WallCreator",
+    "warning": "",
+    "wiki_url": "",
+    "tracker_url": "",
+    "category": "Add Mesh"}
+
 def creandoLadrillo(nombre):
     bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
     bpy.context.object.name = nombre
@@ -160,6 +172,13 @@ class DialogPanel(bpy.types.Panel):
         col.alignment = 'EXPAND'
         col.operator("object.zebus_dialog")
         
-#
 #	Registration
-bpy.utils.register_module(__name__)
+def register():
+    bpy.utils.register_module(__name__)
+
+def unregister():
+    bpy.utils.unregister_module(__name__)
+
+
+if __name__ == "__main__":
+    register()
