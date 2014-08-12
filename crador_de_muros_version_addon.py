@@ -25,8 +25,13 @@ bl_info = {
     "warning": "",
     "wiki_url": "",
     "tracker_url": "",
-    "category": "Add Mesh"}
+    "category": "Add Mesh"
+}
 
+def renombrar(nombre, nuevonombre):
+    ob = bpy.data.objects[str(nombre)]
+    ob.name = nuevonombre
+ 
 def mover(nombre, x, y):
     ob = bpy.data.objects[str(nombre)]
     # en cuanto a coordenadas
@@ -36,6 +41,17 @@ def mover(nombre, x, y):
     y = y*2
     ob.location.x = x
     ob.location.z = y
+    
+def escalar(nombre, x, y, z):
+    ob = bpy.data.objects[str(nombre)]
+    # en cuanto a coordenadas
+    # en metros un cubo de 1x1x1 equivale a 2x2x2 metros..
+    # por lo tanto :
+    #x = x*2
+    #y = y*2
+    ob.scale.x = x
+    ob.scale.y = y
+    ob.scale.z = z
 
 def selecccionarPorNombre(nombre):
     ob = bpy.data.objects[str(nombre)]
@@ -71,7 +87,7 @@ class DialogOperator(bpy.types.Operator):
     ladrillo_alto = FloatProperty(name="ladrillo_alto", min=0, max=100, default=5)
     ladrillo_ancho = FloatProperty(name="ladrillo_ancho", min=0, max=100, default=11)
     ladrillo_largo = FloatProperty(name="ladrillo_largo", min=0, max=100, default=24)
-    cemento = FloatProperty(name="cemento", min=0, max=5, default=0)
+    cemento = FloatProperty(name="cemento", min=0, max=5, default=0.5)
     
     centimetros = BoolProperty(name="centimetros", default=False)
     fill_boundaryes = BoolProperty(name="fill_boundaryes", default=True)
@@ -97,54 +113,63 @@ class DialogOperator(bpy.types.Operator):
         ladrillo_ancho = ladrillo_ancho/2
         ladrillo_largo = ladrillo_largo/2
         
+        ladrillo = ladrillo_largo
+        medio = ladrillo_largo/2
+        
         # array 2 dimensiones
         for v in range(muro_alto):
             for h in range(muro_ancho):
                 
-                creandoLadrillo("ladrillo", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
-                ob = bpy.context.object
+                if v%2 == 0: # si es divisible por 2 entonces offset -->
+                    
+                    if fillb and h == 0: # bloque complejo --------------------------
+                        desseleccionarTodo()
+                        creandoLadrillo("primero", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
+                        ob = bpy.context.object
+                        anterior = ob.name
+
+                        escalar(ob.name, medio-cemento, ladrillo_ancho, ladrillo_alto)
+                        x = ob.location.x - (ob.scale.x/2) - cemento
+                        y = v * (ladrillo_alto + cemento)
+                        mover(ob.name, x ,y)
+                        freezer()
+                        desseleccionarTodo()
+                    # fin bloque completo --------------------------
+                    
+                    else: # el normal:
+                        creandoLadrillo("ladrillo_ofset", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
+                        ob = bpy.context.object
+                        #x = h * (ladrillo + medio + cemento) # <-- el normal con offset
+                        x = h * (ladrillo + cemento) - cemento - medio # <-- el normal con offset contando con fill
+                        y = v * (ladrillo_alto + cemento)
+                        mover(ob.name, x ,y)
+                        freezer()
+                        
+                else: # sin offset -->
+                    if fillb and h == (muro_ancho-1): # bloque complejo --------------------------
+                        desseleccionarTodo()
+                        creandoLadrillo("final", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
+                        ob = bpy.context.object
+                        anterior = ob.name
+
+                        escalar(ob.name, medio-cemento, ladrillo_ancho, ladrillo_alto)
+                        #x = h * (ladrillo + cemento) # <-- el normal sin offset
+                        x = h * (ladrillo) - h * (cemento)# <-- el normal sin offset ## <----- Aqui me quede !!
+                        y = v * (ladrillo_alto + cemento)
+                        mover(ob.name, x ,y)
+                        freezer()
+                        desseleccionarTodo()
+                        # fin bloque completo --------------------------
+                        
+                    else: # el normal:
+                        creandoLadrillo("ladrillo", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
+                        ob = bpy.context.object
+                        x = h * (ladrillo + cemento)
+                        y = v * (ladrillo_alto + cemento)
+                        mover(ob.name, x ,y)
+                        freezer()
                 
-                # si son pares:    
-                if v%2 == 0:
-                    #anterior=ob.name
-                    
-                    ## rellenado de bordes:
-                    #if fillb:
-                        #if h == 0:
-                            #desseleccionarTodo()
-                            #creandoLadrillo("ladrillo_bordes", ladrillo_largo/2, ladrillo_ancho, ladrillo_alto)
-                            #ob = bpy.context.object
-                            
-                            #x = h * ladrillo_largo * (cemento*h) + (ladrillo_ancho/2) * (ob.location.x*2)
-                            #y = v * ladrillo_alto * (cemento*v)
-                            #mover(ob.name, x, y)
-                            #freezer()
-                            
-                        #if (h == muro_ancho-1):
-                            #desseleccionarTodo()
-                            #creandoLadrillo("ladrillo_bordes", ladrillo_largo/2, ladrillo_ancho, ladrillo_alto)
-                            #ob = bpy.context.object
-                            
-                            #x = h * ladrillo_largo * (cemento*h) + (ladrillo_ancho/2) - (ob.location.x*2)
-                            #y = v * ladrillo_alto * (cemento*v)
-                            #mover(ob.name, x, y)
-                            #freezer()        
-                            
-                    #desseleccionarTodo()
-                    #selecccionarPorNombre(anterior)
-                    
-                    x = h * ladrillo_largo + (cemento*h) + (ladrillo_ancho)
-                    y = v * ladrillo_alto + (cemento*v)
-                    mover(ob.name, x, y)
-                    freezer()
-                # si no son pares:
-                else:     
-                    x = h * ladrillo_largo + (cemento*h)
-                    y = v * ladrillo_alto + (cemento*v)
-                    mover(ob.name, x, y)
-                    freezer()
-            
-                    
+                                        
         return {'FINISHED'}   
     
     def invoke(self, context, event):
