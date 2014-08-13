@@ -101,18 +101,23 @@ class DialogOperator(bpy.types.Operator):
         muro_alto = self.muro_alto
         muro_ancho = self.muro_ancho
         
-        ladrillo_alto = self.ladrillo_alto
-        ladrillo_ancho = self.ladrillo_ancho
-        ladrillo_largo = self.ladrillo_largo
+        centimetros = self.centimetros
+        # no se por que me multiplica el size *2 entonces: /2
+        if centimetros:
+            ladrillo_alto = self.ladrillo_alto/2/100
+            ladrillo_ancho = self.ladrillo_ancho/2/100
+            ladrillo_largo = self.ladrillo_largo/2/100
+            cemento = self.cemento/100
+        else:
+            ladrillo_alto = self.ladrillo_alto/2
+            ladrillo_ancho = self.ladrillo_ancho/2
+            ladrillo_largo = self.ladrillo_largo/2
+            # el cemento creo que al no tener pivote en el centro por eso no lo multiplica por 2 y por eso no es necesario /2
+            cemento = self.cemento 
         
-        cemento = self.cemento
         fillb = self.fill_boundaryes
         
-        # no se por que me multiplica el size *2 entonces: /2
-        ladrillo_alto = ladrillo_alto/2
-        ladrillo_ancho = ladrillo_ancho/2
-        ladrillo_largo = ladrillo_largo/2
-        
+                    
         ladrillo = ladrillo_largo
         medio = ladrillo_largo/2
         
