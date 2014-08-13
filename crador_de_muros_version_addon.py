@@ -134,7 +134,7 @@ class DialogOperator(bpy.types.Operator):
                         mover(ob.name, x ,y)
                         freezer()
                         desseleccionarTodo()
-                    # fin bloque completo --------------------------
+                    # fin bloque complejo --------------------------
                     
                     else: # el normal:
                         creandoLadrillo("ladrillo_ofset", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
@@ -159,7 +159,7 @@ class DialogOperator(bpy.types.Operator):
                         mover(ob.name, x ,y)
                         freezer()
                         desseleccionarTodo()
-                        # fin bloque completo --------------------------
+                        # fin bloque complejo --------------------------
                         
                     else: # el normal:
                         creandoLadrillo("ladrillo", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
