@@ -44,11 +44,6 @@ def mover(nombre, x, y):
     
 def escalar(nombre, x, y, z):
     ob = bpy.data.objects[str(nombre)]
-    # en cuanto a coordenadas
-    # en metros un cubo de 1x1x1 equivale a 2x2x2 metros..
-    # por lo tanto :
-    #x = x*2
-    #y = y*2
     ob.scale.x = x
     ob.scale.y = y
     ob.scale.z = z
@@ -107,13 +102,12 @@ class DialogOperator(bpy.types.Operator):
             ladrillo_alto = self.ladrillo_alto/2/100
             ladrillo_ancho = self.ladrillo_ancho/2/100
             ladrillo_largo = self.ladrillo_largo/2/100
-            cemento = self.cemento/100
+            cemento = self.cemento/2/100
         else:
             ladrillo_alto = self.ladrillo_alto/2
             ladrillo_ancho = self.ladrillo_ancho/2
             ladrillo_largo = self.ladrillo_largo/2
-            # el cemento creo que al no tener pivote en el centro por eso no lo multiplica por 2 y por eso no es necesario /2
-            cemento = self.cemento 
+            cemento = self.cemento/2 
         
         fillb = self.fill_boundaryes
         
