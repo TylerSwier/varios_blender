@@ -80,9 +80,9 @@ class DialogOperator(bpy.types.Operator):
     muro_ancho = IntProperty(name="ancho", min=0, max=100, default=4)
        
     ladrillo_alto = FloatProperty(name="ladrillo_alto", min=0, max=100, default=5)
-    ladrillo_ancho = FloatProperty(name="ladrillo_ancho", min=0, max=100, default=11)
+    ladrillo_ancho = FloatProperty(name="ladrillo_ancho", min=0, max=100, default=11.1)
     ladrillo_largo = FloatProperty(name="ladrillo_largo", min=0, max=100, default=24)
-    cemento = FloatProperty(name="cemento", min=0, max=5, default=0.5)
+    cemento = FloatProperty(name="cemento", min=0, max=5, default=1.6)
     
     centimetros = BoolProperty(name="centimetros", default=False)
     fill_boundaryes = BoolProperty(name="fill_boundaryes", default=True)
@@ -111,9 +111,10 @@ class DialogOperator(bpy.types.Operator):
         
         fillb = self.fill_boundaryes
         
-                    
         ladrillo = ladrillo_largo
         medio = ladrillo_largo/2
+        offset_nacimientov = ladrillo_alto/2
+        offset_nacimientoh = medio
         
         # array 2 dimensiones
         for v in range(muro_alto):
@@ -128,8 +129,8 @@ class DialogOperator(bpy.types.Operator):
                         anterior = ob.name
 
                         escalar(ob.name, medio-cemento, ladrillo_ancho, ladrillo_alto)
-                        x = ob.location.x - (ob.scale.x/2) - cemento
-                        y = v * (ladrillo_alto + cemento)
+                        x = ob.location.x - (ob.scale.x/2) - cemento + offset_nacimientoh
+                        y = v * (ladrillo_alto + cemento) + offset_nacimientov
                         mover(ob.name, x ,y)
                         freezer()
                         desseleccionarTodo()
@@ -139,8 +140,8 @@ class DialogOperator(bpy.types.Operator):
                         creandoLadrillo("ladrillo_ofset", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
                         ob = bpy.context.object
                         #x = h * (ladrillo + medio + cemento) # <-- el normal con offset
-                        x = h * (ladrillo + cemento) - cemento - medio # <-- el normal con offset contando con fill
-                        y = v * (ladrillo_alto + cemento)
+                        x = h * (ladrillo + cemento) - cemento - medio  + offset_nacimientoh# <-- el normal con offset contando con fill
+                        y = v * (ladrillo_alto + cemento) + offset_nacimientov
                         mover(ob.name, x ,y)
                         freezer()
                         
@@ -153,8 +154,8 @@ class DialogOperator(bpy.types.Operator):
 
                         escalar(ob.name, medio-cemento, ladrillo_ancho, ladrillo_alto)
                         #x = h * (ladrillo + cemento) # <-- el normal sin offset
-                        x = h * (ladrillo + cemento) - (ob.scale.x/2) - cemento# <-- el normal sin offset contando con fill
-                        y = v * (ladrillo_alto + cemento)
+                        x = h * (ladrillo + cemento) - (ob.scale.x/2) - cemento + offset_nacimientoh# <-- el normal sin offset contando con fill
+                        y = v * (ladrillo_alto + cemento) + offset_nacimientov
                         mover(ob.name, x ,y)
                         freezer()
                         desseleccionarTodo()
@@ -163,8 +164,8 @@ class DialogOperator(bpy.types.Operator):
                     else: # el normal:
                         creandoLadrillo("ladrillo", ladrillo_largo, ladrillo_ancho, ladrillo_alto)
                         ob = bpy.context.object
-                        x = h * (ladrillo + cemento)
-                        y = v * (ladrillo_alto + cemento)
+                        x = h * (ladrillo + cemento) + offset_nacimientoh
+                        y = v * (ladrillo_alto + cemento) + offset_nacimientov
                         mover(ob.name, x ,y)
                         freezer()
                 
