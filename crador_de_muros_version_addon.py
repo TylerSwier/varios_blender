@@ -154,7 +154,7 @@ class DialogOperator(bpy.types.Operator):
 
                         escalar(ob.name, medio-cemento, ladrillo_ancho, ladrillo_alto)
                         #x = h * (ladrillo + cemento) # <-- el normal sin offset
-                        x = h * (ladrillo) - h * (cemento)# <-- el normal sin offset ## <----- Aqui me quede !!
+                        x = h * (ladrillo + cemento) - (ob.scale.x/2) - cemento# <-- el normal sin offset contando con fill
                         y = v * (ladrillo_alto + cemento)
                         mover(ob.name, x ,y)
                         freezer()
@@ -216,7 +216,7 @@ class DialogPanel(bpy.types.Panel):
         col.alignment = 'EXPAND'
         col.operator("object.zebus_dialog")
         
-#	Registration
+#   Registration
 def register():
     bpy.utils.register_module(__name__)
 
