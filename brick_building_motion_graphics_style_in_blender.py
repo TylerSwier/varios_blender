@@ -70,16 +70,27 @@ for i in range(cuantos_bricks):
     creandoLadrillo("ladrillo", ancho, alto, largo)        
     ob = bpy.context.selected_objects[0]
     pivote(ob.name)
-    mover(ob.name, 0, 0, i*2*ob.scale.x)
+    bpy.ops.object.modifier_add(type='BEVEL')
+    bpy.context.object.modifiers["Bevel"].segments = 3
+    bpy.context.object.modifiers["Bevel"].width = 0.07
+
+    mover(ob.name, 0, 0, i*largo*2)
 
     escala_original = ob.scale 
 
+    # un frame anterior lo escalo todo a 0 para que no se vea:
+    scn.frame_set(de_diez_en_diez)
+    escalar(ob.name, 0 ,0 , 0)
+    insertarKeyframe("rotacion","translacion","escala")
+    
+    # ahora si lo escalo a la escala inicial
     scn.frame_set(de_diez_en_diez+1)
-    escalar(ob.name, ancho , 0 , 0)
+    escalar(ob.name, ancho , alto , 0)
     insertarKeyframe("rotacion","translacion","escala")
 
     de_diez_en_diez += de_cuanto_en_cuanto
     
+    # y finalmente lo escalo a su escala real
     scn.frame_set(de_diez_en_diez+1)
     escalar(ob.name, ancho, alto, largo)
     # rotacion:
