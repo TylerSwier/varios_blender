@@ -90,19 +90,28 @@ class SeleccionarSemejantes(bpy.types.Operator):
     bl_description = "Select objects by similar name to the current object selected"
 
     def execute(self, context):
-        patron = bpy.context.selected_objects[0].name
+        patron = -1
+        nombre = -1
         try:
-            nombre = patron.split(".")
-            nombre = nombre[0]
+            patron = bpy.context.selected_objects[0].name
         except:
-            nombre = patron
+            self.report({'INFO'}, 'You must select at least one object')
+        try:
+            if patron != -1:
+                nombre = patron.split(".")
+                nombre = nombre[0]
+        except:
+            if patron != -1:
+                nombre = patron
         
-        scn = bpy.context.scene            
-        scn.Nombre = nombre
-        for ob in bpy.data.objects:
-            if ob.name.find(nombre) >= 0:
-                ob.select = True
-                scn.objects.active = bpy.data.objects[str(ob.name)]
+        scn = bpy.context.scene
+        if patron != -1:            
+            scn.Nombre = nombre
+        if nombre != -1:
+            for ob in bpy.data.objects:
+                if ob.name.find(nombre) >= 0:
+                    ob.select = True
+                    scn.objects.active = bpy.data.objects[str(ob.name)]
         return{'FINISHED'}
 
 class Renombrar(bpy.types.Operator):
@@ -133,3 +142,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+
