@@ -87,7 +87,7 @@ class Seleccionar(bpy.types.Operator):
 class SeleccionarSemejantes(bpy.types.Operator):
     bl_idname = "seleccionar.semejantes"
     bl_label = "Select"
-    bl_description = "Select objects by similar name the current object selected"
+    bl_description = "Select objects by similar name to the current object selected"
 
     def execute(self, context):
         patron = bpy.context.selected_objects[0].name
