@@ -52,23 +52,21 @@ class Botones_Renombrator(bpy.types.Panel):
     
         subrow0 = col.row(align=True)
         subrow0.prop(scn, "Nombre")
+        subrow0.operator("clear.entrytext", text='X') 
         subrow0.operator("seleccionar.semejantes", text='<-')
         col.operator("renombrar.objetos", text='Rename objects selected')  
         col.operator("seleccionar.objetos", text='Select objects per name')  
-
-def desseleccionarTodo():
-    bpy.ops.object.select_all(action='DESELECT')
+         
+         
+class Seleccionar(bpy.types.Operator):
+    bl_idname = "clear.entrytext"
+    bl_label = "Clear"
+    bl_description = "Clear EntryText name"
     
-def deseleccionarTodoEditmode():
-    bpy.ops.mesh.select_all(action='DESELECT')
-    
-def seleccionarTodoEditmode():
-    bpy.ops.mesh.select_all(action='SELECT')
-
-def subdividir(cuantas):
-    for i in range(cuantas):
-        bpy.ops.mesh.subdivide(smoothness=0)
-
+    def execute(self, context):        
+        scn = bpy.context.scene
+        scn.Nombre = ""
+        return{'FINISHED'}
 
 class Seleccionar(bpy.types.Operator):
     bl_idname = "seleccionar.objetos"
