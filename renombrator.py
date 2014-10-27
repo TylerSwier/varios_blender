@@ -120,6 +120,8 @@ class Renombrar(bpy.types.Operator):
     def execute(self, context):        
         scn = bpy.context.scene
         nuevonombre = str(bpy.context.scene.Nombre)
+        nuevonombre = str(nuevonombre.replace(".","_"))
+        bpy.context.scene.Nombre = nuevonombre
         n = 0
         if bpy.context.selected_objects:
             for ob in bpy.context.selected_objects:
@@ -140,4 +142,3 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-
