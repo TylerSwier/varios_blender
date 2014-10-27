@@ -32,7 +32,7 @@ import bpy
 from bpy.props import *
 
 def mySceneProperties():
-    bpy.types.Scene.Nombre = bpy.props.StringProperty( name = "Name: ", default = "", description = "New Name for selected objects")
+    bpy.types.Scene.Nombre = bpy.props.StringProperty( name = "", default = "", description = "New Name for selected objects")
 mySceneProperties()
 
 
@@ -45,15 +45,18 @@ class Botones_Renombrator(bpy.types.Panel):
     
     def draw(self, context):
         layout = self.layout
+        #box = layout.box()
         row = layout.row(align=True)
+        row.alignment = 'RIGHT'
         col = row.column()
         col.alignment = 'EXPAND'
         scn = context.scene
     
         subrow0 = col.row(align=True)
+        subrow0.alignment = 'LEFT'
+        subrow0.operator("clear.entrytext", text='x')
         subrow0.prop(scn, "Nombre")
-        subrow0.operator("clear.entrytext", text='X') 
-        subrow0.operator("seleccionar.semejantes", text='<-')
+        subrow0.operator("seleccionar.semejantes", text='<=')
         col.operator("renombrar.objetos", text='Rename objects selected')  
         col.operator("seleccionar.objetos", text='Select objects per name')  
          
@@ -142,3 +145,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+
