@@ -158,6 +158,7 @@ renderlayers(rlayerso)
 # seteo el clap para que luego me den valor de 1;
 #scn.cycles.sample_clamp_direct = 0.3333
 #scn.cycles.sample_clamp_indirect = 0.0001 #<-- este por si acaso lo elimino
+bpy.context.scene.cycles.progressive = 'BRANCHED_PATH'
 scn.cycles.use_square_sample = True
 scn.cycles.samples = 4
 scn.cycles.aa_samples = 4
