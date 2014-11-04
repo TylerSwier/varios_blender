@@ -165,4 +165,5 @@ scn.render.image_settings.file_format = 'OPEN_EXR_MULTILAYER'
 
 # pongo el fondo en negro:
 #bpy.data.node_groups["Shader Nodetree"].nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
-bpy.data.worlds['World'].node_tree.nodes['Background'].inputs['Color'].default_value = 0,0,0,1
+#bpy.data.worlds['World'].node_tree.nodes['Background'].inputs['Color'].default_value = 0,0,0,1
+bpy.data.worlds['World'].horizon_color = [0,0,0]
