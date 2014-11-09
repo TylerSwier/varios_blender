@@ -94,15 +94,10 @@ def obtenercursor():
     if np[1] >1.5:
         print("sile1")
         offset.location.y = (no[1] - ao[1]) - (np[1] - ap[1]) # altura
-    else:        
+        offset.location.z = ((no[2] - ao[2]) - (np[2] - ap[2])*1.5) # horizontal            
+    elif np[1] <1.5:
         print("sile2")
         offset.location.y = ((no[1] + ao[1]) - (np[1] + ap[1])) # altura
-        
-    if np[2] < 1.5:
-        print("nole1")
-        offset.location.z = ((no[2] - ao[2]) - (np[2] - ap[2])*1.5) # horizontal            
-    else:
-        print("nole2")
         offset.location.z = ((no[2] + ao[2]) - (np[2] + ap[2])*1.5) # horizontal            
 
     
