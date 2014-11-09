@@ -73,13 +73,38 @@ def creandorig():
     bpy.data.objects['mi_armature_g'].pose.bones['Pivot'].custom_shape = bpy.data.objects['e_pivot']
     bpy.data.objects['mi_armature_g'].pose.bones['Offset'].custom_shape = bpy.data.objects['e_offset']
     
+    
+def obtener_coordenadas(objeto):
+    #coordeanadas = [objeto.location.x, objeto.location.y, objeto.location.z]
+    coordeanadas = [objeto.location.x, objeto.location.z, objeto.location.y]
+    return coordeanadas
+
 def obtenercursor():
     pivot = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
     offset = bpy.data.objects['mi_armature_g'].pose.bones["Offset"]
     pm = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"].matrix.to_translation()
     om = bpy.data.objects['mi_armature_g'].pose.bones["Offset"].matrix.to_translation()
+   
+    # seria la nueva coordenada de pivot - la suma de ofset
+    cp = obtener_coordenadas(bpy.data.objects['mi_armature_g'].pose.bones["Pivot"])
+    co = obtener_coordenadas(bpy.data.objects['mi_armature_g'].pose.bones["Offset"])
+
     bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
-    offset.location = om + pivot.location
+    
+    if offset.location.x > 0: # si es positivo:
+        offset.location.x -= cp[0]
+    else:
+        offset.location.x += cp[0]
+        
+    if offset.location.z > 0: # si es positivo:
+        offset.location.z -= cp[1]
+    else:
+        offset.location.z += cp[1]
+
+    if offset.location.y > 0: # si es positivo:
+        offset.location.y -= cp[2]
+    else:
+        offset.location.y += cp[2]
     
 def asignandorig():
     # emparentar mi rig al objeto seleccionado:
