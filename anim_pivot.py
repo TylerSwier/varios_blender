@@ -82,29 +82,29 @@ def obtener_coordenadas(objeto):
 def obtenercursor():
     pivot = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"]
     offset = bpy.data.objects['mi_armature_g'].pose.bones["Offset"]
-    pm = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"].matrix.to_translation()
-    om = bpy.data.objects['mi_armature_g'].pose.bones["Offset"].matrix.to_translation()
-   
-    # seria la nueva coordenada de pivot - la suma de ofset
-    cp = obtener_coordenadas(bpy.data.objects['mi_armature_g'].pose.bones["Pivot"])
-    co = obtener_coordenadas(bpy.data.objects['mi_armature_g'].pose.bones["Offset"])
+    
+    ap = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"].matrix.to_translation()
+    ao = bpy.data.objects['mi_armature_g'].pose.bones["Offset"].matrix.to_translation()
 
     bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+   
+    np = bpy.data.objects['mi_armature_g'].pose.bones["Pivot"].matrix.to_translation()
+    no = bpy.data.objects['mi_armature_g'].pose.bones["Offset"].matrix.to_translation()
     
-    if offset.location.x > 0: # si es positivo:
-        offset.location.x -= cp[0]
-    else:
-        offset.location.x += cp[0]
+    if np[1] >1.5:
+        print("sile1")
+        offset.location.y = (no[1] - ao[1]) - (np[1] - ap[1]) # altura
+    else:        
+        print("sile2")
+        offset.location.y = ((no[1] + ao[1]) - (np[1] + ap[1])) # altura
         
-    if offset.location.z > 0: # si es positivo:
-        offset.location.z -= cp[1]
+    if np[2] < 1.5:
+        print("nole1")
+        offset.location.z = ((no[2] - ao[2]) - (np[2] - ap[2])*1.5) # horizontal            
     else:
-        offset.location.z += cp[1]
+        print("nole2")
+        offset.location.z = ((no[2] + ao[2]) - (np[2] + ap[2])*1.5) # horizontal            
 
-    if offset.location.y > 0: # si es positivo:
-        offset.location.y -= cp[2]
-    else:
-        offset.location.y += cp[2]
     
 def asignandorig():
     # emparentar mi rig al objeto seleccionado:
