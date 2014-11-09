@@ -35,6 +35,8 @@ def mySceneProperties():
     bpy.types.Scene.Nombre = bpy.props.StringProperty( name = "", default = "", description = "New Name for selected objects")
 mySceneProperties()
 
+def desseleccionarTodo():
+    bpy.ops.object.select_all(action='DESELECT')
 
 class Botones_Renombrator(bpy.types.Panel):
     bl_label = "Renombrator"
@@ -61,7 +63,7 @@ class Botones_Renombrator(bpy.types.Panel):
         col.operator("seleccionar.objetos", text='Select objects per name')  
          
          
-class Seleccionar(bpy.types.Operator):
+class Limpiar(bpy.types.Operator):
     bl_idname = "clear.entrytext"
     bl_label = "Clear"
     bl_description = "Clear EntryText name"
@@ -125,15 +127,12 @@ class Renombrar(bpy.types.Operator):
         nuevonombre = str(bpy.context.scene.Nombre)
         nuevonombre = str(nuevonombre.replace(".","_"))
         bpy.context.scene.Nombre = nuevonombre
-        n = 0
+        
         if bpy.context.selected_objects:
-            for ob in bpy.context.selected_objects:
-                scn.objects.active = bpy.data.objects[str(ob.name)]
-                if nuevonombre:
-                    if n == 0:
-                        ob.name = nuevonombre + str(".000")
-                    else:
-                        ob.name = str(nuevonombre)
+            seleccion = bpy.context.selected_objects
+            for ob in seleccion:
+                ob.name = nuevonombre + str(".000")
+    
         return{'FINISHED'}
                     
 def register():
@@ -142,7 +141,5 @@ def register():
 def unregister():
     bpy.utils.unregister_module(__name__)
 
-
 if __name__ == "__main__":
     register()
-
