@@ -31,7 +31,7 @@ def create_objects_for_particles(ps, objs):
     obj_list = []
     it = 0
     for i, _ in enumerate(ps.particles):
-        max = (len(objs)-1)
+        max = len(objs)
         if it == max:
             it = 0
         mesh = objs[it].data
