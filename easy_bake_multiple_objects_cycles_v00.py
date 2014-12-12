@@ -1,8 +1,9 @@
 import bpy
 
+scn = bpy.context.scene
+
 def seleccionar_por_nombre(nombre):
     bpy.ops.object.select_all(action='DESELECT')
-    scn = bpy.context.scene
     for ob in bpy.data.objects:
         if ob.name.find(nombre) >= 0:
             ob.select = True
@@ -14,28 +15,33 @@ def uv_chekeador(ob):
         # agregamos un nuevo mapa de uvs:
         seleccionar_por_nombre(ob.name)
         bpy.ops.mesh.uv_texture_add()
+        cuantos=len(ob.data.uv_textures)
+        ob.data.uv_textures[cuantos-1].active = True
+        ob.data.uv_textures[cuantos-1].active_render = True
+        ob.data.uv_textures[cuantos-1].name = "nuevo_mapa_uv"
     else:
-        if len(ob.data.uv_layers) == 1:
+        for uvi in range(len(ob.data.uv_layers)):
             # -1 no lo contiene, 0 si lo contiene:
-            if ob.data.uv_textures[0].name.find("backup_") != 0:
+            if ob.data.uv_textures[uvi].name.find("backup_") != 0:
                 # lo seleccionamos y lo renombramos
                 #bpy.context.object.data.active_index = 0
-                ob.data.uv_textures[0].active = True
-                ob.data.uv_textures[0].name = str("backup_") + str(ob.data.uv_textures[0].name)
-            # agregamos un nuevo mapa de uvs:
+                ob.data.uv_textures[uvi].active = True
+                ob.data.uv_textures[uvi].name = str("backup_") + str(ob.data.uv_textures[uvi].name)
+        if "nuevo_mapa_uv" not in ob.data.uv_textures:
+            # y agregamos el nuevo mapa:    
             bpy.ops.mesh.uv_texture_add()
             #bpy.context.object.data.active_index = 1 # <-- esto es así:
-            ob.data.uv_textures[1].active = True
-            ob.data.uv_textures[1].active_render = True
-            ob.data.uv_textures[1].name = "nuevo_mapa_uv"
-
+            cuantos=len(ob.data.uv_textures)
+            ob.data.uv_textures[cuantos-1].active = True
+            ob.data.uv_textures[cuantos-1].active_render = True
+            ob.data.uv_textures[cuantos-1].name = "nuevo_mapa_uv"
 
 # cuantos materiales tiene (sin contar con 0):
 total_mats = len(bpy.context.object.material_slots)
 objetos = bpy.context.selected_objects
 for a, ob in enumerate(objetos):
-	#print(a)
-	#print(ob)
+    #print(a)
+    #print(ob)
     uv_chekeador(ob)
     #creamos una nueva imagen por objeto donde ira el bakeo:
     #bpy.data.window_managers["WinMan"].(null) = "nuevo_map"
