@@ -18,11 +18,12 @@ def backuper(ob):
 def crar_nuevo_uvmap(ob):
     if len(ob.data.uv_layers) != 0:
         backuper(ob)
-    bpy.ops.mesh.uv_texture_add()
-    cuantos=len(ob.data.uv_textures)-1
-    ob.data.uv_textures[cuantos].name = "nuevo_mapa_uv"
-    ob.data.uv_textures[cuantos].active = True
-    ob.data.uv_textures[cuantos].active_render = True    
+    if "nuevo_mapa_uv" not in ob.data.uv_layers:
+        bpy.ops.mesh.uv_texture_add()
+        cuantos=len(ob.data.uv_textures)-1
+        ob.data.uv_textures[cuantos].name = "nuevo_mapa_uv"
+        ob.data.uv_textures[cuantos].active = True
+        ob.data.uv_textures[cuantos].active_render = True    
 
 def uv_chekeador(ob):
     seleccionar_por_nombre(ob.name)
@@ -33,13 +34,21 @@ def uv_chekeador(ob):
     if "nuevo_mapa_uv" not in ob.data.uv_layers:
         crar_nuevo_uvmap(ob)
 
+def nuevo_gestor(ob):
+    cuantos = len(ob.data.uv_layers)
+    if cuantos == 0:
+        crar_nuevo_uvmap(ob)
+    else:
+        backuper(ob)
+
 # cuantos materiales tiene (sin contar con 0):
 total_mats = len(bpy.context.object.material_slots)
 objetos = bpy.context.selected_objects
 for a, ob in enumerate(objetos):
     #print(a)
     #print(ob)
-    uv_chekeador(ob)
+    #uv_chekeador(ob)
+    nuevo_gestor(ob)
     #creamos una nueva imagen por objeto donde ira el bakeo:
     #bpy.data.window_managers["WinMan"].(null) = "nuevo_map"
     nombre='nuevo_mapa_para_bakeo_0' + str(a)
