@@ -9,32 +9,29 @@ def seleccionar_por_nombre(nombre):
             ob.select = True
             scn.objects.active = bpy.data.objects[str(ob.name)]
 
-def crar_nuevo_uvmap(ac, real):
-    if ac >= real:
-        bpy.ops.mesh.uv_texture_add()
-        cuantos=len(ob.data.uv_textures)-1
-        ob.data.uv_textures[cuantos].name = "nuevo_mapa_uv"
-        ob.data.uv_textures[cuantos].active = True
-        ob.data.uv_textures[cuantos].active_render = True    
+def backuper(ob):
+    for i in range(len(ob.data.uv_layers)):
+        ob.data.uv_textures[i].active = True
+        if ob.data.uv_layers[i].name.find("backup_") != 0: # -1 no lo contiene, 0 si lo contiene:
+            ob.data.uv_layers[i].name = str("backup_") + str(ob.data.uv_layers[i].name)
 
-def uv_chekeador(ob, real):
-    ac = 0
+def crar_nuevo_uvmap(ob):
+    if len(ob.data.uv_layers) != 0:
+        backuper(ob)
+    bpy.ops.mesh.uv_texture_add()
+    cuantos=len(ob.data.uv_textures)-1
+    ob.data.uv_textures[cuantos].name = "nuevo_mapa_uv"
+    ob.data.uv_textures[cuantos].active = True
+    ob.data.uv_textures[cuantos].active_render = True    
+
+def uv_chekeador(ob):
     seleccionar_por_nombre(ob.name)
-    # si no tiene uvs se las creamos y si tene las backupeamos y creamos nuevas:
-    if len(ob.data.uv_layers) == 0:
-        crar_nuevo_uvmap(ac, real)
-    else:
-        for uvi, uvs in enumerate(ob.data.uv_layers):
-            # -1 no lo contiene, 0 si lo contiene:
-            if uvs.name.find("backup_") != 0:
-                # lo seleccionamos y lo renombramos
-                #bpy.context.object.data.active_index = 0
-                ob.data.uv_textures[uvi].active = True
-                uvs.name = str("backup_") + str(uvs.name)
-        if "nuevo_mapa_uv" not in ob.data.uv_textures:
-            # y agregamos el nuevo mapa:    
-            crar_nuevo_uvmap(ac, real)
-    ac += 1
+    # backupeamos :
+    if "backup_" not in ob.data.uv_layers and len(ob.data.uv_layers) != 0: # -1 no lo contiene, 0 si lo contiene:
+        backuper(ob)
+    # y creamos nuevas:       
+    if "nuevo_mapa_uv" not in ob.data.uv_layers:
+        crar_nuevo_uvmap(ob)
 
 # cuantos materiales tiene (sin contar con 0):
 total_mats = len(bpy.context.object.material_slots)
@@ -42,8 +39,7 @@ objetos = bpy.context.selected_objects
 for a, ob in enumerate(objetos):
     #print(a)
     #print(ob)
-    real = a
-    uv_chekeador(ob, real)
+    uv_chekeador(ob)
     #creamos una nueva imagen por objeto donde ira el bakeo:
     #bpy.data.window_managers["WinMan"].(null) = "nuevo_map"
     nombre='nuevo_mapa_para_bakeo_0' + str(a)
@@ -53,5 +49,3 @@ for a, ob in enumerate(objetos):
             bpy.context.object.material_slots[i].material.node_tree.nodes.new("ShaderNodeTexImage")
             bpy.context.object.material_slots[i].material.node_tree.nodes['Image Texture'].image = bpy.data.images[nombre]
             bpy.context.object.material_slots[i].material.node_tree.nodes['Image Texture'].name = 'img_texture_automatic'
-
-    #bpy.ops.node.add_node(type="ShaderNodeTexImage", use_transform=False)
