@@ -1,145 +1,100 @@
-# License:
-''' Copyright (c) 2012 Jorge Hernandez - Melendez
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-'''
-bl_info = {
-    "name": "Renombrator",
-    "description": "Rename all objects selected",
-    "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 1),
-    "blender": (2, 72, 0),
-    "location": "",
-    "warning": "",
-    "wiki_url": "",
-    "tracker_url": "",
-    "category": ""
-    }
-    
 import bpy
-from bpy.props import *
 
-def mySceneProperties():
-    bpy.types.Scene.Nombre = bpy.props.StringProperty( name = "", default = "", description = "New Name for selected objects")
-mySceneProperties()
+scn = bpy.context.scene
 
-def desseleccionarTodo():
+def seleccionar_por_nombre(nombre):
+    deseleccionar_todo()
+    bpy.data.objects[nombre].select = True
+    scn.objects.active = bpy.data.objects[nombre]
+
+def deseleccionar_todo():
     bpy.ops.object.select_all(action='DESELECT')
 
-class Botones_Renombrator(bpy.types.Panel):
-    bl_label = "Renombrator"
-    bl_space_type = "VIEW_3D"
-    #bl_region_type = "TOOL_PROPS"
-    bl_region_type = "TOOLS"
-    bl_category = "Renombrator"
+def seleccionar_todo():
+    bpy.ops.object.select_all(action='SELECT')
     
-    def draw(self, context):
-        layout = self.layout
-        #box = layout.box()
-        row = layout.row(align=True)
-        row.alignment = 'RIGHT'
-        col = row.column()
-        col.alignment = 'EXPAND'
-        scn = context.scene
-    
-        subrow0 = col.row(align=True)
-        subrow0.alignment = 'LEFT'
-        subrow0.operator("clear.entrytext", text='x')
-        subrow0.prop(scn, "Nombre")
-        subrow0.operator("seleccionar.semejantes", text='<=')
-        col.operator("renombrar.objetos", text='Rename objects selected')  
-        col.operator("seleccionar.objetos", text='Select objects per name')  
-         
-         
-class Limpiar(bpy.types.Operator):
-    bl_idname = "clear.entrytext"
-    bl_label = "Clear"
-    bl_description = "Clear EntryText name"
-    
-    def execute(self, context):        
-        scn = bpy.context.scene
-        scn.Nombre = ""
-        return{'FINISHED'}
+def crear_vertices(ob):
+    ob.data.vertices.add(1)
+    ob.data.update
 
-class Seleccionar(bpy.types.Operator):
-    bl_idname = "seleccionar.objetos"
-    bl_label = "Select"
-    bl_description = "Select objects per name"
-    
-    def execute(self, context):        
-        scn = bpy.context.scene
-        for ob in bpy.data.objects:
-            if ob.name.find(scn.Nombre) >= 0:
-                ob.select = True
-                scn.objects.active = bpy.data.objects[str(ob.name)]
-        return{'FINISHED'}
+def borrar_elementos_seleccionados(tipo):
+    if tipo == "vertices":
+        bpy.ops.mesh.delete(type='VERT')        
 
-
-class SeleccionarSemejantes(bpy.types.Operator):
-    bl_idname = "seleccionar.semejantes"
-    bl_label = "Select"
-    bl_description = "Select objects by similar name to the current object selected"
-
-    def execute(self, context):
-        patron = -1
-        nombre = -1
-        try:
-            patron = bpy.context.selected_objects[0].name
-        except:
-            self.report({'INFO'}, 'You must select at least one object')
-        try:
-            if patron != -1:
-                nombre = patron.split(".")
-                nombre = nombre[0]
-        except:
-            if patron != -1:
-                nombre = patron
+def tab_editmode():
+    bpy.ops.object.editmode_toggle()
         
-        scn = bpy.context.scene
-        if patron != -1:            
-            scn.Nombre = nombre
-        if nombre != -1:
-            for ob in bpy.data.objects:
-                if ob.name.find(nombre) >= 0:
-                    ob.select = True
-                    scn.objects.active = bpy.data.objects[str(ob.name)]
-        return{'FINISHED'}
+def obtener_coords_vertex_seleccionados():
+    coordenadas_de_vertices = []
+    for ob in bpy.context.selected_objects:
+        print(ob.name)
+        if ob.type == 'MESH':
+            for v in ob.data.vertices:
+                if v.select:
+                    coordenadas_de_vertices.append([v.co[0],v.co[1],v.co[2]])
+            print(coordenadas_de_vertices[0])
+            return coordenadas_de_vertices[0]
 
-class Renombrar(bpy.types.Operator):
-    bl_idname = "renombrar.objetos"
-    bl_label = "Rename"
-    bl_description = "Rename objects selected"
+def crear_locator(pos):
+    bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1, view_align=False, location=(pos[0],pos[1],pos[2]), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+
+def extruir_vertices(longitud, cuantos_segmentos):    
+    bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(longitud/cuantos_segmentos, 0, 0), "constraint_axis":(True, False, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
     
-    def execute(self, context):        
-        scn = bpy.context.scene
-        nuevonombre = str(bpy.context.scene.Nombre)
-        nuevonombre = str(nuevonombre.replace(".","_"))
-        bpy.context.scene.Nombre = nuevonombre
-        
-        if bpy.context.selected_objects:
-            seleccion = bpy.context.selected_objects
-            for ob in seleccion:
-                ob.name = nuevonombre + str(".000")
-    
-        return{'FINISHED'}
-                    
-def register():
-    bpy.utils.register_module(__name__)
+# creamos un plano y lo borramos
+bpy.ops.mesh.primitive_plane_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+bpy.context.selected_objects[0].name = "cuerda"
+tab_editmode()
+#seleccionar_todo()
+borrar_elementos_seleccionados("vertices")
 
-def unregister():
-    bpy.utils.unregister_module(__name__)
+tab_editmode()
+ob = bpy.context.selected_objects[0]
+crear_vertices(ob)
+pos = obtener_coords_vertex_seleccionados()
 
-if __name__ == "__main__":
-    register()
+tab_editmode()
+bpy.ops.object.vertex_group_add()
+bpy.ops.object.vertex_group_assign()
+tab_editmode()
+
+
+crear_locator(pos)
+deseleccionar_todo()
+
+seleccionar_por_nombre("cuerda")
+tab_editmode()
+
+longitud=10
+cuantos_segmentos=70
+calidad_de_colision=20
+substeps=50
+for i in range(cuantos_segmentos):
+    extruir_vertices(longitud, cuantos_segmentos)
+    bpy.ops.object.vertex_group_remove_from()
+    pos = obtener_coords_vertex_seleccionados()
+    tab_editmode()
+    crear_locator(pos)
+    deseleccionar_todo()
+    seleccionar_por_nombre("cuerda")
+    tab_editmode()
+
+# Group contiene los vertices del pin y Group.001 contiene la linea unica principal
+
+bpy.ops.mesh.select_all(action='TOGGLE')
+bpy.ops.mesh.select_all(action='TOGGLE') # sleccionamos todos los vertices y hacemos un nuevo grupo de vertices
+bpy.ops.object.vertex_group_add()
+bpy.ops.object.vertex_group_assign()
+
+bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(0, 0.005, 0), "constraint_axis":(False, True, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
+bpy.ops.object.vertex_group_remove_from()
+
+
+bpy.ops.mesh.select_all(action='TOGGLE')
+bpy.ops.object.editmode_toggle()
+
+bpy.ops.object.modifier_add(type='CLOTH')
+bpy.context.object.modifiers["Cloth"].settings.use_pin_cloth = True
+bpy.context.object.modifiers["Cloth"].settings.vertex_group_mass = "Group"
+bpy.context.object.modifiers["Cloth"].collision_settings.collision_quality = calidad_de_colision
+bpy.context.object.modifiers["Cloth"].settings.quality = substeps
