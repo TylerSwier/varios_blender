@@ -8,7 +8,6 @@ calidad_de_colision=20
 substeps=50
 
 def seleccionar_por_nombre(nombre):
-    deseleccionar_todo()
     bpy.data.objects[nombre].select = True
     scn.objects.active = bpy.data.objects[nombre]
 
@@ -66,7 +65,6 @@ tab_editmode()
 
 crear_locator(pos)
 deseleccionar_todo()
-
 seleccionar_por_nombre("cuerda")
 tab_editmode()
 
