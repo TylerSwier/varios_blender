@@ -10,6 +10,7 @@ bpy.ops.object.editmode_toggle()
 
 longitud=5
 cuantos_segmentos=40
+calidad_de_colision=10
 for i in range(cuantos_segmentos):
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(longitud/cuantos_segmentos, 0, 0), "constraint_axis":(True, False, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
 
@@ -34,5 +35,5 @@ bpy.ops.object.editmode_toggle()
 bpy.ops.object.modifier_add(type='CLOTH')
 bpy.context.object.modifiers["Cloth"].settings.use_pin_cloth = True
 bpy.context.object.modifiers["Cloth"].settings.vertex_group_mass = "Group"
-bpy.context.object.modifiers["Cloth"].collision_settings.collision_quality = 5
+bpy.context.object.modifiers["Cloth"].collision_settings.collision_quality = calidad_de_colision
 
