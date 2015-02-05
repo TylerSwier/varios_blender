@@ -1,3 +1,4 @@
+# work well in blender 2.73a
 import bpy
 bpy.ops.mesh.primitive_plane_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
 bpy.ops.object.editmode_toggle()
