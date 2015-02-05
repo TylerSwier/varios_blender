@@ -1,6 +1,11 @@
+# work well in blender 2.73a
 import bpy
 
 scn = bpy.context.scene
+longitud=10
+cuantos_segmentos=70
+calidad_de_colision=20
+substeps=50
 
 def seleccionar_por_nombre(nombre):
     deseleccionar_todo()
@@ -65,10 +70,6 @@ deseleccionar_todo()
 seleccionar_por_nombre("cuerda")
 tab_editmode()
 
-longitud=10
-cuantos_segmentos=70
-calidad_de_colision=20
-substeps=50
 for i in range(cuantos_segmentos):
     extruir_vertices(longitud, cuantos_segmentos)
     bpy.ops.object.vertex_group_remove_from()
