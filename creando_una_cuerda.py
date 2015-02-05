@@ -34,3 +34,5 @@ bpy.ops.object.editmode_toggle()
 bpy.ops.object.modifier_add(type='CLOTH')
 bpy.context.object.modifiers["Cloth"].settings.use_pin_cloth = True
 bpy.context.object.modifiers["Cloth"].settings.vertex_group_mass = "Group"
+bpy.context.object.modifiers["Cloth"].collision_settings.collision_quality = 5
+
