@@ -17,11 +17,15 @@ bpy.ops.object.vertex_group_add()
 #bpy.context.object.name = "pin"    
 bpy.ops.object.vertex_group_assign()
 
-bpy.ops.mesh.select_all(action='TOGGLE')
-bpy.context.object.name = "jo"
-bpy.ops.mesh.select_all(action='TOGGLE')
-bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(0, 0.005, 0), "constraint_axis":(False, True, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
+# Group contiene los vertices del pin y Group.001 contiene la linea unica principal
 
+bpy.ops.mesh.select_all(action='TOGGLE')
+bpy.ops.mesh.select_all(action='TOGGLE') # sleccionamos todos los vertices y hacemos un nuevo grupo de vertices
+bpy.ops.object.vertex_group_add()
+bpy.ops.object.vertex_group_assign()
+
+bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(0, 0.005, 0), "constraint_axis":(False, True, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
+bpy.ops.object.vertex_group_remove_from()
 
 
 bpy.ops.mesh.select_all(action='TOGGLE')
