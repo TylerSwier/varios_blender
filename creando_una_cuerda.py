@@ -9,7 +9,7 @@ bpy.context.selected_objects[0].data.update
 bpy.ops.object.editmode_toggle()
 
 longitud=5
-cuantos_segmentos=40
+cuantos_segmentos=70
 calidad_de_colision=10
 for i in range(cuantos_segmentos):
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(longitud/cuantos_segmentos, 0, 0), "constraint_axis":(True, False, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
