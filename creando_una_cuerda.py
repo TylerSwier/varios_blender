@@ -17,6 +17,7 @@ def seleccionar_todo():
 def reset_scene():
     seleccionar_todo()
     bpy.ops.object.delete(use_global=False)
+    
 reset_scene()
 
 def entrar_en_editmode():
@@ -132,7 +133,7 @@ for i in range(cuantos_segmentos):
     #bpy.ops.object.hook_add_newob()
     salir_de_editmode() # salimos de edit mode
     # creo el locator en su sitio
-    #crear_locator(pos)
+    crear_locator(pos)
     deseleccionar_todo()
     seleccionar_por_nombre("cuerda")
     # vuelvo a seleccionar la cuerda
@@ -186,6 +187,33 @@ bpy.ops.object.modifier_remove(modifier="Cloth")
 # la convertimos en curva:
 bpy.ops.object.convert(target='CURVE')
 
+# todos los emptys:
+#emptys = []
+#for eo in bpy.data.objects:
+#    if eo.type == 'EMPTY':
+#        emptys.append(eo)
+#        
+#print(emptys)
+
+
+#co = bpy.data.objects['cuerda.001']
+#n = 0 
+#for e in emptys:
+#    deseleccionar_todo()
+#    seleccionar_por_nombre(e.name)
+#    seleccionar_por_nombre(co.name)
+#    entrar_en_editmode()
+#    deselect_all_in_edit_mode(co)
+#    bpy.ops.mesh.select_all(action="DESELECT")
+#    bpy.context.tool_settings.mesh_select_mode = (True , False , False)
+#    salir_de_editmode()
+#    co.data.vertices[n].select = True
+#    entrar_en_editmode()
+#    bpy.ops.object.hook_add_selob(use_bone=False)
+#    salir_de_editmode()
+
+#entrar_en_editmode()
+        
 
 #deseleccionar_todo()
 #seleccionar_por_nombre("cuerda.001")
