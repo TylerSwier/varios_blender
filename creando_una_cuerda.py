@@ -153,10 +153,16 @@ for v in ob.data.vertices:
       v.select = True
       
 entrar_en_editmode()
-      
-#bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(0, 0, 0), "constraint_axis":(False, False, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
-## separamos por seleccion
-#bpy.ops.mesh.separate(type'SELECTED')
+
+# ya tenemos la guia seleccionada:      
+# la duplicamos:
+bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(0, 0, 0), "constraint_axis":(False, False, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
+# separamos por seleccion:
+bpy.ops.mesh.separate(type='SELECTED')
+salir_de_editmode()
+
+deseleccionar_todo()
+seleccionar_por_nombre("cuerda.001")
 
 bpy.ops.object.modifier_add(type='CLOTH')
 bpy.context.object.modifiers["Cloth"].settings.use_pin_cloth = True
