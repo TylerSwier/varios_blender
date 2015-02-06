@@ -139,6 +139,12 @@ deselect_all_in_edit_mode(ob)
 
 salir_de_editmode()
 
+bpy.ops.object.modifier_add(type='CLOTH')
+bpy.context.object.modifiers["Cloth"].settings.use_pin_cloth = True
+bpy.context.object.modifiers["Cloth"].settings.vertex_group_mass = "Group"
+bpy.context.object.modifiers["Cloth"].collision_settings.collision_quality = calidad_de_colision
+bpy.context.object.modifiers["Cloth"].settings.quality = substeps
+
 # DUPLICAMOS para convertir a curva:
 # selecciono los vertices que forman parte del grupo Group.001
 seleccionar_por_nombre("cuerda")
@@ -163,12 +169,7 @@ salir_de_editmode()
 
 deseleccionar_todo()
 seleccionar_por_nombre("cuerda.001")
-
-bpy.ops.object.modifier_add(type='CLOTH')
-bpy.context.object.modifiers["Cloth"].settings.use_pin_cloth = True
-bpy.context.object.modifiers["Cloth"].settings.vertex_group_mass = "Group"
-bpy.context.object.modifiers["Cloth"].collision_settings.collision_quality = calidad_de_colision
-bpy.context.object.modifiers["Cloth"].settings.quality = substeps
+bpy.ops.object.modifier_remove(modifier="Cloth")
 
 #deseleccionar_todo()
 #seleccionar_por_nombre("cuerda.001")
