@@ -7,7 +7,17 @@ cuantos_segmentos=4
 calidad_de_colision=20
 substeps=50
 
-import bpy
+def deseleccionar_todo():
+    bpy.ops.object.select_all(action='DESELECT')
+        
+def seleccionar_todo():
+    bpy.ops.object.select_all(action='SELECT')
+
+# Clear scene:
+def reset_scene():
+    seleccionar_todo()
+    bpy.ops.object.delete(use_global=False)
+reset_scene()
 
 def entrar_en_editmode():
     bpy.ops.object.mode_set(mode='EDIT')
@@ -48,12 +58,6 @@ def which_vertex_are_selected(ob):
 def seleccionar_por_nombre(nombre):
     bpy.data.objects[nombre].select = True
     scn.objects.active = bpy.data.objects[nombre]
-
-def deseleccionar_todo():
-    bpy.ops.object.select_all(action='DESELECT')
-        
-def seleccionar_todo():
-    bpy.ops.object.select_all(action='SELECT')
     
 def crear_vertices(ob):
     ob.data.vertices.add(1)
