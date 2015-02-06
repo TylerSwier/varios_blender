@@ -107,8 +107,9 @@ entrar_en_editmode() # entramos en edit mode
 bpy.ops.object.vertex_group_add() # creamos un grupo
 select_all_in_edit_mode(ob)
 bpy.ops.object.vertex_group_assign() # y lo asignamos
+# los hooks van a la curva no a la guia poligonal...
 # creo el primer hook sin necesidad de crear luego el locator a mano:
-bpy.ops.object.hook_add_newob()
+#bpy.ops.object.hook_add_newob()
 salir_de_editmode() # salimos de edit mode
 ob.vertex_groups[0].name = "Pin"
 
@@ -126,8 +127,9 @@ for i in range(cuantos_segmentos):
     bpy.ops.object.vertex_group_remove_from()
     # obtengo la direccion para lego crear el locator en su posicion
     pos = obtener_coords_vertex_seleccionados()
+    # los hooks van a la curva no a la guia poligonal...
     # creo el hook sin necesidad de crear el locator a mano:
-    bpy.ops.object.hook_add_newob()
+    #bpy.ops.object.hook_add_newob()
     salir_de_editmode() # salimos de edit mode
     # creo el locator en su sitio
     #crear_locator(pos)
