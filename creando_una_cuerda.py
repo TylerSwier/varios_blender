@@ -104,6 +104,7 @@ bpy.ops.object.vertex_group_add() # creamos un grupo
 select_all_in_edit_mode(ob)
 bpy.ops.object.vertex_group_assign() # y lo asignamos
 salir_de_editmode() # salimos de edit mode
+ob.vertex_groups[0].name = "Pin"
 
 # creamos un primer locator
 #crear_locator(pos)
@@ -130,6 +131,7 @@ entrar_en_editmode() # entramos en edit mode
 bpy.ops.object.vertex_group_add() # CREANDO GRUPO GUIA MAESTRA
 select_all_in_edit_mode(ob)
 bpy.ops.object.vertex_group_assign() # y lo asignamos
+ob.vertex_groups[1].name = "Guide_rope"
 
 # extruimos la curva para que tenga un minimo grosor para colisionar
 bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(0, 0.005, 0), "constraint_axis":(False, True, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
@@ -152,7 +154,7 @@ entrar_en_editmode()
 bpy.ops.mesh.select_all(action="DESELECT")
 bpy.context.tool_settings.mesh_select_mode = (True , False , False)
 salir_de_editmode()
-gi = ob.vertex_groups["Group.001"].index # get group index
+gi = ob.vertex_groups["Guide_rope"].index # get group index
 for v in ob.data.vertices:
   for g in v.groups:
     if g.group == gi: # compare with index in VertexGroupElement
