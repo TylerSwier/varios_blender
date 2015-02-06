@@ -106,7 +106,7 @@ bpy.ops.object.vertex_group_assign() # y lo asignamos
 salir_de_editmode() # salimos de edit mode
 
 # creamos un primer locator
-crear_locator(pos)
+#crear_locator(pos)
 deseleccionar_todo()
 
 seleccionar_por_nombre("cuerda")
