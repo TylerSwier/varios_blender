@@ -169,7 +169,11 @@ salir_de_editmode()
 
 deseleccionar_todo()
 seleccionar_por_nombre("cuerda.001")
+# a la nueva curva copiada le quitamos el cloth:
 bpy.ops.object.modifier_remove(modifier="Cloth")
+# la convertimos en curva:
+bpy.ops.object.convert(target='CURVE')
+
 
 #deseleccionar_todo()
 #seleccionar_por_nombre("cuerda.001")
