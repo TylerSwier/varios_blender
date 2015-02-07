@@ -188,30 +188,38 @@ bpy.ops.object.modifier_remove(modifier="Cloth")
 bpy.ops.object.convert(target='CURVE')
 
 # todos los emptys:
-#emptys = []
-#for eo in bpy.data.objects:
-#    if eo.type == 'EMPTY':
-#        emptys.append(eo)
-#        
+emptys = []
+for eo in bpy.data.objects:
+    if eo.type == 'EMPTY':
+        emptys.append(eo)
+        
 #print(emptys)
 
+def select_all_vertex_in_curve_bezier(bc):
+    for i in range(len(bc.data.splines[0].points)):
+        bc.data.splines[0].points[i].select = True
 
-#co = bpy.data.objects['cuerda.001']
-#n = 0 
-#for e in emptys:
-#    deseleccionar_todo()
-#    seleccionar_por_nombre(e.name)
-#    seleccionar_por_nombre(co.name)
-#    entrar_en_editmode()
-#    deselect_all_in_edit_mode(co)
-#    bpy.ops.mesh.select_all(action="DESELECT")
-#    bpy.context.tool_settings.mesh_select_mode = (True , False , False)
-#    salir_de_editmode()
-#    co.data.vertices[n].select = True
-#    entrar_en_editmode()
-#    bpy.ops.object.hook_add_selob(use_bone=False)
-#    salir_de_editmode()
+def deselect_all_vertex_in_curve_bezier(bc):
+    for i in range(len(bc.data.splines[0].points)):
+        bc.data.splines[0].points[i].select = False
+        
+# cuantos puntos tiene la becier:
+#len(bpy.data.objects['cuerda.001'].data.splines[0].points)
+# seleccionar y deseleccionar:
+#bpy.data.objects['cuerda.001'].data.splines[0].points[0].select = True
 
+bc = bpy.data.objects['cuerda.001']
+n = 0 
+for e in emptys:
+    deseleccionar_todo()
+    seleccionar_por_nombre(e.name)
+    seleccionar_por_nombre(bc.name)
+    entrar_en_editmode()
+    deselect_all_vertex_in_curve_bezier(bc)
+    bc.data.splines[0].points[n].select = True
+    bpy.ops.object.hook_add_selob(use_bone=False)
+    salir_de_editmode()
+    n = n + 1
 #entrar_en_editmode()
         
 
