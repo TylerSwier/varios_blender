@@ -2,10 +2,13 @@
 import bpy
 
 scn = bpy.context.scene
-longitud=5
+longitud=6
 cuantos_segmentos=4
 calidad_de_colision=20
 substeps=50
+# para que desde el primer punto hasta el ultimo, entre 
+# medias tenga x segmentos debo sumarle 1 a la cantidad:
+cuantos_segmentos += 1
 
 def deseleccionar_todo():
     bpy.ops.object.select_all(action='DESELECT')
@@ -100,7 +103,6 @@ borrar_elementos_seleccionados("vertices")
 salir_de_editmode() # salimos de edit mode
 
 crear_vertices(ob) # creamos un vertex
-pos = obtener_coords_vertex_seleccionados() # y obtenemos su posicion
 
 # creando el grupo Group para el PIN
 # Group contiene los vertices del pin y Group.001 contiene la linea unica principal
@@ -114,8 +116,6 @@ bpy.ops.object.vertex_group_assign() # y lo asignamos
 salir_de_editmode() # salimos de edit mode
 ob.vertex_groups[0].name = "Pin"
 
-# creamos un primer locator
-#crear_locator(pos)
 deseleccionar_todo()
 
 seleccionar_por_nombre("cuerda")
@@ -136,8 +136,18 @@ for i in range(cuantos_segmentos):
     crear_locator(pos)
     deseleccionar_todo()
     seleccionar_por_nombre("cuerda")
-    # vuelvo a seleccionar la cuerda
     
+deseleccionar_todo()
+seleccionar_por_nombre("cuerda")    
+# vuelvo a seleccionar la cuerda
+entrar_en_editmode()
+pos = obtener_coords_vertex_seleccionados() # y obtenemos su posicion
+salir_de_editmode()
+# creamos el ultimo locator
+crear_locator(pos)
+
+deseleccionar_todo()
+seleccionar_por_nombre("cuerda")        
 entrar_en_editmode() # entramos en edit mode
 bpy.ops.object.vertex_group_add() # CREANDO GRUPO GUIA MAESTRA
 select_all_in_edit_mode(ob)
