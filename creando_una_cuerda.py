@@ -2,8 +2,8 @@
 import bpy
 
 scn = bpy.context.scene
-longitud=6
-cuantos_segmentos=4
+longitud=10
+cuantos_segmentos=20
 calidad_de_colision=20
 substeps=50
 # para que desde el primer punto hasta el ultimo, entre 
@@ -252,3 +252,15 @@ for e in emptys:
     #deselect_all_in_edit_mode(ob)
     salir_de_editmode()
     n = n + 1
+
+# display que no muestre las relaciones
+#bpy.context.space_data.show_relationship_lines = False
+for area in bpy.context.screen.areas:
+    if area.type == 'VIEW_3D':
+        area.spaces[0].show_relationship_lines = False
+
+seleccionar_por_nombre("cuerda.001")
+# cuerda curva settings:
+bpy.context.object.data.fill_mode = 'FULL'
+bpy.context.object.data.bevel_depth = 0.04
+bpy.context.object.data.bevel_resolution = 4
