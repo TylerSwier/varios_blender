@@ -3,7 +3,7 @@ import bpy
 
 scn = bpy.context.scene
 longitud=10
-cuantos_segmentos=20
+cuantos_segmentos=70
 calidad_de_colision=20
 substeps=50
 # para que desde el primer punto hasta el ultimo, entre 
@@ -263,4 +263,4 @@ seleccionar_por_nombre("cuerda.001")
 # cuerda curva settings:
 bpy.context.object.data.fill_mode = 'FULL'
 bpy.context.object.data.bevel_depth = 0.04
-bpy.context.object.data.bevel_resolution = 4
+bpy.context.object.data.bevel_resolution = 6
