@@ -233,7 +233,22 @@ for e in emptys:
 #entrar_en_editmode()
         
 
-#deseleccionar_todo()
-#seleccionar_por_nombre("cuerda.001")
-# convierto a curva:
-#bpy.ops.object.convert(target='CURVE')
+ob = bpy.data.objects['cuerda']
+n = 0 
+for e in emptys:
+    deseleccionar_todo()
+    seleccionar_por_nombre(e.name)
+    seleccionar_por_nombre(ob.name)
+    entrar_en_editmode()
+    bpy.ops.mesh.select_all(action="DESELECT")
+    bpy.context.tool_settings.mesh_select_mode = (True , False , False)
+    salir_de_editmode()
+    for v in ob.data.vertices:
+        if v.select:
+            v.select = False
+    ob.data.vertices[n].select = True
+    entrar_en_editmode()
+    bpy.ops.object.vertex_parent_set()
+    #deselect_all_in_edit_mode(ob)
+    salir_de_editmode()
+    n = n + 1
