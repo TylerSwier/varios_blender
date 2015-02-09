@@ -90,7 +90,14 @@ def crear_locator(pos):
 
 def extruir_vertices(longitud, cuantos_segmentos):    
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"mirror":False}, TRANSFORM_OT_translate={"value":(longitud/cuantos_segmentos, 0, 0), "constraint_axis":(True, False, False), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
-    
+
+deseleccionar_todo()
+# creamos el empty que sera el padre de todo
+bpy.ops.object.empty_add(type='SPHERE', radius=1, view_align=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+ob = bpy.context.selected_objects[0]
+ob.name = "Rope"
+deseleccionar_todo()
+
 # creamos un plano y lo borramos
 bpy.ops.mesh.primitive_plane_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
 ob = bpy.context.selected_objects[0]
@@ -201,7 +208,8 @@ bpy.ops.object.convert(target='CURVE')
 emptys = []
 for eo in bpy.data.objects:
     if eo.type == 'EMPTY':
-        emptys.append(eo)
+        if eo.name != "Rope":
+            emptys.append(eo)
         
 #print(emptys)
 
@@ -252,6 +260,19 @@ for e in emptys:
     #deselect_all_in_edit_mode(ob)
     salir_de_editmode()
     n = n + 1
+
+# ocultar los emptys:
+for e in emptys:
+    deseleccionar_todo()
+    seleccionar_por_nombre(e.name)
+    bpy.context.object.hide = True
+
+# emparentando todo al empty esferico:
+seleccionar_por_nombre("cuerda.001")
+seleccionar_por_nombre("cuerda")
+seleccionar_por_nombre("Rope")
+bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
+deseleccionar_todo()
 
 # display que no muestre las relaciones
 #bpy.context.space_data.show_relationship_lines = False
