@@ -40,7 +40,10 @@ def salir_de_editmode():
 
 # Clear scene:
 def reset_scene():
-    salir_de_editmode()
+    try:
+        salir_de_editmode()
+    except:
+        pass
     seleccionar_todo()
     bpy.ops.object.delete(use_global=False)
     
@@ -285,10 +288,10 @@ class DialogOperator(bpy.types.Operator):
             salir_de_editmode()
             n = n + 1
         # ocultar los emptys:
-        for e in emptys:
+        #for e in emptys:
             deseleccionar_todo()
-            seleccionar_por_nombre(e.name)
-            bpy.context.object.hide = True
+        #    seleccionar_por_nombre(e.name)
+        #    bpy.context.object.hide = True
         # emparentando todo al empty esferico:
         seleccionar_por_nombre("cuerda.001")
         seleccionar_por_nombre("cuerda")
