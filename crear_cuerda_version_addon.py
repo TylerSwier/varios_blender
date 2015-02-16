@@ -137,6 +137,7 @@ class DialogOperator(bpy.types.Operator):
     qcr = IntProperty(name="qualcolr", default=20)
     substeps = IntProperty(name="rsubsteps", default=50)
     resrope = IntProperty(name="resr", default=5)
+    radiusrope =  FloatProperty(name="radius", default=0.04)
     hide_emptys = BoolProperty(name="hemptys", default=False)    
     def execute(self,context):        
         # chicha ###############################################################      
@@ -306,8 +307,8 @@ class DialogOperator(bpy.types.Operator):
         seleccionar_por_nombre("cuerda.001")
         # cuerda curva settings:
         bpy.context.object.data.fill_mode = 'FULL'
-        bpy.context.object.data.bevel_depth = 0.04
-        bpy.context.object.data.bevel_resolution = 6
+        bpy.context.object.data.bevel_depth = self.radiusrope
+        bpy.context.object.data.bevel_resolution = self.resrope
         #################################################################################                                
         return {'FINISHED'}
 
@@ -322,6 +323,8 @@ class DialogOperator(bpy.types.Operator):
         rowsub0 = col.row()
         rowsub0.prop(self, "ropelenght", text='rope lenght')
         rowsub0.prop(self, "ropesegments", text='rope segments')
+        rowsub0.prop(self, "radiusrope", text='rope radius')
+        
         col.label("Quality Settings:")
         col.prop(self, "resrope", text='resolution rope')
         col.prop(self, "qcr", text='Quality Collision Rope')
