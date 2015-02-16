@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 bl_info = {
-    "name": "Auto Cloth Rope Creator",
-    "description": "Dynamic cloth rope creator",
+    "name": "Rope Creator",
+    "description": "Dynamic rope (with cloth) creator",
     "author": "Jorge Hernandez - Melenedez",
     "version": (0, 1),
     "blender": (2, 73),
@@ -123,7 +123,7 @@ def deselect_all_vertex_in_curve_bezier(bc):
 # addomizando:
 class DialogOperator(bpy.types.Operator):
     bl_idname = "object.zebus_dialog"
-    bl_label = "Cloth Rope AutoCreator v00"
+    bl_label = "Rope Creator"
     # Defaults:
     #longitud=10
     #cuantos_segmentos=70
@@ -288,7 +288,8 @@ class DialogOperator(bpy.types.Operator):
             #deselect_all_in_edit_mode(ob)
             salir_de_editmode()
             n = n + 1
-        # ocultar los emptys:
+        ########################################################################
+        # ocultar los emptys: ##################################################
         #for e in emptys:
             deseleccionar_todo()
         #    seleccionar_por_nombre(e.name)
@@ -313,7 +314,7 @@ class DialogOperator(bpy.types.Operator):
         return {'FINISHED'}
 
     def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self, width=200)
+        return context.window_manager.invoke_props_dialog(self, width=300)
 
     def draw(self, context):
         layout = self.layout
@@ -321,19 +322,19 @@ class DialogOperator(bpy.types.Operator):
         col = box.column()
         col.label("Rope settings:")
         rowsub0 = col.row()
-        rowsub0.prop(self, "ropelenght", text='rope lenght')
-        rowsub0.prop(self, "ropesegments", text='rope segments')
-        rowsub0.prop(self, "radiusrope", text='rope radius')
+        rowsub0.prop(self, "ropelenght", text='Length')
+        rowsub0.prop(self, "ropesegments", text='Segments')
+        rowsub0.prop(self, "radiusrope", text='Radius')
         
         col.label("Quality Settings:")
-        col.prop(self, "resrope", text='resolution rope')
-        col.prop(self, "qcr", text='Quality Collision Rope')
-        col.prop(self, "substeps", text='substeps')
+        col.prop(self, "resrope", text='Resolution curve')
+        col.prop(self, "qcr", text='Quality Collision')
+        col.prop(self, "substeps", text='Substeps')
 
 bpy.utils.register_class(DialogOperator)
 
 class DialogPanel(bpy.types.Panel):
-    bl_label = "Cloth Rope Creator"
+    bl_label = "Rope Creator"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
     bl_category = "RopeCreator"
