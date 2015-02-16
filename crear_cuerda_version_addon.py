@@ -137,7 +137,7 @@ class DialogOperator(bpy.types.Operator):
     qcr = IntProperty(name="qualcolr", default=20)
     substeps = IntProperty(name="rsubsteps", default=50)
     resrope = IntProperty(name="resr", default=5)
-    radiusrope =  FloatProperty(name="radius", default=0.04)
+    radiusrope =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
     hide_emptys = BoolProperty(name="hemptys", default=False)    
     def execute(self,context):        
         # chicha ###############################################################      
