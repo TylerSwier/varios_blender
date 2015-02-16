@@ -311,30 +311,29 @@ class DialogOperator(bpy.types.Operator):
         #################################################################################                                
         return {'FINISHED'}
 
-def invoke(self, context, event):
-    return context.window_manager.invoke_props_dialog(self, width=200)
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self, width=200)
 
-def draw(self, context):
-    layout = self.layout
-    box = layout.box()
-    col = box.column()
-    col.label("Rope settings:")
-    rowsub0 = col.row()
-    rowsub0.prop(self, "ropelenght", text='rope lenght')
-    rowsub0.prop(self, "ropesegments", text='rope segments')
-    col.label("Quality Settings:")
-    col.prop(self, "resrope", text='resolution rope')
-    col.prop(self, "qcr", text='Quality Collision Rope')
-    col.prop(self, "substeps", text='substeps')
+    def draw(self, context):
+        layout = self.layout
+        box = layout.box()
+        col = box.column()
+        col.label("Rope settings:")
+        rowsub0 = col.row()
+        rowsub0.prop(self, "ropelenght", text='rope lenght')
+        rowsub0.prop(self, "ropesegments", text='rope segments')
+        col.label("Quality Settings:")
+        col.prop(self, "resrope", text='resolution rope')
+        col.prop(self, "qcr", text='Quality Collision Rope')
+        col.prop(self, "substeps", text='substeps')
 
 bpy.utils.register_class(DialogOperator)
 
 class DialogPanel(bpy.types.Panel):
-    bl_label = "Dialog"
+    bl_label = "Cloth Rope Creator"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
     bl_category = "RopeCreator"
-
     def draw(self, context):
         layout = self.layout
         context = bpy.context
