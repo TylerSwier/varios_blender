@@ -27,8 +27,6 @@ bl_info = {
     "category": "Add Mesh"
 }
 
-scn = bpy.context.scene
-
 def deseleccionar_todo():
     bpy.ops.object.select_all(action='DESELECT')
         
@@ -81,6 +79,7 @@ def which_vertex_are_selected(ob):
             print("el vertice " + str(v.index) + " esta seleccionado")
 
 def seleccionar_por_nombre(nombre):
+    scn = bpy.context.scene
     bpy.data.objects[nombre].select = True
     scn.objects.active = bpy.data.objects[nombre]
     
