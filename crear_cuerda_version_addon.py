@@ -122,7 +122,7 @@ def deselect_all_vertex_in_curve_bezier(bc):
 # addomizando:
 class ClothRope(bpy.types.Operator):
     bl_idname = "clot.rope"
-    bl_label = "Rope Creator"
+    bl_label = "Rope Cloth"
     # Defaults:
     #longitud=10
     #cuantos_segmentos=70
@@ -133,8 +133,8 @@ class ClothRope(bpy.types.Operator):
     #cuantos_segmentos += 1
     ropelenght = IntProperty(name="longitud", default=5)
     ropesegments = IntProperty(name="rsegments", default=5) 
-    qcr = IntProperty(name="qualcolr", min = 1, max = 20, default=20)
-    substeps = IntProperty(name="rsubsteps", min = 4, max = 80, default=50)
+    qcr = IntProperty(name="qualcolr", default=20)
+    substeps = IntProperty(name="rsubsteps", default=50)
     resrope = IntProperty(name="resr", default=5)
     radiusrope =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
     hide_emptys = BoolProperty(name="hemptys", default=False)    
@@ -334,7 +334,7 @@ bpy.utils.register_class(ClothRope)
 
 class BallRope(bpy.types.Operator):
     bl_idname = "ball.rope"
-    bl_label = "Rope Creator"
+    bl_label = "Rope Ball"
     def execute(self, context):
         pass
         return {'FINISHED'}
