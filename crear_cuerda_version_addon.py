@@ -120,8 +120,8 @@ def deselect_all_vertex_in_curve_bezier(bc):
         bc.data.splines[0].points[i].select = False
 
 # addomizando:
-class DialogOperator(bpy.types.Operator):
-    bl_idname = "object.zebus_dialog"
+class ClothRope(bpy.types.Operator):
+    bl_idname = "clot.rope"
     bl_label = "Rope Creator"
     # Defaults:
     #longitud=10
@@ -133,8 +133,8 @@ class DialogOperator(bpy.types.Operator):
     #cuantos_segmentos += 1
     ropelenght = IntProperty(name="longitud", default=5)
     ropesegments = IntProperty(name="rsegments", default=5) 
-    qcr = IntProperty(name="qualcolr", default=20)
-    substeps = IntProperty(name="rsubsteps", default=50)
+    qcr = IntProperty(name="qualcolr", min = 1, max = 20, default=20)
+    substeps = IntProperty(name="rsubsteps", min = 4, max = 80, default=50)
     resrope = IntProperty(name="resr", default=5)
     radiusrope =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
     hide_emptys = BoolProperty(name="hemptys", default=False)    
@@ -330,7 +330,34 @@ class DialogOperator(bpy.types.Operator):
         col.prop(self, "qcr", text='Quality Collision')
         col.prop(self, "substeps", text='Substeps')
 
-bpy.utils.register_class(DialogOperator)
+bpy.utils.register_class(ClothRope)
+
+class BallRope(bpy.types.Operator):
+    bl_idname = "ball.rope"
+    bl_label = "Rope Creator"
+    def execute(self, context):
+        pass
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self, width=310)
+
+    def draw(self, context):
+        layout = self.layout
+        box = layout.box()
+        col = box.column()
+        col.label("Rope settings:")
+        rowsub0 = col.row()
+        rowsub0.prop(self, "ropelenght", text='Length')
+        rowsub0.prop(self, "ropesegments", text='Segments')
+        rowsub0.prop(self, "radiusrope", text='Radius')
+        
+        col.label("Quality Settings:")
+        col.prop(self, "resrope", text='Resolution curve')
+        col.prop(self, "qcr", text='Quality Collision')
+        col.prop(self, "substeps", text='Substeps')
+
+bpy.utils.register_class(BallRope)
 
 class DialogPanel(bpy.types.Panel):
     bl_label = "Rope Creator"
@@ -344,7 +371,8 @@ class DialogPanel(bpy.types.Panel):
         row = layout.row(align=True)
         col = row.column()
         col.alignment = 'EXPAND'
-        col.operator("object.zebus_dialog")
+        col.operator("clot.rope")
+        col.operator("ball.rope")
 
 #   Registration
 def register():
