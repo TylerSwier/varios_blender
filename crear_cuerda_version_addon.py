@@ -42,6 +42,13 @@ def reset_scene():
         salir_de_editmode()
     except:
         pass
+    area = bpy.context.area
+    # en el outliner expando todo para poder seleccionar los emptys hijos
+    old_type = area.type
+    area.type = 'OUTLINER'
+    bpy.ops.outliner.expanded_toggle()
+    area.type = old_type
+    # vuelvo al contexto donde estaba
     seleccionar_todo()
     bpy.ops.object.delete(use_global=False)
     
