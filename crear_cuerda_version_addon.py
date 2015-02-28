@@ -354,13 +354,14 @@ class BallRope(bpy.types.Operator):
     # defaults rope ball
     ropelenght2 = IntProperty(name="longitud", default=6)
     ropesegments2 = IntProperty(name="rsegments", default=4) 
-    qcr2 = IntProperty(name="qualcolr", min = 1, max = 20, default=20)
-    substeps2 = IntProperty(name="rsubsteps", min = 4, max = 80, default=50)
-    resrope2 = IntProperty(name="resr", default=5)
     radiusrope2 =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
-    hide_emptys2 = BoolProperty(name="hemptys", default=False) 
+    worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
+    solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
     def execute(self, context):
         offset_del_suelo = 1
+        offset_del_suelo_real = 4
+        world_steps = self.worldsteps
+        solver_iterations = self.solveriterations 
         longitud = self.ropelenght2
         segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
         reset_scene()
@@ -456,7 +457,14 @@ class BallRope(bpy.types.Operator):
         # lo subo todo para arriba un poco mas:
         seleccionar_todo()
         deseleccionar_por_nombre("groundplane")
-        bpy.ops.transform.translate(value=(0, 0, 2), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.transform.translate(value=(0, 0, offset_del_suelo_real), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+
+        deseleccionar_todo()
+        seleccionar_por_nombre(cuboslink[-1].name)        
+        bpy.ops.rigidbody.objects_add(type='PASSIVE')
+
+        bpy.context.scene.rigidbody_world.steps_per_second = world_steps
+        bpy.context.scene.rigidbody_world.solver_iterations= solver_iterations
         ocultar_relationships()
         deseleccionar_todo()
         return {'FINISHED'}
@@ -475,10 +483,9 @@ class BallRope(bpy.types.Operator):
         rowsub0.prop(self, "radiusrope2", text='Radius')
         
         col.label("Quality Settings:")
-        col.prop(self, "resrope2", text='Resolution curve')
-        col.prop(self, "qcr2", text='Quality Collision')
-        col.prop(self, "substeps2", text='Substeps')
-
+        col.prop(self, "worldsteps", text='World Steps')
+        col.prop(self, "solveriterations", text='Solver Iterarions')
+        
 bpy.utils.register_class(BallRope)
 
 class DialogPanel(bpy.types.Panel):
