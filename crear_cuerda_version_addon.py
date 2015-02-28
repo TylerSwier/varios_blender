@@ -352,18 +352,18 @@ class BallRope(bpy.types.Operator):
     bl_idname = "ball.rope"
     bl_label = "Rope Ball"
     # defaults rope ball
-    ropelenght2 = IntProperty(name="longitud", default=6)
+    ropelenght2 = IntProperty(name="longitud", default=10)
     ropesegments2 = IntProperty(name="rsegments", default=4) 
     radiusrope2 =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
     def execute(self, context):
-        offset_del_suelo = 1
-        offset_del_suelo_real = 4
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
         longitud = self.ropelenght2
         segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
+        offset_del_suelo = 1
+        offset_del_suelo_real = longitud/2
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10
@@ -446,10 +446,11 @@ class BallRope(bpy.types.Operator):
         deseleccionar_todo()
         seleccionar_por_nombre(cuboslink[0].name)
         entrar_en_editmode()
-        z = cuboslink[0].scale.z*2
+        z = cuboslink[0].scale.z+longitud/2
         bpy.ops.view3d.snap_cursor_to_selected()
         bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.ops.transform.translate(value=(0, 0, -z), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.transform.resize(value=(longitud/2, longitud/2, longitud/2), constraint_axis=(False, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         deselect_all_in_edit_mode(cuboslink[0])
         salir_de_editmode()
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS')
@@ -465,6 +466,19 @@ class BallRope(bpy.types.Operator):
 
         bpy.context.scene.rigidbody_world.steps_per_second = world_steps
         bpy.context.scene.rigidbody_world.solver_iterations= solver_iterations
+
+        # para mover todo desde el primero de arriba:
+        seleccionar_por_nombre(cuboslink[-1].name)
+        bpy.ops.view3d.snap_cursor_to_selected()
+        seleccionar_todo()
+        deseleccionar_por_nombre("groundplane")
+        deseleccionar_por_nombre(cuboslink[-1].name)
+        bpy.context.space_data.pivot_point = 'CURSOR'
+        bpy.ops.transform.rotate(value=-45, axis=(1, 0, 0), constraint_axis=(True, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.context.space_data.pivot_point = 'MEDIAN_POINT'
+        deseleccionar_todo()
+        
+
         ocultar_relationships()
         deseleccionar_todo()
         return {'FINISHED'}
