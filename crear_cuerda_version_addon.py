@@ -354,16 +354,19 @@ class BallRope(bpy.types.Operator):
     # defaults rope ball
     ropelenght2 = IntProperty(name="longitud", default=10)
     ropesegments2 = IntProperty(name="rsegments", min = 0, max = 999, default=4) 
-    radiusrope2 =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
+    radiusrope2 =  FloatProperty(name="radius", default=0.274)
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
+    massball = IntProperty(name="massball", default=2)
     def execute(self, context):
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
         longitud = self.ropelenght2
         segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
         offset_del_suelo = 1
-        offset_del_suelo_real = longitud/2
+        offset_del_suelo_real = (longitud/2)+2
+        radio = self.radiusrope2
+        masa = self.massball
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10
@@ -373,6 +376,7 @@ class BallRope(bpy.types.Operator):
         bpy.ops.rigidbody.objects_add(type='PASSIVE')
         # creamos el primer cubo:
         cuboslink = []
+        n = 0
         for i in range(segmentos):
             # si es 0 le digo que empieza desde 1
             if i == 0:
@@ -383,22 +387,29 @@ class BallRope(bpy.types.Operator):
             bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, i*separacion), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
             bpy.ops.rigidbody.objects_add(type='ACTIVE')
             bpy.context.object.name = "CubeLink"
+            if n != 0:
+                bpy.context.object.draw_type = 'WIRE'
+                bpy.context.object.hide_render = True
+            n += 1
             bpy.context.object.scale.z = longitud/(segmentos*2)
-            bpy.context.object.scale.x = bpy.context.object.scale.z
-            bpy.context.object.scale.y = bpy.context.object.scale.z
+            #bpy.context.object.scale.x = bpy.context.object.scale.z
+            #bpy.context.object.scale.y = bpy.context.object.scale.z
+            bpy.context.object.scale.x = radio
+            bpy.context.object.scale.y = radio
             cuboslink.append(bpy.context.object)
         for i in range(len(cuboslink)):
             deseleccionar_todo()
-            nombre1 = cuboslink[-i]
-            nombre2 = cuboslink[-i+1]
-            seleccionar_por_nombre(nombre1.name)
-            seleccionar_por_nombre(nombre2.name)
-            bpy.ops.rigidbody.connect()
-        deseleccionar_todo()
-        for i in range(segmentos):
+            if i != len(cuboslink)-1:
+                nombre1 = cuboslink[i]
+                nombre2 = cuboslink[i+1]
+                seleccionar_por_nombre(nombre1.name)
+                seleccionar_por_nombre(nombre2.name)
+                bpy.ops.rigidbody.connect()
+        seleccionar_por_nombre
+        for i in range(segmentos-1):
             if i == 0:
                 seleccionar_por_nombre("Constraint")
-            else: # prueno con 13
+            else: 
                 if i <= 9 and i > 0:
                     seleccionar_por_nombre("Constraint.00" + str(i))
                 else:
@@ -453,6 +464,7 @@ class BallRope(bpy.types.Operator):
         bpy.ops.transform.resize(value=(longitud/2, longitud/2, longitud/2), constraint_axis=(False, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         deselect_all_in_edit_mode(cuboslink[0])
         salir_de_editmode()
+        bpy.context.object.rigid_body.mass = masa
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS')
         
         # lo subo todo para arriba un poco mas:
@@ -478,6 +490,9 @@ class BallRope(bpy.types.Operator):
         bpy.context.space_data.pivot_point = 'MEDIAN_POINT'
         deseleccionar_todo()
         
+        seleccionar_por_nombre("Cuerda")
+        bpy.context.object.data.fill_mode = 'FULL'
+        bpy.context.object.data.bevel_depth = radio
 
         ocultar_relationships()
         deseleccionar_todo()
@@ -497,6 +512,7 @@ class BallRope(bpy.types.Operator):
         rowsub0.prop(self, "radiusrope2", text='Radius')
         
         col.label("Quality Settings:")
+        col.prop(self, "massball", text='Ball Mass')
         col.prop(self, "worldsteps", text='World Steps')
         col.prop(self, "solveriterations", text='Solver Iterarions')
         
