@@ -126,6 +126,12 @@ def deselect_all_vertex_in_curve_bezier(bc):
     for i in range(len(bc.data.splines[0].points)):
         bc.data.splines[0].points[i].select = False
 
+def ocultar_relationships():
+    #bpy.context.space_data.show_relationship_lines = False
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            area.spaces[0].show_relationship_lines = False
+
 # addomizando:
 class ClothRope(bpy.types.Operator):
     bl_idname = "clot.rope"
@@ -307,10 +313,7 @@ class ClothRope(bpy.types.Operator):
         bpy.ops.object.parent_set(type='OBJECT', keep_transform=True)
         deseleccionar_todo()
         # display que no muestre las relaciones
-        #bpy.context.space_data.show_relationship_lines = False
-        for area in bpy.context.screen.areas:
-            if area.type == 'VIEW_3D':
-                area.spaces[0].show_relationship_lines = False
+        ocultar_relationships()
         seleccionar_por_nombre("cuerda.001")
         # cuerda curva settings:
         bpy.context.object.data.fill_mode = 'FULL'
@@ -392,6 +395,7 @@ class BallRope(bpy.types.Operator):
             for c in bpy.context.selected_objects:
                 c.rigid_body_constraint.type = 'POINT'
         deseleccionar_todo()
+        ocultar_relationships()
         return {'FINISHED'}
 
     def invoke(self, context, event):
