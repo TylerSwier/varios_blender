@@ -391,7 +391,7 @@ class BallRope(bpy.types.Operator):
                 bpy.context.object.draw_type = 'WIRE'
                 bpy.context.object.hide_render = True
             n += 1
-            bpy.context.object.scale.z = longitud/(segmentos*2)
+            bpy.context.object.scale.z = longitud/(segmentos*2)*(radio*2)
             #bpy.context.object.scale.x = bpy.context.object.scale.z
             #bpy.context.object.scale.y = bpy.context.object.scale.z
             bpy.context.object.scale.x = radio
