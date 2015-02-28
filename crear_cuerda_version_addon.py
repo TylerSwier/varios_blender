@@ -354,7 +354,8 @@ class BallRope(bpy.types.Operator):
     # defaults rope ball
     ropelenght2 = IntProperty(name="longitud", default=10)
     ropesegments2 = IntProperty(name="rsegments", min = 0, max = 999, default=6) 
-    radiusrope2 =  FloatProperty(name="radius", default=0.4)
+    radiuscubes =  FloatProperty(name="radius", default=1)
+    radiusrope =  FloatProperty(name="radius", default=0.4)
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
     massball = IntProperty(name="massball", default=1)
@@ -365,7 +366,8 @@ class BallRope(bpy.types.Operator):
         segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
         offset_del_suelo = 1
         offset_del_suelo_real = (longitud/2)+(segmentos/2)
-        radio = self.radiusrope2
+        radio = self.radiuscubes
+        radiorope = self.radiusrope
         masa = self.massball
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
@@ -492,7 +494,7 @@ class BallRope(bpy.types.Operator):
         
         seleccionar_por_nombre("Cuerda")
         bpy.context.object.data.fill_mode = 'FULL'
-        bpy.context.object.data.bevel_depth = radio
+        bpy.context.object.data.bevel_depth = radiorope
 
         ocultar_relationships()
         deseleccionar_todo()
@@ -509,8 +511,10 @@ class BallRope(bpy.types.Operator):
         rowsub0 = col.row()
         rowsub0.prop(self, "ropelenght2", text='Length')
         rowsub0.prop(self, "ropesegments2", text='Segments')
-        rowsub0.prop(self, "radiusrope2", text='Radius')
-        
+        rowsub1 = col.row()
+        rowsub1.prop(self, "radiuscubes", text='Radius Link Cubes')
+        rowsub1.prop(self, "radiusrope", text='Radius Rope')
+                
         col.label("Quality Settings:")
         col.prop(self, "massball", text='Ball Mass')
         col.prop(self, "worldsteps", text='World Steps')
