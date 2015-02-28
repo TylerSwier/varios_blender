@@ -383,6 +383,15 @@ class BallRope(bpy.types.Operator):
             seleccionar_por_nombre(nombre1.name)
             seleccionar_por_nombre(nombre2.name)
             bpy.ops.rigidbody.connect()
+        deseleccionar_todo()
+        for i in range(segmentos):
+            if i == 0:
+                seleccionar_por_nombre("Constraint")
+            else:
+                seleccionar_por_nombre("Constraint.00" + str(i))
+            for c in bpy.context.selected_objects:
+                c.rigid_body_constraint.type = 'POINT'
+        deseleccionar_todo()
         return {'FINISHED'}
 
     def invoke(self, context, event):
