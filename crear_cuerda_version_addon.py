@@ -352,7 +352,7 @@ class BallRope(bpy.types.Operator):
     hide_emptys2 = BoolProperty(name="hemptys", default=False) 
     def execute(self, context):
         longitud = self.ropelenght2
-        segmentos = self.ropesegments2
+        segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10
