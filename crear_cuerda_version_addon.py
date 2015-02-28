@@ -353,7 +353,7 @@ class BallRope(bpy.types.Operator):
     bl_label = "Rope Ball"
     # defaults rope ball
     ropelenght2 = IntProperty(name="longitud", default=10)
-    ropesegments2 = IntProperty(name="rsegments", default=4) 
+    ropesegments2 = IntProperty(name="rsegments", min = 0, max = 999, default=4) 
     radiusrope2 =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
