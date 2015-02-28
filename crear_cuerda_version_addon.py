@@ -395,6 +395,34 @@ class BallRope(bpy.types.Operator):
             for c in bpy.context.selected_objects:
                 c.rigid_body_constraint.type = 'POINT'
         deseleccionar_todo()
+        
+        # creamos la curva bezier:
+        bpy.ops.curve.primitive_bezier_curve_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+        bpy.context.object.name = "Cuerda"
+        for i in range(len(cuboslink)):
+            x = cuboslink[i].location[0]
+            y = cuboslink[i].location[1]
+            z = cuboslink[i].location[2]
+            # si es 0 le digo que empieza desde 1 es el offset desde el suelo...
+            if i == 0:
+                i = 1
+            else: # si no es 0 les tengo que sumar uno para que no se pisen al empezar el primero desde 1
+                i = i+1
+            entrar_en_editmode()
+            if i == 1:
+                # selecciono todos los vertices y los  borro
+                select_all_vertex_in_curve_bezier(bpy.data.objects["Cuerda"])
+                bpy.ops.curve.delete(type='VERT')
+                # creamos el primer vertice:
+                bpy.ops.curve.vertex_add(location=(x, y, z))
+                # y lo escalamos un poco:
+                #select_all_vertex_in_curve_bezier(bpy.data.objects["Cuerda"])
+                #bpy.ops.transform.resize(value=(0.05, 0.05, 0.05), constraint_axis=(False, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            else:
+                # extruimos el resto:
+                bpy.ops.curve.extrude_move(CURVE_OT_extrude={"mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(0, 0, z/i), "constraint_axis":(False, False, True), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
+            salir_de_editmode()
+        
         ocultar_relationships()
         return {'FINISHED'}
 
