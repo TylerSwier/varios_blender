@@ -34,7 +34,8 @@ def seleccionar_todo():
     bpy.ops.object.select_all(action='SELECT')
 
 def salir_de_editmode():
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if bpy.context.mode == "EDIT" or bpy.context.mode == "EDIT_CURVE":
+        bpy.ops.object.mode_set(mode='OBJECT')
 
 # Clear scene:
 def reset_scene():
@@ -53,7 +54,8 @@ def reset_scene():
     bpy.ops.object.delete(use_global=False)
     
 def entrar_en_editmode():
-    bpy.ops.object.mode_set(mode='EDIT')    
+    if bpy.context.mode == "OBJECT":
+        bpy.ops.object.mode_set(mode='EDIT')    
 
 def select_all_in_edit_mode(ob):
     if ob.mode != 'EDIT':
@@ -407,6 +409,9 @@ class BallRope(bpy.types.Operator):
         bpy.ops.curve.primitive_bezier_curve_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.name = "Cuerda"
         for i in range(len(cuboslink)):
+            cubonombre = cuboslink[i].name
+            seleccionar_por_nombre(cubonombre)
+            seleccionar_por_nombre("Cuerda")
             x = cuboslink[i].location[0]
             y = cuboslink[i].location[1]
             z = cuboslink[i].location[2]
@@ -415,21 +420,21 @@ class BallRope(bpy.types.Operator):
                 i = 1
             else: # si no es 0 les tengo que sumar uno para que no se pisen al empezar el primero desde 1
                 i = i+1
-            entrar_en_editmode()
+            salir_de_editmode()
+            #entrar_en_editmode()
+            tab_editmode()
             if i == 1:
                 # selecciono todos los vertices y los  borro
                 select_all_vertex_in_curve_bezier(bpy.data.objects["Cuerda"])
                 bpy.ops.curve.delete(type='VERT')
                 # creamos el primer vertice:
                 bpy.ops.curve.vertex_add(location=(x, y, z))
-                # y lo escalamos un poco:
-                #select_all_vertex_in_curve_bezier(bpy.data.objects["Cuerda"])
-                #bpy.ops.transform.resize(value=(0.05, 0.05, 0.05), constraint_axis=(False, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
             else:
                 # extruimos el resto:
                 bpy.ops.curve.extrude_move(CURVE_OT_extrude={"mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(0, 0, z/i), "constraint_axis":(False, False, True), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
+            bpy.ops.object.hook_add_selob(use_bone=False)
             salir_de_editmode()
-        
+            deseleccionar_todo()
         ocultar_relationships()
         return {'FINISHED'}
 
