@@ -343,8 +343,8 @@ class BallRope(bpy.types.Operator):
     bl_idname = "ball.rope"
     bl_label = "Rope Ball"
     # defaults rope ball
-    ropelenght2 = IntProperty(name="longitud", default=5)
-    ropesegments2 = IntProperty(name="rsegments", default=5) 
+    ropelenght2 = IntProperty(name="longitud", default=6)
+    ropesegments2 = IntProperty(name="rsegments", default=4) 
     qcr2 = IntProperty(name="qualcolr", min = 1, max = 20, default=20)
     substeps2 = IntProperty(name="rsubsteps", min = 4, max = 80, default=50)
     resrope2 = IntProperty(name="resr", default=5)
@@ -352,6 +352,7 @@ class BallRope(bpy.types.Operator):
     hide_emptys2 = BoolProperty(name="hemptys", default=False) 
     def execute(self, context):
         longitud = self.ropelenght2
+        segmentos = self.ropesegments2
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10
@@ -361,16 +362,17 @@ class BallRope(bpy.types.Operator):
         bpy.ops.rigidbody.objects_add(type='PASSIVE')
         # creamos el primer cubo:
         cuboslink = []
-        for i in range(longitud):
+        for i in range(segmentos):
             # si es 0 le digo que empieza desde 1
             if i == 0:
                 i = 1
             else: # si no es 0 les tengo que sumar uno para que no se pisen al empezar el primero desde 1
                 i = i+1
-            separacion = 3 # distancia entre los cubos link
+            separacion = longitud*2/segmentos # distancia entre los cubos link
             bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, i*separacion), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
             bpy.ops.rigidbody.objects_add(type='ACTIVE')
             bpy.context.object.name = "CubeLink"
+            bpy.context.object.scale.z = longitud/(segmentos*2)
             cuboslink.append(bpy.context.object)
         for i in range(len(cuboslink)):
             deseleccionar_todo()
