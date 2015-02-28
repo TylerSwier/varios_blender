@@ -342,8 +342,43 @@ bpy.utils.register_class(ClothRope)
 class BallRope(bpy.types.Operator):
     bl_idname = "ball.rope"
     bl_label = "Rope Ball"
+    # defaults rope ball
+    ropelenght2 = IntProperty(name="longitud", default=5)
+    ropesegments2 = IntProperty(name="rsegments", default=5) 
+    qcr2 = IntProperty(name="qualcolr", min = 1, max = 20, default=20)
+    substeps2 = IntProperty(name="rsubsteps", min = 4, max = 80, default=50)
+    resrope2 = IntProperty(name="resr", default=5)
+    radiusrope2 =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
+    hide_emptys2 = BoolProperty(name="hemptys", default=False) 
     def execute(self, context):
-        pass
+        longitud = self.ropelenght2
+        reset_scene()
+        bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+        bpy.context.object.scale.x = 10
+        bpy.context.object.scale.y = 10
+        bpy.context.object.scale.z = 0.05
+        bpy.context.object.name = "groundplane"
+        bpy.ops.rigidbody.objects_add(type='PASSIVE')
+        # creamos el primer cubo:
+        cuboslink = []
+        for i in range(longitud):
+            # si es 0 le digo que empieza desde 1
+            if i == 0:
+                i = 1
+            else: # si no es 0 les tengo que sumar uno para que no se pisen al empezar el primero desde 1
+                i = i+1
+            separacion = 3 # distancia entre los cubos link
+            bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, i*separacion), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+            bpy.ops.rigidbody.objects_add(type='ACTIVE')
+            bpy.context.object.name = "CubeLink"
+            cuboslink.append(bpy.context.object)
+        for i in range(len(cuboslink)):
+            deseleccionar_todo()
+            nombre1 = cuboslink[-i]
+            nombre2 = cuboslink[-i+1]
+            seleccionar_por_nombre(nombre1.name)
+            seleccionar_por_nombre(nombre2.name)
+            bpy.ops.rigidbody.connect()
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -355,14 +390,14 @@ class BallRope(bpy.types.Operator):
         col = box.column()
         col.label("Rope settings:")
         rowsub0 = col.row()
-        rowsub0.prop(self, "ropelenght", text='Length')
-        rowsub0.prop(self, "ropesegments", text='Segments')
-        rowsub0.prop(self, "radiusrope", text='Radius')
+        rowsub0.prop(self, "ropelenght2", text='Length')
+        rowsub0.prop(self, "ropesegments2", text='Segments')
+        rowsub0.prop(self, "radiusrope2", text='Radius')
         
         col.label("Quality Settings:")
-        col.prop(self, "resrope", text='Resolution curve')
-        col.prop(self, "qcr", text='Quality Collision')
-        col.prop(self, "substeps", text='Substeps')
+        col.prop(self, "resrope2", text='Resolution curve')
+        col.prop(self, "qcr2", text='Quality Collision')
+        col.prop(self, "substeps2", text='Substeps')
 
 bpy.utils.register_class(BallRope)
 
