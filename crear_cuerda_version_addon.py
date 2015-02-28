@@ -353,18 +353,18 @@ class BallRope(bpy.types.Operator):
     bl_label = "Rope Ball"
     # defaults rope ball
     ropelenght2 = IntProperty(name="longitud", default=10)
-    ropesegments2 = IntProperty(name="rsegments", min = 0, max = 999, default=4) 
+    ropesegments2 = IntProperty(name="rsegments", min = 0, max = 999, default=6) 
     radiusrope2 =  FloatProperty(name="radius", default=0.4)
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
-    massball = IntProperty(name="massball", default=2)
+    massball = IntProperty(name="massball", default=1)
     def execute(self, context):
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
         longitud = self.ropelenght2
         segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
         offset_del_suelo = 1
-        offset_del_suelo_real = (longitud/2)+2
+        offset_del_suelo_real = (longitud/2)+(segmentos/2)
         radio = self.radiusrope2
         masa = self.massball
         reset_scene()
