@@ -390,8 +390,15 @@ class BallRope(bpy.types.Operator):
         for i in range(segmentos):
             if i == 0:
                 seleccionar_por_nombre("Constraint")
-            else:
-                seleccionar_por_nombre("Constraint.00" + str(i))
+            else: # prueno con 13
+                if i <= 9 and i > 0:
+                    seleccionar_por_nombre("Constraint.00" + str(i))
+                else:
+                    if i <= 99 and i > 9:
+                        seleccionar_por_nombre("Constraint.0" + str(i))
+                    else:
+                        if i <= 999 and i > 99:
+                            seleccionar_por_nombre("Constraint." + str(i))
             for c in bpy.context.selected_objects:
                 c.rigid_body_constraint.type = 'POINT'
         deseleccionar_todo()
