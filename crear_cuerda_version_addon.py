@@ -373,6 +373,8 @@ class BallRope(bpy.types.Operator):
             bpy.ops.rigidbody.objects_add(type='ACTIVE')
             bpy.context.object.name = "CubeLink"
             bpy.context.object.scale.z = longitud/(segmentos*2)
+            bpy.context.object.scale.x = bpy.context.object.scale.z
+            bpy.context.object.scale.y = bpy.context.object.scale.z
             cuboslink.append(bpy.context.object)
         for i in range(len(cuboslink)):
             deseleccionar_todo()
