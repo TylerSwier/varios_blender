@@ -34,7 +34,7 @@ def seleccionar_todo():
     bpy.ops.object.select_all(action='SELECT')
 
 def salir_de_editmode():
-    if bpy.context.mode == "EDIT" or bpy.context.mode == "EDIT_CURVE":
+    if bpy.context.mode == "EDIT" or bpy.context.mode == "EDIT_CURVE" or bpy.context.mode == "EDIT_MESH":
         bpy.ops.object.mode_set(mode='OBJECT')
 
 # Clear scene:
@@ -91,6 +91,10 @@ def seleccionar_por_nombre(nombre):
     scn = bpy.context.scene
     bpy.data.objects[nombre].select = True
     scn.objects.active = bpy.data.objects[nombre]
+
+def deseleccionar_por_nombre(nombre):
+    scn = bpy.context.scene
+    bpy.data.objects[nombre].select = False
     
 def crear_vertices(ob):
     ob.data.vertices.add(1)
@@ -356,6 +360,7 @@ class BallRope(bpy.types.Operator):
     radiusrope2 =  FloatProperty(name="radius", min = 0.04, max = 1, default=0.04)
     hide_emptys2 = BoolProperty(name="hemptys", default=False) 
     def execute(self, context):
+        offset_del_suelo = 1
         longitud = self.ropelenght2
         segmentos = self.ropesegments2+2 # hago un + 2 para que los segmentos sean los que hay entre los dos extremos... 
         reset_scene()
@@ -370,9 +375,9 @@ class BallRope(bpy.types.Operator):
         for i in range(segmentos):
             # si es 0 le digo que empieza desde 1
             if i == 0:
-                i = 1
+                i = offset_del_suelo
             else: # si no es 0 les tengo que sumar uno para que no se pisen al empezar el primero desde 1
-                i = i+1
+                i = i+offset_del_suelo
             separacion = longitud*2/segmentos # distancia entre los cubos link
             bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, i*separacion), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
             bpy.ops.rigidbody.objects_add(type='ACTIVE')
@@ -417,9 +422,9 @@ class BallRope(bpy.types.Operator):
             z = cuboslink[i].location[2]
             # si es 0 le digo que empieza desde 1 es el offset desde el suelo...
             if i == 0:
-                i = 1
+                i = offset_del_suelo
             else: # si no es 0 les tengo que sumar uno para que no se pisen al empezar el primero desde 1
-                i = i+1
+                i = i+offset_del_suelo
             salir_de_editmode()
             #entrar_en_editmode()
             tab_editmode()
@@ -435,7 +440,25 @@ class BallRope(bpy.types.Operator):
             bpy.ops.object.hook_add_selob(use_bone=False)
             salir_de_editmode()
             deseleccionar_todo()
+            
+        # creando la esfera ball:
+        deseleccionar_todo()
+        seleccionar_por_nombre(cuboslink[0].name)
+        entrar_en_editmode()
+        z = cuboslink[0].scale.z*2
+        bpy.ops.view3d.snap_cursor_to_selected()
+        bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+        bpy.ops.transform.translate(value=(0, 0, -z), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        deselect_all_in_edit_mode(cuboslink[0])
+        salir_de_editmode()
+        bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS')
+        
+        # lo subo todo para arriba un poco mas:
+        seleccionar_todo()
+        deseleccionar_por_nombre("groundplane")
+        bpy.ops.transform.translate(value=(0, 0, 2), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         ocultar_relationships()
+        deseleccionar_todo()
         return {'FINISHED'}
 
     def invoke(self, context, event):
