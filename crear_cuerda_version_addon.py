@@ -27,6 +27,13 @@ bl_info = {
     "category": "Add Mesh"
 }
 
+def desocultar(quien):
+    if quien == "todo":
+        for ob in bpy.data.objects:
+            ob.hide = False
+    else:
+        bpy.data.objects[quien].hide = False
+
 def deseleccionar_todo():
     bpy.ops.object.select_all(action='DESELECT')
         
@@ -39,6 +46,7 @@ def salir_de_editmode():
 
 # Clear scene:
 def reset_scene():
+    desocultar("todo")
     # el play back al principio
     bpy.ops.screen.frame_jump(end=False)
     try:
