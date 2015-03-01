@@ -356,7 +356,7 @@ class BallRope(bpy.types.Operator):
     # defaults rope ball
     ropelenght2 = IntProperty(name="longitud", default=10)
     ropesegments2 = IntProperty(name="rsegments", min = 0, max = 999, default=6) 
-    radiuscubes =  FloatProperty(name="radius", default=1)
+    radiuscubes =  FloatProperty(name="radius", default=0.5)
     radiusrope =  FloatProperty(name="radius", default=0.4)
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
@@ -376,6 +376,7 @@ class BallRope(bpy.types.Operator):
         resolucion = self.resrope
         rotrope = self.grados
         reset_scene()
+        # suelo:
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10+longitud
         bpy.context.object.scale.y = 10+longitud
@@ -399,7 +400,7 @@ class BallRope(bpy.types.Operator):
                 bpy.context.object.draw_type = 'WIRE'
                 bpy.context.object.hide_render = True
             n += 1
-            bpy.context.object.scale.z = longitud/(segmentos*2)*(radio*2)
+            bpy.context.object.scale.z = (longitud*2)/(segmentos*2)-0.1
             #bpy.context.object.scale.x = bpy.context.object.scale.z
             #bpy.context.object.scale.y = bpy.context.object.scale.z
             bpy.context.object.scale.x = radio
