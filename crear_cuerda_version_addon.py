@@ -363,6 +363,7 @@ class BallRope(bpy.types.Operator):
     massball = IntProperty(name="massball", default=1)
     resrope = IntProperty(name="resolucion", default=4)
     grados = FloatProperty(name="grados", default=45)
+    separacion = FloatProperty(name="separacion", default=0.1)
     def execute(self, context):
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
@@ -375,6 +376,7 @@ class BallRope(bpy.types.Operator):
         masa = self.massball
         resolucion = self.resrope
         rotrope = self.grados
+        separation = self.separacion
         reset_scene()
         # suelo:
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
@@ -400,7 +402,7 @@ class BallRope(bpy.types.Operator):
                 bpy.context.object.draw_type = 'WIRE'
                 bpy.context.object.hide_render = True
             n += 1
-            bpy.context.object.scale.z = (longitud*2)/(segmentos*2)-0.1
+            bpy.context.object.scale.z = (longitud*2)/(segmentos*2)-separation
             #bpy.context.object.scale.x = bpy.context.object.scale.z
             #bpy.context.object.scale.y = bpy.context.object.scale.z
             bpy.context.object.scale.x = radio
@@ -524,7 +526,8 @@ class BallRope(bpy.types.Operator):
         rowsub1.prop(self, "radiuscubes", text='Radius Link Cubes')
         rowsub1.prop(self, "radiusrope", text='Radius Rope')
         rowsub2 = col.row()
-        rowsub2.prop(self, "grados", text='Degrees')        
+        rowsub2.prop(self, "grados", text='Degrees')
+        rowsub2.prop(self, "separacion", text='Separation Link Cubes')
                 
         col.label("Quality Settings:")
         col.prop(self, "resrope", text='Resolution Rope')
