@@ -364,6 +364,7 @@ class BallRope(bpy.types.Operator):
     resrope = IntProperty(name="resolucion", default=4)
     grados = FloatProperty(name="grados", default=45)
     separacion = FloatProperty(name="separacion", default=0.1)
+    hidecubes = BoolProperty(name="hidecubes", default=False)
     def execute(self, context):
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
@@ -377,6 +378,7 @@ class BallRope(bpy.types.Operator):
         resolucion = self.resrope
         rotrope = self.grados
         separation = self.separacion
+        hidecubeslinks = self.hidecubes
         reset_scene()
         # suelo:
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
@@ -506,7 +508,13 @@ class BallRope(bpy.types.Operator):
         seleccionar_por_nombre("Cuerda")
         bpy.context.object.data.fill_mode = 'FULL'
         bpy.context.object.data.bevel_depth = radiorope
-
+        for ob in bpy.data.objects:
+            if ob.name != cuboslink[0].name:
+                if ob.name.find("CubeLink") >= 0:
+                    deseleccionar_todo()
+                    seleccionar_por_nombre(ob.name)
+                    if hidecubeslinks:
+                        bpy.context.object.hide = True
         ocultar_relationships()
         deseleccionar_todo()
         return {'FINISHED'}
@@ -520,14 +528,16 @@ class BallRope(bpy.types.Operator):
         col = box.column()
         col.label("Rope settings:")
         rowsub0 = col.row()
-        rowsub0.prop(self, "ropelenght2", text='Length')
-        rowsub0.prop(self, "ropesegments2", text='Segments')
+        rowsub0.prop(self, "hidecubes", text='Hide Link Cubes')
         rowsub1 = col.row()
-        rowsub1.prop(self, "radiuscubes", text='Radius Link Cubes')
-        rowsub1.prop(self, "radiusrope", text='Radius Rope')
+        rowsub1.prop(self, "ropelenght2", text='Length')
+        rowsub1.prop(self, "ropesegments2", text='Segments')
         rowsub2 = col.row()
-        rowsub2.prop(self, "grados", text='Degrees')
-        rowsub2.prop(self, "separacion", text='Separation Link Cubes')
+        rowsub2.prop(self, "radiuscubes", text='Radius Link Cubes')
+        rowsub2.prop(self, "radiusrope", text='Radius Rope')
+        rowsub3 = col.row()
+        rowsub3.prop(self, "grados", text='Degrees')
+        rowsub3.prop(self, "separacion", text='Separation Link Cubes')
                 
         col.label("Quality Settings:")
         col.prop(self, "resrope", text='Resolution Rope')
