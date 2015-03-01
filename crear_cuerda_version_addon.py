@@ -471,6 +471,7 @@ class BallRope(bpy.types.Operator):
         bpy.ops.transform.resize(value=(longitud/2, longitud/2, longitud/2), constraint_axis=(False, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         deselect_all_in_edit_mode(cuboslink[0])
         salir_de_editmode()
+        bpy.ops.object.shade_smooth()
         bpy.context.object.rigid_body.mass = masa
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS')
         
