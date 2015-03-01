@@ -371,8 +371,8 @@ class BallRope(bpy.types.Operator):
         masa = self.massball
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-        bpy.context.object.scale.x = 10
-        bpy.context.object.scale.y = 10
+        bpy.context.object.scale.x = 10+longitud
+        bpy.context.object.scale.y = 10+longitud
         bpy.context.object.scale.z = 0.05
         bpy.context.object.name = "groundplane"
         bpy.ops.rigidbody.objects_add(type='PASSIVE')
@@ -462,7 +462,7 @@ class BallRope(bpy.types.Operator):
         z = cuboslink[0].scale.z+longitud/2
         bpy.ops.view3d.snap_cursor_to_selected()
         bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-        bpy.ops.transform.translate(value=(0, 0, -z), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.transform.translate(value=(0, 0, -z+2), constraint_axis=(False, False, True), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         bpy.ops.transform.resize(value=(longitud/2, longitud/2, longitud/2), constraint_axis=(False, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         deselect_all_in_edit_mode(cuboslink[0])
         salir_de_editmode()
