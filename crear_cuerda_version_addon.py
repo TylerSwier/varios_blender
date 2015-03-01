@@ -39,6 +39,8 @@ def salir_de_editmode():
 
 # Clear scene:
 def reset_scene():
+    # el play back al principio
+    bpy.ops.screen.frame_jump(end=False)
     try:
         salir_de_editmode()
     except:
@@ -359,6 +361,7 @@ class BallRope(bpy.types.Operator):
     worldsteps = IntProperty(name="worldsteps", min = 60, max = 1000, default=250)
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
     massball = IntProperty(name="massball", default=1)
+    resrope = IntProperty(name="resolucion", default=4)
     def execute(self, context):
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
@@ -369,6 +372,7 @@ class BallRope(bpy.types.Operator):
         radio = self.radiuscubes
         radiorope = self.radiusrope
         masa = self.massball
+        resolucion = self.resrope
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10+longitud
@@ -453,6 +457,7 @@ class BallRope(bpy.types.Operator):
                 bpy.ops.curve.extrude_move(CURVE_OT_extrude={"mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(0, 0, z/i), "constraint_axis":(False, False, True), "constraint_orientation":'GLOBAL', "mirror":False, "proportional":'DISABLED', "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "texture_space":False, "remove_on_cancel":False, "release_confirm":False})
             bpy.ops.object.hook_add_selob(use_bone=False)
             salir_de_editmode()
+            bpy.context.object.data.bevel_resolution = resolucion
             deseleccionar_todo()
             
         # creando la esfera ball:
@@ -516,6 +521,7 @@ class BallRope(bpy.types.Operator):
         rowsub1.prop(self, "radiusrope", text='Radius Rope')
                 
         col.label("Quality Settings:")
+        col.prop(self, "resrope", text='Resolution Rope')
         col.prop(self, "massball", text='Ball Mass')
         col.prop(self, "worldsteps", text='World Steps')
         col.prop(self, "solveriterations", text='Solver Iterarions')
