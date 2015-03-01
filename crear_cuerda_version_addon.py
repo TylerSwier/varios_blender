@@ -362,6 +362,7 @@ class BallRope(bpy.types.Operator):
     solveriterations = IntProperty(name="solveriterations", min = 10, max = 100, default=50)
     massball = IntProperty(name="massball", default=1)
     resrope = IntProperty(name="resolucion", default=4)
+    grados = FloatProperty(name="grados", default=45)
     def execute(self, context):
         world_steps = self.worldsteps
         solver_iterations = self.solveriterations 
@@ -373,6 +374,7 @@ class BallRope(bpy.types.Operator):
         radiorope = self.radiusrope
         masa = self.massball
         resolucion = self.resrope
+        rotrope = self.grados
         reset_scene()
         bpy.ops.mesh.primitive_cube_add(radius=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.scale.x = 10+longitud
@@ -494,7 +496,7 @@ class BallRope(bpy.types.Operator):
         deseleccionar_por_nombre("groundplane")
         deseleccionar_por_nombre(cuboslink[-1].name)
         bpy.context.space_data.pivot_point = 'CURSOR'
-        bpy.ops.transform.rotate(value=-45, axis=(1, 0, 0), constraint_axis=(True, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+        bpy.ops.transform.rotate(value=rotrope, axis=(1, 0, 0), constraint_axis=(True, False, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
         bpy.context.space_data.pivot_point = 'MEDIAN_POINT'
         deseleccionar_todo()
         
@@ -520,6 +522,8 @@ class BallRope(bpy.types.Operator):
         rowsub1 = col.row()
         rowsub1.prop(self, "radiuscubes", text='Radius Link Cubes')
         rowsub1.prop(self, "radiusrope", text='Radius Rope')
+        rowsub2 = col.row()
+        rowsub2.prop(self, "grados", text='Degrees')        
                 
         col.label("Quality Settings:")
         col.prop(self, "resrope", text='Resolution Rope')
