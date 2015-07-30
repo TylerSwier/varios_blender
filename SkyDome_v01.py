@@ -18,7 +18,8 @@ def seleccionar_por_nombre(nombre):
 deseleccionar_todo()
 
 sizesky=100
-resolution=40
+# con icosphere con 5 ya es mucho y con esfera normal valores mas altos
+resolution=5
 difusion=0.2
 
 bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=resolution, size=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
