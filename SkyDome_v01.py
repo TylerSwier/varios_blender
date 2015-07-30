@@ -18,8 +18,11 @@ def seleccionar_por_nombre(nombre):
 deseleccionar_todo()
 
 sizesky=100
+resolution=40
+difusion=0.2
 
-bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+bpy.ops.mesh.primitive_uv_sphere_add(segments=resolution, size=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+#bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
 bpy.context.object.scale = [sizesky, sizesky, sizesky]
 bpy.context.object.name = "skydome_base"
 
@@ -43,6 +46,7 @@ for c in vectores:
     if z >= 0:    
         #bpy.ops.object.lamp_add(type='SPOT', radius=1, view_align=False, location=(x, y, z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.ops.object.lamp_add(type='AREA', view_align=False, location=(x, y, z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+        bpy.context.object.data.size = difusion
         bpy.ops.object.constraint_add(type='TRACK_TO')
         bpy.context.object.constraints["Track To"].target = bpy.data.objects["target_lights"]
         bpy.context.object.constraints["Track To"].track_axis = 'TRACK_NEGATIVE_Z'
