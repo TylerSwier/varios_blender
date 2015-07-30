@@ -1,5 +1,7 @@
 import bpy  
 
+scn = bpy.context.scene
+
 def deseleccionar_todo():
     bpy.ops.object.select_all(action='DESELECT')
 
