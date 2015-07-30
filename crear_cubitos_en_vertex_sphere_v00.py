@@ -45,3 +45,5 @@ for c in vectores:
 deseleccionar_todo()
 seleccionar_por_nombre("skydome_base")
 bpy.ops.object.delete(use_global=False)
+bpy.context.space_data.show_relationship_lines = False
+
