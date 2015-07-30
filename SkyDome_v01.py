@@ -2,6 +2,12 @@ import bpy
 
 scn = bpy.context.scene
 
+def ocultar_relationships():
+    #bpy.context.space_data.show_relationship_lines = False
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            area.spaces[0].show_relationship_lines = False
+
 def deseleccionar_todo():
     bpy.ops.object.select_all(action='DESELECT')
 
@@ -11,8 +17,10 @@ def seleccionar_por_nombre(nombre):
     
 deseleccionar_todo()
 
+sizesky=100
+
 bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-bpy.context.object.scale = [3000, 3000, 3000]
+bpy.context.object.scale = [sizesky, sizesky, sizesky]
 bpy.context.object.name = "skydome_base"
 
 ob = bpy.context.selected_objects[0]
@@ -45,5 +53,5 @@ for c in vectores:
 deseleccionar_todo()
 seleccionar_por_nombre("skydome_base")
 bpy.ops.object.delete(use_global=False)
-bpy.context.space_data.show_relationship_lines = False
-
+ocultar_relationships()
+#bpy.context.space_data.show_relationship_lines = False
