@@ -45,7 +45,8 @@ for c in vectores:
     x = c[0]
     y = c[1]
     z = c[2]
-    if z >= 0:    
+    #if z >= 0:
+    if z >= -1: # con icosphere para que funcione bien tiene que ser -1    
         #bpy.ops.object.lamp_add(type='SPOT', radius=1, view_align=False, location=(x, y, z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.ops.object.lamp_add(type='AREA', view_align=False, location=(x, y, z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
         bpy.context.object.data.size = difusion
