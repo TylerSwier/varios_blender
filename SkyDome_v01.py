@@ -21,7 +21,7 @@ sizesky=100
 resolution=40
 difusion=0.2
 
-bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=resolucion, size=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=resolution, size=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
 #bpy.ops.mesh.primitive_uv_sphere_add(segments=resolution, size=1, view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
 #bpy.ops.mesh.primitive_uv_sphere_add(view_align=False, enter_editmode=False, location=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
 bpy.context.object.scale = [sizesky, sizesky, sizesky]
