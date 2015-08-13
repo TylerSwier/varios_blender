@@ -45,11 +45,11 @@ def deselectByName(name):
     bpy.data.objects[name].select = False
 
 def enterEditMode():
-    if bpy.context.mode == "OBJECT":
+    if bpy.context.mode != 'EDIT':
         bpy.ops.object.mode_set(mode='EDIT')
 
 def exitEditMode():
-    if bpy.context.mode == "EDIT" or bpy.context.mode == "EDIT_CURVE" or bpy.context.mode == "EDIT_MESH":
+    if bpy.context.mode != 'OBJECT':
         bpy.ops.object.mode_set(mode='OBJECT')
 
 def deselectAllInEditMode(ob):
