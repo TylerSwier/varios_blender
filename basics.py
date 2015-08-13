@@ -1,6 +1,7 @@
 import bpy
+import bmesh
 
-# version v00
+# version v00 tested in blender 2.75a
 # for import this library in blender put this file in:
 # blender-version/version/scripts/modules/zblibs
 # from zblibs.basics import *
@@ -18,6 +19,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+
+bpy.app.debug = True
 
 def obIsFirstObjectSelected():
     ob = bpy.context.selected_objects[0]
@@ -47,6 +50,17 @@ def selectAllInEditMode(ob):
         enterEditMode()
     deselectAllInEditMode(ob)
     bpy.ops.mesh.select_all(action='SELECT')
+
+def whathVertexIsSelected(ob):
+    current_mode = ob.mode
+    if ob.mode != 'EDIT':
+        enterEditMode()
+    mesh = bmesh.from_edit_mesh(ob.data)
+    for v in mesh.verts:
+        if v.select:
+            print("The vertex " + str(v.index) + " are selected.")
+    # restore mode:
+    bpy.ops.object.mode_set(mode=current_mode)
 
 def hide(ob):
     ob.hide = True
