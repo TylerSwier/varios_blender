@@ -74,6 +74,19 @@ def whathVertexIsSelected(ob):
     # restore mode:
     bpy.ops.object.mode_set(mode=current_mode)
 
+def deleteSelectedVertex(ob,v):
+    me = ob.data
+    #bm = bmesh.new() # <- out editmesh
+    #bm = bm.from_mesh(me) # <- out editmesh or:
+    enterEditMode()
+    bm = bmesh.from_edit_mesh(me) # <- inside editmesh
+    bm.verts.ensure_lookup_table() # <- inside editmesh
+    bm.verts.remove(bm.verts[v]) # <- inside editmesh
+    #bm.to_mesh(me) # <- out editmode
+    bmesh.update_edit_mesh(me) # <- inside editmesh
+    #enterEditMode()
+    exitEditMode()
+    
 def hide(ob):
     ob.hide = True
 
