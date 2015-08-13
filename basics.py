@@ -32,6 +32,15 @@ def deselectAll():
 def selectAll():
     bpy.ops.object.select_all(action='SELECT')
 
+def selectByName(name):
+    scn = bpy.context.scene
+    bpy.data.objects[name].select = True
+    scn.objects.active = bpy.data.objects[name]
+
+def deselectByName(name):
+    scn = bpy.context.scene
+    bpy.data.objects[name].select = False
+
 def enterEditMode():
     if bpy.context.mode == "OBJECT":
         bpy.ops.object.mode_set(mode='EDIT')
