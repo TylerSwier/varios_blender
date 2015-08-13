@@ -74,7 +74,7 @@ def whathVertexIsSelected(ob):
     # restore mode:
     bpy.ops.object.mode_set(mode=current_mode)
 
-def deleteSelectedVertex(ob,v):
+def deleteVertex(ob,v):
     me = ob.data
     #bm = bmesh.new() # <- out editmesh
     #bm = bm.from_mesh(me) # <- out editmesh or:
