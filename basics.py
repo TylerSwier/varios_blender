@@ -78,18 +78,21 @@ def unhide(ob):
     ob.hide = False
 
 def activeObjectLayerOnlyThisNumber(number):
-    current_layer = bpy.context.scene.active_layer
-    for scn in bpy.data.scenes:
-        layers = scn.layers
-        # first disable all layer
-        for i in range(len(layers)):
-            layers[i] = False
-        # after active layer
-        for i in range(len(layers)):
-            if i == number:       
-                layers[i] = True
-        # disable first current layer:
-        layers[current_layer] = False
+    if number > 19 or number < 0:
+        print("Index layer incorrect.")
+    else:
+        current_layer = bpy.context.scene.active_layer
+        for scn in bpy.data.scenes:
+            layers = scn.layers
+            # first disable all layer
+            for i in range(len(layers)):
+                layers[i] = False
+            # after active layer
+            for i in range(len(layers)):
+                if i == number:       
+                    layers[i] = True
+            # disable first current layer:
+            layers[current_layer] = False
 
 # remove all objects in the current scene:
 def removeAllObjectsInScene():
