@@ -23,8 +23,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 bpy.app.debug = True
 
 def obIsFirstObjectSelected():
-    ob = bpy.context.selected_objects[0]
-    return ob
+    if len(bpy.context.selected_objects) > 0:
+        ob = bpy.context.selected_objects[0]
+        return ob
+    else:
+        print("Error, no any selected object.")
 
 def deselectAll():
     bpy.ops.object.select_all(action='DESELECT')
