@@ -79,8 +79,6 @@ def selectOnlyThisVertex(ob,v):
     me = ob.data
     enterEditMode()
     bm = bmesh.from_edit_mesh(me)
-    print(me)
-    print(bm)
     bm.verts.ensure_lookup_table()
     for vert in bm.verts:
         if vert.index == v:
