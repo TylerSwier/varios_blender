@@ -80,11 +80,14 @@ def selectOnlyThisVertex(ob,v):
     enterEditMode()
     bm = bmesh.from_edit_mesh(me)
     bm.verts.ensure_lookup_table()
-    for vert in bm.verts:
-        if vert.index == v:
-            vert.select = True
-        else:
-            vert.select = False
+    if v <= len(bm.verts)-1:
+        for vert in bm.verts:
+            if vert.index == v:
+                vert.select = True
+            else:
+                vert.select = False
+    else:
+        print("Index incorrect")
     bmesh.update_edit_mesh(me)
     # restore mode:
     bpy.ops.object.mode_set(mode=current_mode)
