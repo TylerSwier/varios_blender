@@ -67,25 +67,54 @@ def whathVertexIsSelected(ob):
     current_mode = ob.mode
     if ob.mode != 'EDIT':
         enterEditMode()
-    mesh = bmesh.from_edit_mesh(ob.data)
-    for v in mesh.verts:
+    bm = bmesh.from_edit_mesh(ob.data)
+    for v in bm.verts:
         if v.select:
             print("The vertex " + str(v.index) + " are selected.")
     # restore mode:
     bpy.ops.object.mode_set(mode=current_mode)
 
-def deleteVertex(ob,v):
+def selectOnlyThisVertex(ob,v):
+    current_mode = ob.mode
     me = ob.data
-    #bm = bmesh.new() # <- out editmesh
-    #bm = bm.from_mesh(me) # <- out editmesh or:
+    enterEditMode()
+    bm = bmesh.from_edit_mesh(me)
+    print(me)
+    print(bm)
+    bm.verts.ensure_lookup_table()
+    for vert in bm.verts:
+        if vert.index == v:
+            vert.select = True
+        else:
+            vert.select = False
+    bmesh.update_edit_mesh(me)
+    # restore mode:
+    bpy.ops.object.mode_set(mode=current_mode)
+
+def deleteVertex(ob,v):
+    current_mode = ob.mode
+    me = ob.data
     enterEditMode()
     bm = bmesh.from_edit_mesh(me) # <- inside editmesh
     bm.verts.ensure_lookup_table() # <- inside editmesh
     bm.verts.remove(bm.verts[v]) # <- inside editmesh
-    #bm.to_mesh(me) # <- out editmode
     bmesh.update_edit_mesh(me) # <- inside editmesh
-    #enterEditMode()
-    exitEditMode()
+    # restore mode:
+    bpy.ops.object.mode_set(mode=current_mode)
+
+def deleteVertexsSelected(ob):
+    current_mode = ob.mode
+    me = ob.data
+    enterEditMode()
+    bm = bmesh.from_edit_mesh(me)
+    bm.verts.ensure_lookup_table()
+    for vert in bm.verts:
+        if vert.select:
+            deleteVertex(ob,vert.index)
+            bmesh.update_edit_mesh(me)
+    # restore mode:
+    bpy.ops.object.mode_set(mode=current_mode)
+
     
 def hide(ob):
     ob.hide = True
