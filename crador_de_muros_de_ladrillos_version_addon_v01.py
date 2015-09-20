@@ -163,13 +163,6 @@ class DialogOperator(bpy.types.Operator):
                         y = v * (ladrillo_alto + cemento) + offset_nacimientov
                         mover(ob.name, x ,y)
                         freezer()
-                        # cemento:
-                        creandoLadrillo("cemento", cemento, ondo_dedo, ladrillo_alto)
-                        ob = bpy.context.object
-                        x = h * (ladrillo + cemento) + offset_nacimientoh + medio + (cemento/2)
-                        y = v * (ladrillo_alto + cemento) + offset_nacimientov
-                        mover(ob.name, x ,y)
-                        freezer()
                 
         desseleccionarTodo()               
         return {'FINISHED'}   
