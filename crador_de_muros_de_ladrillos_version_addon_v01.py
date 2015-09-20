@@ -19,8 +19,8 @@ bl_info = {
     "name": "Wall Creator",
     "description": "Wall Creator",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 2),
-    "blender": (2, 75, 0),
+    "version": (0, 1),
+    "blender": (2, 71, 0),
     "location": "Left Toolbar > WallCreator",
     "warning": "",
     "wiki_url": "",
@@ -103,13 +103,11 @@ class DialogOperator(bpy.types.Operator):
             ladrillo_ancho = self.ladrillo_ancho/2/100
             ladrillo_largo = self.ladrillo_largo/2/100
             cemento = self.cemento/2/100
-            ondo_dedo = (self.ladrillo_ancho/2/110) # esto da profundidad 5
         else:
             ladrillo_alto = self.ladrillo_alto/2
             ladrillo_ancho = self.ladrillo_ancho/2
             ladrillo_largo = self.ladrillo_largo/2
             cemento = self.cemento/2
-            ondo_dedo = (self.ladrillo_ancho/2)-0.5 # esto da 50
         
         fillb = self.fill_boundaryes
         
@@ -144,22 +142,7 @@ class DialogOperator(bpy.types.Operator):
                         y = v * (ladrillo_alto + cemento) + offset_nacimientov
                         mover(ob.name, x ,y)
                         freezer()
-                        # cemento:
-                        creandoLadrillo("cemento", cemento, ondo_dedo, ladrillo_alto)
-                        ob = bpy.context.object
-                        x = h * (ladrillo + cemento) - (cemento/2)  + offset_nacimientoh - (ladrillo + cemento)# <-- el normal con offset contando con fill
-                        y = v * (ladrillo_alto + cemento) + offset_nacimientov
-                        mover(ob.name, x ,y)
-                        freezer()
-                        if h%2 == 0: # cementos horizontales largos ###########################################
-                            # cemento horizontal largo:
-                            creandoLadrillo("cemento", (ladrillo_ancho*muro_ancho)+(cemento*muro_ancho)+(medio*muro_ancho)- ((cemento/2)+medio), ondo_dedo, cemento)
-                            ob = bpy.context.object
-                            x = h * 2 + (muro_ancho*ladrillo_ancho) - (medio-(cemento*2))
-                            y = v * (ladrillo_alto + cemento) + offset_nacimientov + (ladrillo_alto/2) + (cemento/2)
-                            mover(ob.name, x ,y)
-                            freezer()
-                            
+
                 else: # sin offset -->
                     if fillb and h == (muro_ancho-1): # bloque complejo --------------------------
                         desseleccionarTodo()
