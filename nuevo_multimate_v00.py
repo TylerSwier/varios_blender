@@ -2,12 +2,15 @@ import bpy
 # capturamos el nombre de la escena actual
 scn_original = bpy.context.scene.name
 
-def createNewScene(name):
+def createNewScene(name, retorno=True):
+    scn_original = bpy.context.scene.name
     bpy.ops.scene.new(type='NEW')
     bpy.context.scene.name = name
+    if retorno:
+        bpy.context.screen.scene = bpy.data.scenes[scn_original]        
 
 # creamos una escena nueva
-createNewScene("RGB_Pass")
+createNewScene("RGB_Pass", False)
 # capturamos el nombre de la nueva escena
 new_scn = bpy.context.scene.name
 
