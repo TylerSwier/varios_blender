@@ -1,6 +1,6 @@
 import bpy
 # capturamos el nombre de la escena actual
-scn_actual = bpy.context.scene.name
+scn_original = bpy.context.scene.name
 
 def createNewScene(name):
     bpy.ops.scene.new(type='NEW')
@@ -15,7 +15,7 @@ new_scn = bpy.context.scene.name
 bpy.context.scene.render.engine = 'CYCLES'
 
 # volvemos a la escena oritinal
-bpy.context.screen.scene = bpy.data.scenes[scn_actual]
+bpy.context.screen.scene = bpy.data.scenes[scn_original]
 
 # seleccionamos todos los mesh y camaras
 bpy.ops.object.select_all(action='DESELECT')
