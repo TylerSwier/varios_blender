@@ -16,7 +16,7 @@ def createNewScene(name, retornamos=True, motor='CYCLES'):
         bpy.context.scene.render.engine = motor
 
 # creamos una escena nueva
-new_scn = createNewScene("RGB_Pass")
+name_scn = createNewScene("RGB_Pass")
 print(new_scn)
 
 # seleccionamos todos los mesh y camaras
@@ -26,4 +26,4 @@ for ob in bpy.data.objects:
         ob.select = True
         
 # enviamos los objetos seleccionados a la ultima nueva escena:
-bpy.ops.object.make_links_scene(scene=new_scn)
+bpy.ops.object.make_links_scene(scene=name_scn)
