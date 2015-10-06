@@ -17,7 +17,7 @@ def createNewScene(name, retornamos=True, motor='CYCLES'):
 
 # creamos una escena nueva
 name_scn = createNewScene("RGB_Pass")
-print(new_scn)
+#print(name_scn)
 
 # seleccionamos todos los mesh y camaras
 bpy.ops.object.select_all(action='DESELECT')
