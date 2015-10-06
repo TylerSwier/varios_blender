@@ -1,24 +1,23 @@
 import bpy
-# capturamos el nombre de la escena actual
-scn_original = bpy.context.scene.name
 
-def createNewScene(name, retorno=True):
+def createNewScene(name, retornamos=True, motor='CYCLES'):
     scn_original = bpy.context.scene.name
     bpy.ops.scene.new(type='NEW')
     bpy.context.scene.name = name
-    if retorno:
-        bpy.context.screen.scene = bpy.data.scenes[scn_original]        
+    if retornamos:
+        new_scn = bpy.context.scene.name
+        bpy.context.screen.scene = bpy.data.scenes[scn_original]
+        return new_scn
+    else:
+        # si no retornamos devolvemos el nombre de la nueva escena
+        return bpy.context.scene.name
+    # si no se especifica motor se usara cycles en la nueva escena
+    if motor:
+        bpy.context.scene.render.engine = motor
 
 # creamos una escena nueva
-createNewScene("RGB_Pass", False)
-# capturamos el nombre de la nueva escena
-new_scn = bpy.context.scene.name
-
-# seteamos el motor de render a cycles
-bpy.context.scene.render.engine = 'CYCLES'
-
-# volvemos a la escena oritinal
-bpy.context.screen.scene = bpy.data.scenes[scn_original]
+new_scn = createNewScene("RGB_Pass")
+print(new_scn)
 
 # seleccionamos todos los mesh y camaras
 bpy.ops.object.select_all(action='DESELECT')
