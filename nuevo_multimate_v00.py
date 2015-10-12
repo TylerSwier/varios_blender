@@ -1,4 +1,5 @@
 import bpy
+import re
 
 def selectAll():
     bpy.ops.object.select_all(action='SELECT')
@@ -84,8 +85,8 @@ def buscador_posicion(tupla,busqueda):
             return i
     return '-1'
 
-if 'Backup_Original_Scene' not in bpy.data.scenes:
-    createNewScene('Backup_Original_Scene','FULL_COPY', True)
+#if 'Backup_Original_Scene' not in bpy.data.scenes:
+#    createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
 monomaterials = []
 multimaterials =  []
@@ -123,10 +124,17 @@ for group3 in detresentres:
         # creamos una escena nueva
         scn_name = 'RGB_Pass.00' + str(n)
         name_scn = createNewScene(scn_name,'NEW',True)
+        print(group3)
         for i in range(len(group3)):
-            selectOnlyOneObjectByName(group3[i])
+            contenido = group3[i]
+            resultado = re.search('(.*)(_copy)?(.*)?$', contenido)
+            #print(resultado.group(1))
+            selectOnlyOneObjectByName(resultado.group(1))
             ob = bpy.context.selected_objects[0]
-            copyCurrentObjectToScene(ob, scn_name)        
+            copyCurrentObjectToScene(ob, scn_name)
             crear_shader_shadeless(canales[i],canales[i])
-            aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
+            aplicar_shader(bpy.data.objects[contenido+'_copy'],canales[i])
     n += 1
+    
+# si se utiliza varias veces hay que purgar en el outliner...
+#bpy.ops.outliner.orphans_purge()
