@@ -84,8 +84,8 @@ def buscador_posicion(tupla,busqueda):
             return i
     return '-1'
 
-#if 'Backup_Original_Scene' not in bpy.data.scenes:
-#    createNewScene('Backup_Original_Scene','FULL_COPY', True)
+if 'Backup_Original_Scene' not in bpy.data.scenes:
+    createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
 monomaterials = []
 multimaterials =  []
