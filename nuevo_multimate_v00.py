@@ -30,6 +30,24 @@ def createNewScene(name, tipo='NEW', retornamos=False, motor='CYCLES'):
 def aplicar_shader_copy(ob,nombre):
     ob.active_material = bpy.data.materials[nombre].copy()
 
+def copyCurrentObjectToScene(ob, toscene):
+    # duplico
+    bpy.ops.object.duplicate(linked=False, mode='TRANSLATION')
+    # renombro
+    bpy.context.selected_objects[0].name = bpy.context.selected_objects[0].name + "_copy" 
+    # copio el duplicado a su escena
+    bpy.ops.object.make_links_scene(scene=toscene)
+    # selecciono solo el seleccionado (el ultimo duplicado)
+    #selectOnlyOneObjectByName(bpy.context.selected_objects[0].name)
+    # borro el seleccionado
+    bpy.ops.object.delete(use_global=False)
+    # vuelvo a seleccionar al que corresponde por el bucle
+    selectOnlyOneObjectByName(ob.name)
+    # obtengo el nombre de su material
+    mat = ob.material_slots[0].name
+    # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
+    aplicar_shader_copy(ob, mat)    
+
 if 'Backup_Original_Scene' not in bpy.data.scenes:
     createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
@@ -39,11 +57,5 @@ for ob in bpy.context.scene.objects:
         deselectAll()
         selectOnlyOneObjectByName(ob.name)
         name_org = ob.name
-        bpy.ops.object.duplicate(linked=False, mode='TRANSLATION')
-        bpy.context.selected_objects[0].name = bpy.context.selected_objects[0].name + "_copy" 
-        bpy.ops.object.make_links_scene(scene='test')
-        selectOnlyOneObjectByName(bpy.context.selected_objects[0].name)
-        bpy.ops.object.delete(use_global=False)
-        selectOnlyOneObjectByName(ob.name)
-        mat = bpy.context.selected_objects[0].material_slots[0].name
-        aplicar_shader_copy(ob, mat)
+        # copio el objeto actual a la escena indicada:
+        copyCurrentObjectToScene(ob, 'test')
