@@ -33,8 +33,10 @@ def aplicar_shader_copy(ob,nombre):
 def copyCurrentObjectToScene(ob, toscene):
     # duplico
     bpy.ops.object.duplicate(linked=False, mode='TRANSLATION')
+    # guardo el nombre del nuevo duplicado
+    duplicado = bpy.context.selected_objects[0]
     # renombro
-    bpy.context.selected_objects[0].name = bpy.context.selected_objects[0].name + "_copy" 
+    bpy.data.objects[duplicado.name].name = ob.name + "_copy" 
     # copio el duplicado a su escena
     bpy.ops.object.make_links_scene(scene=toscene)
     # selecciono solo el seleccionado (el ultimo duplicado)
@@ -46,10 +48,10 @@ def copyCurrentObjectToScene(ob, toscene):
     # obtengo el nombre de su material
     mat = ob.material_slots[0].name
     # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
-    aplicar_shader_copy(ob, mat)    
+    aplicar_shader_copy(duplicado, mat) 
 
-if 'Backup_Original_Scene' not in bpy.data.scenes:
-    createNewScene('Backup_Original_Scene','FULL_COPY', True)
+#if 'Backup_Original_Scene' not in bpy.data.scenes:
+#    createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
 createNewScene('test','NEW',True)
 for ob in bpy.context.scene.objects:
