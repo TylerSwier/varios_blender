@@ -30,6 +30,35 @@ def createNewScene(name, tipo='NEW', retornamos=False, motor='CYCLES'):
 def aplicar_shader_copy(ob,nombre):
     ob.active_material = bpy.data.materials[nombre].copy()
 
+def cuantos_materiales_tiene(ob):
+    return len(ob.material_slots)
+
+def aplicar_shader(ob,nombre):
+    ob.active_material = bpy.data.materials[nombre]
+    
+def crear_shader_shadeless(nombre,color):
+    # solo lo creamos si no existe previamente:
+    if buscador_posicion(bpy.data.materials, nombre) == '-1':
+        bpy.data.materials.new(nombre)
+        bpy.data.materials[nombre].use_nodes = True
+        bpy.data.materials[nombre].node_tree.nodes.new(type='ShaderNodeEmission')
+        outp = bpy.data.materials[nombre].node_tree.nodes['Emission'].outputs[0]
+        # esta complicacion la creo por que en osx tuve problemas:
+        materialoutput = buscador_posicion(bpy.data.materials[nombre].node_tree.nodes,'Material Output')
+        moinput = buscador_posicion(bpy.data.materials[nombre].node_tree.nodes[materialoutput].inputs,'Surface')
+        inp = bpy.data.materials[nombre].node_tree.nodes[materialoutput].inputs[moinput]
+        if color == 'Rojo':
+            color = 1,0,0,1
+        if color == 'Verde':
+            color = 0,1,0,1
+        if color == 'Azul':
+            color = 0,0,1,1
+        ep = buscador_posicion(bpy.data.materials[nombre].node_tree.nodes,'Emission')
+        bpy.data.materials[nombre].node_tree.nodes[ep].inputs[0].default_value = color
+        # si sale muy mal el AA poner 1 en lugar de 1.25:
+        bpy.data.materials[nombre].node_tree.nodes[ep].inputs[1].default_value = 1
+        bpy.data.materials[nombre].node_tree.links.new(inp,outp)
+
 def copyCurrentObjectToScene(ob, toscene):
     # duplico
     bpy.ops.object.duplicate(linked=False, mode='TRANSLATION')
@@ -48,14 +77,56 @@ def copyCurrentObjectToScene(ob, toscene):
     # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
     aplicar_shader_copy(duplicado, mat) 
 
+# para buscar los index:
+def buscador_posicion(tupla,busqueda):
+    for i in range(len(tupla)):
+        if tupla[i].name == busqueda:
+            return i
+    return '-1'
+
 #if 'Backup_Original_Scene' not in bpy.data.scenes:
 #    createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
-createNewScene('test','NEW',True)
-for ob in bpy.context.scene.objects:
+monomaterials = []
+multimaterials =  []
+canales = ['Rojo','Verde','Azul']
+
+bpy.ops.object.select_all(action='DESELECT')
+for ob in bpy.data.objects:
     if ob.type == 'MESH': 
-        deselectAll()
-        selectOnlyOneObjectByName(ob.name)
-        name_org = ob.name
-        # copio el objeto actual a la escena indicada:
-        copyCurrentObjectToScene(ob, 'test')
+        cuantos = cuantos_materiales_tiene(ob)
+        if cuantos <= 1: # si son mono material lo seleccionamos
+            ob.select = True
+            monomaterials.append( ob.name )
+        else:
+            multimaterials.append( ob.name )
+
+
+# de 3 en 3:
+todo = monomaterials
+detresentres = [] # <-- el array contenedor tendra los grupos de 3 en 3 dentro
+i = 0
+while i <= len(todo):
+    grupo = [] # creando los subgrupos de 3 en 3
+    try: # <-- puede dar error si no hay suficientes para completar otro grupo de tres
+        for j in range(3): # realizo 3 veces una accion
+            grupo.append(todo[i]) # se va rellenando con el iterador externo de 3 en 3 tandas
+            i = i +1 # al terminar las 3 tandas se sigue iterando otras 3 mas y asi
+    except: # <-- si no hay suficientes no importa continuamos y salimos del while
+        i = len(todo)+1
+    detresentres.append(grupo) # agregando al grupo principal
+
+n = 0
+print(detresentres)
+for group3 in detresentres:
+    if len(group3) != 0: 
+        # creamos una escena nueva
+        scn_name = 'RGB_Pass.00' + str(n)
+        name_scn = createNewScene(scn_name,'NEW',True)
+        for i in range(len(group3)):
+            selectOnlyOneObjectByName(group3[i])
+            ob = bpy.context.selected_objects[0]
+            copyCurrentObjectToScene(ob, scn_name)        
+            crear_shader_shadeless(canales[i],canales[i])
+            aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
+    n += 1
