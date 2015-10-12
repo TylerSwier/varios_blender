@@ -126,15 +126,11 @@ for group3 in detresentres:
         name_scn = createNewScene(scn_name,'NEW',True)
         print(group3)
         for i in range(len(group3)):
-            contenido = group3[i]
-            resultado = re.search('(.*)(_copy)?(.*)?$', contenido)
-            #print(resultado.group(1))
-            selectOnlyOneObjectByName(resultado.group(1))
+            selectOnlyOneObjectByName(group3[i])
             ob = bpy.context.selected_objects[0]
             copyCurrentObjectToScene(ob, scn_name)
             crear_shader_shadeless(canales[i],canales[i])
-            aplicar_shader(bpy.data.objects[contenido+'_copy'],canales[i])
+            aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
     n += 1
-    
-# si se utiliza varias veces hay que purgar en el outliner...
+
 #bpy.ops.outliner.orphans_purge()
