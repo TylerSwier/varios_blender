@@ -39,9 +39,7 @@ def copyCurrentObjectToScene(ob, toscene):
     bpy.data.objects[duplicado.name].name = ob.name + "_copy" 
     # copio el duplicado a su escena
     bpy.ops.object.make_links_scene(scene=toscene)
-    # selecciono solo el seleccionado (el ultimo duplicado)
-    #selectOnlyOneObjectByName(bpy.context.selected_objects[0].name)
-    # borro el seleccionado
+    # una vez copiado a la otra escena borro el duplicado de la escena actual
     bpy.ops.object.delete(use_global=False)
     # vuelvo a seleccionar al que corresponde por el bucle
     selectOnlyOneObjectByName(ob.name)
