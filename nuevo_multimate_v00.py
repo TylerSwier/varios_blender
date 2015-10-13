@@ -84,9 +84,6 @@ def buscador_posicion(tupla,busqueda):
             return i
     return '-1'
 
-#if 'Backup_Original_Scene' not in bpy.data.scenes:
-#    createNewScene('Backup_Original_Scene','FULL_COPY', True)
-
 # Obteniendo settings de la escena original
 current_scene = bpy.context.scene.name
 cycles_samples = bpy.data.scenes[current_scene].cycles.samples
@@ -98,6 +95,8 @@ filter_width = bpy.data.scenes[current_scene].cycles.filter_width
 exr_codec = bpy.data.scenes[current_scene].render.image_settings.exr_codec
 color_mode = bpy.data.scenes[current_scene].render.image_settings.color_mode
 
+#if 'Backup_Original_Scene' not in bpy.data.scenes:
+#    createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
 monomaterials = []
 multimaterials =  []
