@@ -2,7 +2,7 @@ import bpy
 
 def selectAll():
     bpy.ops.object.select_all(action='SELECT')
-    
+
 def deselectAll():
     bpy.ops.object.select_all(action='DESELECT')
 
@@ -27,7 +27,7 @@ def createNewScene(name, tipo='NEW', retornamos=False, motor='CYCLES'):
     return [scn_original,new_scn]
 
 # para hacer los materiales unicos y no vinculados (Make a single user copy):
-def make_material_single_user_copy(ob,nombre):
+def makeMaterialSingleUserCopy(ob,nombre):
     ob.active_material = bpy.data.materials[nombre].copy()
 
 def cuantos_materiales_tiene(ob):
@@ -35,7 +35,7 @@ def cuantos_materiales_tiene(ob):
 
 def aplicar_shader(ob,nombre):
     ob.active_material = bpy.data.materials[nombre]
-    
+
 def crear_shader_shadeless(nombre,color):
     # solo lo creamos si no existe previamente:
     if buscador_posicion(bpy.data.materials, nombre) == '-1':
@@ -65,7 +65,7 @@ def copyCurrentObjectToScene(ob, toscene):
     # guardo el nombre del nuevo duplicado
     duplicado = bpy.context.selected_objects[0]
     # renombro
-    bpy.data.objects[duplicado.name].name = ob.name + "_copy" 
+    bpy.data.objects[duplicado.name].name = ob.name + "_copy"
     # copio el duplicado a su escena
     bpy.ops.object.make_links_scene(scene=toscene)
     # una vez copiado a la otra escena borro el duplicado de la escena actual
@@ -75,7 +75,7 @@ def copyCurrentObjectToScene(ob, toscene):
     # obtengo el nombre de su material
     mat = ob.material_slots[0].name
     # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
-    make_material_single_user_copy(duplicado, mat) 
+    makeMaterialSingleUserCopy(duplicado, mat)
 
 # para buscar los index:
 def buscador_posicion(tupla,busqueda):
@@ -93,7 +93,7 @@ canales = ['Rojo','Verde','Azul']
 
 bpy.ops.object.select_all(action='DESELECT')
 for ob in bpy.data.objects:
-    if ob.type == 'MESH': 
+    if ob.type == 'MESH':
         cuantos = cuantos_materiales_tiene(ob)
         if cuantos <= 1: # si son mono material lo seleccionamos
             ob.select = True
@@ -119,7 +119,7 @@ while i <= len(todo):
 n = 0
 print(detresentres)
 for group3 in detresentres:
-    if len(group3) != 0: 
+    if len(group3) != 0:
         # creamos una escena nueva
         scn_name = 'RGB_Pass.00' + str(n)
         name_scn = createNewScene(scn_name,'NEW',True)
