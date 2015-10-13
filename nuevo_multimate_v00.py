@@ -27,7 +27,7 @@ def createNewScene(name, tipo='NEW', retornamos=False, motor='CYCLES'):
     return [scn_original,new_scn]
 
 # para hacer los materiales unicos y no vinculados (Make a single user copy):
-def aplicar_shader_copy(ob,nombre):
+def make_material_single_user_copy(ob,nombre):
     ob.active_material = bpy.data.materials[nombre].copy()
 
 def cuantos_materiales_tiene(ob):
@@ -75,7 +75,7 @@ def copyCurrentObjectToScene(ob, toscene):
     # obtengo el nombre de su material
     mat = ob.material_slots[0].name
     # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
-    aplicar_shader_copy(duplicado, mat) 
+    make_material_single_user_copy(duplicado, mat) 
 
 # para buscar los index:
 def buscador_posicion(tupla,busqueda):
