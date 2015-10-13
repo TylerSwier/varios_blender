@@ -96,7 +96,7 @@ img_compression = bpy.data.scenes[current_scene].render.image_settings.compressi
 filter_type = bpy.data.scenes[current_scene].cycles.filter_type
 filter_width = bpy.data.scenes[current_scene].cycles.filter_width
 exr_codec = bpy.data.scenes[current_scene].render.image_settings.exr_codec
-color_mode = bpy.data.scenes['Scene'].render.image_settings.color_mode
+color_mode = bpy.data.scenes[current_scene].render.image_settings.color_mode
 
 
 monomaterials = []
