@@ -64,22 +64,24 @@ def crear_shader_shadeless(nombre,color):
         bpy.data.materials[nombre].node_tree.links.new(inp,outp)
 
 def copyCurrentObjectToScene(ob, toscene):
-    # duplico
-    bpy.ops.object.duplicate(linked=False, mode='TRANSLATION')
-    # guardo el nombre del nuevo duplicado
-    duplicado = bpy.context.selected_objects[0]
-    # renombro
-    bpy.data.objects[duplicado.name].name = ob.name + "_copy"
-    # copio el duplicado a su escena
-    bpy.ops.object.make_links_scene(scene=toscene)
-    # una vez copiado a la otra escena borro el duplicado de la escena actual
-    bpy.ops.object.delete(use_global=False)
-    # vuelvo a seleccionar al que corresponde por el bucle
-    selectOnlyOneObjectByName(ob.name)
-    # obtengo el nombre de su material
-    mat = ob.material_slots[0].name
-    # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
-    makeMaterialSingleUserCopy(duplicado, mat)
+    # Para evitar list index out of range:
+    if len(bpy.context.selected_objects) != 0 and len(ob.material_slots) != 0:
+        # duplico
+        bpy.ops.object.duplicate(linked=False, mode='TRANSLATION')
+        # guardo el nombre del nuevo duplicado
+        duplicado = bpy.context.selected_objects[0]
+        # renombro
+        bpy.data.objects[duplicado.name].name = ob.name + "_copy"
+        # copio el duplicado a su escena
+        bpy.ops.object.make_links_scene(scene=toscene)
+        # una vez copiado a la otra escena borro el duplicado de la escena actual
+        bpy.ops.object.delete(use_global=False)
+        # vuelvo a seleccionar al que corresponde por el bucle
+        selectOnlyOneObjectByName(ob.name)
+        # obtengo el nombre de su material
+        mat = ob.material_slots[0].name
+        # hago un material single user copy para que sea unico y no le afecte los cambios de las copias
+        makeMaterialSingleUserCopy(duplicado, mat)
 
 # para buscar los index:
 def buscador_posicion(tupla,busqueda):
@@ -152,7 +154,7 @@ for group3 in detresentres:
         bpy.data.scenes[current_scene].render.image_settings.color_mode = color_mode
         #print(group3)
         for i in range(len(group3)):
-            # intento de evitar list index out of range:
+            # Para evitar list index out of range:
             # como len empieza desde 1 y el for desde 0 le tengo que restar 1:
             if i <= (len(group3)-1) and i <= (len(canales)-1):
                 selectOnlyOneObjectByName(group3[i])
