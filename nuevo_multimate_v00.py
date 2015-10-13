@@ -129,7 +129,7 @@ while i <= len(todo):
     detresentres.append(grupo) # agregando al grupo principal
 
 n = 0
-print(detresentres)
+#print(detresentres)
 for group3 in detresentres:
     if len(group3) != 0:
         # creamos una escena nueva
