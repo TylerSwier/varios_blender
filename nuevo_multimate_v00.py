@@ -165,9 +165,11 @@ for group3 in detresentres:
             if i <= (len(group3)-1) and i <= (len(canales)-1):
                 selectOnlyOneObjectByName(group3[i])
                 ob = bpy.context.selected_objects[0]
-                copyCurrentObjectToScene(ob, scn_name)
-                crear_shader_shadeless(canales[i],canales[i])
-                aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
+                # si esta oculto el ojo de render no nos interesa ese objeto:
+                if ob.hide == 'False':
+                    copyCurrentObjectToScene(ob, scn_name)
+                    crear_shader_shadeless(canales[i],canales[i])
+                    aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
     n += 1
 
 #bpy.ops.outliner.orphans_purge()
