@@ -87,6 +87,15 @@ def buscador_posicion(tupla,busqueda):
 #if 'Backup_Original_Scene' not in bpy.data.scenes:
 #    createNewScene('Backup_Original_Scene','FULL_COPY', True)
 
+# Obteniendo settings de la escena original
+current_scene = bpy.context.scene.name
+cycles_samples = bpy.data.scenes[current_scene].cycles.samples
+file_format = bpy.data.scenes[current_scene].render.image_settings.file_format
+color_depth = bpy.data.scenes[current_scene].render.image_settings.color_depth
+img_compression = bpy.data.scenes[current_scene].render.image_settings.compression
+filter_type = bpy.data.scenes[current_scene].cycles.filter_type
+filter_width = bpy.data.scenes[current_scene].cycles.filter_width
+
 monomaterials = []
 multimaterials =  []
 canales = ['Rojo','Verde','Azul']
@@ -123,6 +132,14 @@ for group3 in detresentres:
         # creamos una escena nueva
         scn_name = 'RGB_Pass.00' + str(n)
         name_scn = createNewScene(scn_name,'NEW',True)
+        # Copiando settings de la escena original a la nueva
+        current_scene = name_scn[1]
+        bpy.data.scenes[current_scene].cycles.samples = cycles_samples
+        bpy.data.scenes[current_scene].render.image_settings.file_format = file_format
+        bpy.data.scenes[current_scene].render.image_settings.color_depth = color_depth
+        bpy.data.scenes[current_scene].render.image_settings.compression = img_compression
+        bpy.data.scenes[current_scene].cycles.filter_type = filter_type
+        bpy.data.scenes[current_scene].cycles.filter_width = filter_width
         print(group3)
         for i in range(len(group3)):
             selectOnlyOneObjectByName(group3[i])
