@@ -152,6 +152,10 @@ for group3 in detresentres:
         bpy.data.scenes[current_scene].cycles.filter_width = filter_width
         bpy.data.scenes[current_scene].render.image_settings.exr_codec = exr_codec
         bpy.data.scenes[current_scene].render.image_settings.color_mode = color_mode
+        bpy.context.scene.layers[1] = True
+        # activo visible todos los layers:
+        for li in range(20):
+            bpy.context.scene.layers[li] = True
         #print(group3)
         for i in range(len(group3)):
             # Para evitar list index out of range:
