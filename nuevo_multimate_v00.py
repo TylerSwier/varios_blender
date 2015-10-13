@@ -166,17 +166,17 @@ for group3 in detresentres:
                 selectOnlyOneObjectByName(group3[i])
                 ob = bpy.context.selected_objects[0]
                 # si esta oculto el ojo de para el render no nos interesa ese objeto:
-                if not ob.hide_render:
+                if ob.hide_render == False:
                     copyCurrentObjectToScene(ob, scn_name)
                     crear_shader_shadeless(canales[i],canales[i])
                     aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
-    # si esta vacia la elimino (este apartado puede tardar bastante...):
-    if len(bpy.data.scenes[scn_name].objects) == '0':
-        # current suele ser el main scene y la scn_name son las copias
-        current_scn = bpy.context.scene.name
-        bpy.context.screen.scene = bpy.data.scenes[scn_name]
-        bpy.ops.scene.delete()
-        bpy.context.screen.scene = bpy.data.scenes[current_scn]
     n += 1
 
-#bpy.ops.outliner.orphans_purge()
+# si hay escenas vacias las elimino:
+current_scn = bpy.context.scene.name
+for scn in bpy.data.scenes:
+    if len(scn.objects) <= 0 :
+        bpy.context.screen.scene = bpy.data.scenes[scn_name]
+        bpy.ops.scene.delete()
+        
+bpy.context.screen.scene = bpy.data.scenes[current_scn]
