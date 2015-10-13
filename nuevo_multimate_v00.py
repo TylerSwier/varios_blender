@@ -100,6 +100,10 @@ filter_type = bpy.data.scenes[current_scene].cycles.filter_type
 filter_width = bpy.data.scenes[current_scene].cycles.filter_width
 exr_codec = bpy.data.scenes[current_scene].render.image_settings.exr_codec
 color_mode = bpy.data.scenes[current_scene].render.image_settings.color_mode
+# copio las mismas layers activas de la original:
+layers = []
+for li in range(20):
+    layers.append(bpy.data.scenes[current_scene].layers[li])
 
 #if 'Backup_Original_Scene' not in bpy.data.scenes:
 #    createNewScene('Backup_Original_Scene','FULL_COPY', True)
@@ -152,9 +156,8 @@ for group3 in detresentres:
         bpy.data.scenes[current_scene].cycles.filter_width = filter_width
         bpy.data.scenes[current_scene].render.image_settings.exr_codec = exr_codec
         bpy.data.scenes[current_scene].render.image_settings.color_mode = color_mode
-        # activo visible todos los layers:
-        for li in range(20):
-            bpy.data.scenes[current_scene].layers[li] = True
+        # copio las mismas layers activas de la original:
+        bpy.data.scenes[current_scene].layers = layers
         #print(group3)
         for i in range(len(group3)):
             # Para evitar list index out of range:
