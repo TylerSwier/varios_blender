@@ -130,7 +130,9 @@ while i <= len(todo):
 
 n = 0
 #print(detresentres)
+#print(len(detresentres))
 for group3 in detresentres:
+    #print(n)
     if len(group3) != 0:
         # creamos una escena nueva
         scn_name = 'RGB_Pass.00' + str(n)
@@ -145,13 +147,16 @@ for group3 in detresentres:
         bpy.data.scenes[current_scene].cycles.filter_width = filter_width
         bpy.data.scenes[current_scene].render.image_settings.exr_codec = exr_codec
         bpy.data.scenes[current_scene].render.image_settings.color_mode = color_mode
-        print(group3)
+        #print(group3)
         for i in range(len(group3)):
-            selectOnlyOneObjectByName(group3[i])
-            ob = bpy.context.selected_objects[0]
-            copyCurrentObjectToScene(ob, scn_name)
-            crear_shader_shadeless(canales[i],canales[i])
-            aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
+            # intento de evitar list index out of range:
+            # como len empieza desde 1 y el for desde 0 le tengo que restar 1:
+            if i <= (len(group3)-1) and i <= (len(canales)-1):
+                selectOnlyOneObjectByName(group3[i])
+                ob = bpy.context.selected_objects[0]
+                copyCurrentObjectToScene(ob, scn_name)
+                crear_shader_shadeless(canales[i],canales[i])
+                aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
     n += 1
 
 #bpy.ops.outliner.orphans_purge()
