@@ -1,5 +1,4 @@
 import bpy
-import re
 
 def selectAll():
     bpy.ops.object.select_all(action='SELECT')
