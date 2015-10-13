@@ -95,6 +95,9 @@ color_depth = bpy.data.scenes[current_scene].render.image_settings.color_depth
 img_compression = bpy.data.scenes[current_scene].render.image_settings.compression
 filter_type = bpy.data.scenes[current_scene].cycles.filter_type
 filter_width = bpy.data.scenes[current_scene].cycles.filter_width
+exr_codec = bpy.data.scenes[current_scene].render.image_settings.exr_codec
+color_mode = bpy.data.scenes['Scene'].render.image_settings.color_mode
+
 
 monomaterials = []
 multimaterials =  []
@@ -140,6 +143,8 @@ for group3 in detresentres:
         bpy.data.scenes[current_scene].render.image_settings.compression = img_compression
         bpy.data.scenes[current_scene].cycles.filter_type = filter_type
         bpy.data.scenes[current_scene].cycles.filter_width = filter_width
+        bpy.data.scenes[current_scene].render.image_settings.exr_codec = exr_codec
+        bpy.data.scenes['Scene'].render.image_settings.color_mode = color_mode
         print(group3)
         for i in range(len(group3)):
             selectOnlyOneObjectByName(group3[i])
