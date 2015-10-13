@@ -170,6 +170,13 @@ for group3 in detresentres:
                     copyCurrentObjectToScene(ob, scn_name)
                     crear_shader_shadeless(canales[i],canales[i])
                     aplicar_shader(bpy.data.objects[group3[i]+'_copy'],canales[i])
+    # si esta vacia la elimino:
+    if len(bpy.data.scenes[scn_name].objects) == 0:
+        # current suele ser el main scene y la scn_name son las copias
+        current_scn = bpy.context.scene.name
+        bpy.context.screen.scene = bpy.data.scenes[scn_name]
+        bpy.ops.scene.delete()
+        bpy.context.screen.scene = bpy.data.scenes[current_scn]
     n += 1
 
 #bpy.ops.outliner.orphans_purge()
