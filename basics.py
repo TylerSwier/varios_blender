@@ -24,7 +24,7 @@ bpy.app.debug = True
 
 def obIsFirstObjectSelected():
     if len(bpy.context.selected_objects) > 0:
-        ob = bpy.context.selected_objects[0]
+        ob = bpy.context.object
         return ob
     else:
         print("Error, no any selected object.")
