@@ -18,10 +18,10 @@ for face in bm.faces:
 ob.data.update()                         # Update the mesh from the bmesh data
 bpy.ops.object.mode_set(mode = 'OBJECT') # volvemos a object mode 
 
-# comprobamos por cada slot del objeto si esta o no aplicado:
+# comprobamos por cada slot del objeto si esta o no asignado:
 for i in range(len(ob.material_slots)):
     mat = ob.material_slots[i].name
     if mat in materiales_aplicados:
-        print("El material " + str(mat) + " Si esta aplicado")
+        print("El material " + str(mat) + " Si esta asignado")
     else:
-        print("El material " + str(mat) + " No esta aplicado")
+        print("El material " + str(mat) + " No esta asignado")
