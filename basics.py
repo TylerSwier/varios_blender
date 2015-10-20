@@ -123,7 +123,7 @@ def hide(ob):
 def unhide(ob):
     ob.hide = False
 
-def activeObjectLayerOnlyThisNumber(number):
+def viewOnlyThisNumberLayer(number):
     if number > 19 or number < 0:
         print("Index layer incorrect.")
     else:
