@@ -40,23 +40,21 @@ class MyButon(bpy.types.Operator):
         self.report({'INFO'}, "MyButon executed.")
         return {'FINISHED'}
     
-    
 # action update:
 def upd(self, context):
     for obj in context.selected_objects:    
         bpy.data.objects[obj.name].show_name = context.scene.MyBool
+
 
 def register():
     bpy.utils.register_module(__name__)
     #bpy.utils.register_class(interfaz)
     bpy.types.Scene.MyBool = bpy.props.BoolProperty(update=upd)
 
-
 def unregister():
     bpy.utils.register_module(__name__)
     #bpy.utils.unregister_class(interfaz)
     del bpy.types.Scene.MyBool
-
 
 if __name__ == "__main__":
     register()
