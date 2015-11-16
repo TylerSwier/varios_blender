@@ -37,7 +37,7 @@ class MyButon(bpy.types.Operator):
     def execute(self, context):
         # en este caso no tiene sentido porque el propio bool ya lo hace
         # pero desde aqui podriamos decirle al boton que ejecute x funcion:
-        #upd(self, context)
+        upd(self, context)
         self.report({'INFO'}, "MyButon executed.")
         return {'FINISHED'}
     
