@@ -25,7 +25,7 @@ class interfaz(bpy.types.Panel):
 
 class MyButon(bpy.types.Operator):
     bl_idname = "my.buton" # <- el idname nunca con mayusculas
-    bl_label = "Boton Update"
+    bl_label = "Boton Update all Names"
     bl_description = "Ejemplo atenuar items"
 
     # Si hay objetos seleccionados se activa este item del addon, sino sale atenuado:
