@@ -14,7 +14,7 @@ class interfaz(bpy.types.Panel):
         col.alignment = 'EXPAND'
     
         col.label(text = "Interfaz")
-        col.prop(scn, "MyBool", text="Global names")
+        col.prop(scn, "MyBool", text="Global Names")
     
         # show individuals checkboxs:
         col.label(text = "Individual:")    
