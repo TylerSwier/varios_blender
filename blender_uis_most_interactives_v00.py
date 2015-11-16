@@ -17,7 +17,7 @@ class interfaz(bpy.types.Panel):
         col.prop(scn, "MyBool", text="Global Names")
     
         # show individuals checkboxs:
-        col.label(text = "Individual:")    
+        col.label(text = "Individual Names:")    
         for obj in context.selected_objects:    
             col.prop(obj, "show_name", text=str("Name de: " + obj.name))
     
@@ -25,7 +25,7 @@ class interfaz(bpy.types.Panel):
 
 class MyButon(bpy.types.Operator):
     bl_idname = "my.buton" # <- el idname nunca con mayusculas
-    bl_label = "Boton"
+    bl_label = "Boton Update"
     bl_description = "Ejemplo atenuar items"
 
     # Si hay objetos seleccionados se activa este item del addon, sino sale atenuado:
@@ -37,7 +37,7 @@ class MyButon(bpy.types.Operator):
     def execute(self, context):
         # en este caso no tiene sentido porque el propio bool ya lo hace
         # pero desde aqui podriamos decirle al boton que ejecute x funcion:
-        upd(self, context)
+        #upd(self, context)
         self.report({'INFO'}, "MyButon executed.")
         return {'FINISHED'}
     
