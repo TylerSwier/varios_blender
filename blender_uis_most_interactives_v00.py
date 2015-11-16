@@ -19,7 +19,7 @@ class interfaz(bpy.types.Panel):
         # show individuals checkboxs:
         col.label(text = "Individual:")    
         for obj in context.selected_objects:    
-            col.prop(obj, "show_name", text="Name")
+            col.prop(obj, "show_name", text=str("Name de: " + obj.name)))
     
         col.operator("my.buton")
 
