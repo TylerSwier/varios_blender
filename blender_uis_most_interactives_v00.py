@@ -4,7 +4,7 @@ class interfaz(bpy.types.Panel):
     bl_label = "My Addon:"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
-    bl_category = "Test"
+    bl_category = "Tab"
     
     def draw(self, context):
         scn = context.scene
@@ -26,7 +26,7 @@ class interfaz(bpy.types.Panel):
 class MyButon(bpy.types.Operator):
     bl_idname = "my.buton" # <- el idname nunca con mayusculas
     bl_label = "Boton"
-    bl_description = "tab"
+    bl_description = "Ejemplo atenuar items"
 
     # Si hay objetos seleccionados se activa este item del addon, sino sale atenuado:
     @classmethod
