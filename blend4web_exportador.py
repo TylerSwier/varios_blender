@@ -26,9 +26,9 @@ for ob in bpy.data.objects:
         # activar sombras
     try:
         if ob.name != 'cuerpo':
+            ob.b4w_shadow_receive = True
             if ob.name != 'suelo':
                 ob.b4w_shadow_cast = True
-            ob.b4w_shadow_receive = True
     except:
         pass
 
