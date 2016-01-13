@@ -26,7 +26,8 @@ for ob in bpy.data.objects:
         # activar sombras
     try:
         if ob.name != 'cuerpo':
-            ob.b4w_shadow_cast = True
+            if ob.name != 'suelo':
+                ob.b4w_shadow_cast = True
             ob.b4w_shadow_receive = True
     except:
         pass
@@ -69,4 +70,3 @@ if os.path.isfile(file_target):
 bpy.ops.export_scene.b4w_json(filepath=ruta, do_autosave=True, strict_mode=False, run_in_viewer=False, override_filepath=ruta, save_export_path=False, is_html_export=False)
 # exportar el html tambien:
 #bpy.ops.export_scene.b4w_html(filepath=bpy.data.filepath)
-
