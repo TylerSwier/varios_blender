@@ -58,10 +58,10 @@ ruta = ruta[:-2]
 nombre_json="first-person.json"
 nombre_bin="first-person.bin"
 ruta = ','.join(ruta).replace(',','/')+"/"+nombre_json
-bin = ','.join(ruta).replace(',','/')+"/"+nombre_bin
+name_bin = ','.join(ruta).replace(',','/')+"/"+nombre_bin
 
 # eliminamos el .bin:
-file_target = bin
+file_target = name_bin
 if os.path.isfile(file_target):
     os.remove(file_target)
 
