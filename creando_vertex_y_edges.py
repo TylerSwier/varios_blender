@@ -20,7 +20,7 @@ vertices = [[-1,0,0],[-1,1,0],[0,1,-1],[0,0,0]]
 aristas = [[0,1],[1,2],[2,3],[3,0]] # el id de cada vertice para ese edge
 caras = [[0,1,2,3]] # el id de los vertices para esa cara
 # para hacer edges no se debe especificar las faces:
-ob = createMeshes('test', vertices, aristas)
+ob = createMeshes('test', vertices, aristas, [])
 # para hacer caras no hay que especificar las aristas:
 #ob = createMeshes('test', vertices, [], caras)
 #print(ob.name)
