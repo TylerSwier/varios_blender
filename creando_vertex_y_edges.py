@@ -7,7 +7,6 @@ def createMeshes(name, vertex=[], edges=[], faces=[]):
     ob = bpy.data.objects.new(name, me)
     ob.show_name = True
     ob.data.show_extra_indices = True
-    # from_pydata( vertices aristas y caras)
     me.from_pydata(vertex, edges, faces)
     # Update mesh with new data
     me.update()    
