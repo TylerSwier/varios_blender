@@ -14,24 +14,49 @@ class Turtle(object):
         angle = math.radians(angle)
         cos = math.cos(angle)
         sin = math.sin(angle)
-        newx = self.direction.x*cos - self.direction.y*sin
-        newy = self.direction.x*sin + self.direction.y*cos
+        # Antonio:
+        # self.t11 = self.c11*math.cos(self.ang) + self.c21*math.sin(self.ang)
+        # self.t12 = self.c12*math.cos(self.ang) + self.c22*math.sin(self.ang)
+        # self.t13 = self.c13*math.cos(self.ang) + self.c23*math.sin(self.ang)
+        # self.t21 = self.c21*math.cos(self.ang) - self.c11*math.sin(self.ang)
+        # self.t22 = self.c22*math.cos(self.ang) - self.c12*math.sin(self.ang)
+        # self.t23 = self.c23*math.cos(self.ang) - self.c13*math.sin(self.ang)
+        #  Carlos:
+        # newx = self.direction.x * cos - self.direction.y * sin
+        # newy = self.direction.x * sin + self.direction.y * cos
+        #######################################################
+        # rotacion en z:
+        newx = self.direction.x * cos - self.direction.y * sin
+        newy = self.direction.x * sin + self.direction.y * cos
+        newz = 0 + 0 + self.direction.z
+        # rotacion en y:
+        # newx = self.direction.x * cos + 0 + self.direction.z * sin
+        # newy = 0 + self.direction.y + 0
+        # newz = -self.direction.x + 0 + self.direction.z * cos
+        # rotacion en x:
+        # newx = self.direction.x + 0 + 0
+        # newy = 0 + self.direction.y  * cos - self.direction.z * sin
+        # newz = 0 + self.direction.y * sin + self.direction.z * cos
+        #######################################################
         self.direction.x = newx
         self.direction.y = newy
+        self.direction.z = newz
     def turnLeft(self):
         self.rotate(-90)
+        self.direction.y = newy
     def turnRight(self):
         self.rotate(90)
     def walk(self, step=1):
         self.position.x += step*self.direction.x
         self.position.y += step*self.direction.y
+        self.position.z += step*self.direction.z
     def putCube(self):
         print("Poniendo huevo en:")
         print("Location: " + str(self.position.x) + str(self.position.y) + str(self.position.z))
         print("Direction: " + str(self.direction.x) + str(self.direction.y) + str(self.direction.z))
         # para crear la piramide y que salga con los ejes correspondientes:
-        bpy.ops.mesh.primitive_cone_add(vertices=4, view_align=False, enter_editmode=False, location=(self.position.x,self.position.y,self.position.z), rotation=(self.direction.x,self.direction.y,self.direction.z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-        #bpy.ops.mesh.primitive_cube_add(location=(self.position.x,self.position.y, 0), rotation=(0, 0, 0), radius=0.2)
+        #bpy.ops.mesh.primitive_cone_add(vertices=4, view_align=False, enter_editmode=False, location=(self.position.x,self.position.y,self.position.z), rotation=(self.direction.x,self.direction.y,self.direction.z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+        bpy.ops.mesh.primitive_cube_add(location=(self.position.x,self.position.y, 0), rotation=(self.direction.x,self.direction.y,self.direction.z), radius=0.2)
 
 
 ############################
