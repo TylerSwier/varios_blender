@@ -31,8 +31,6 @@ class Turtle(object):
         print("Direction: " + str(self.direction.x) + str(self.direction.y) + str(self.direction.z))
         # para crear la piramide y que salga con los ejes correspondientes:
         bpy.ops.mesh.primitive_cone_add(vertices=4, view_align=False, enter_editmode=False, location=(self.position.x,self.position.y,self.position.z), rotation=(self.direction.x,self.direction.y,self.direction.z), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-        bpy.context.object.rotation_euler.y = math.radians(90)
-        bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
         #bpy.ops.mesh.primitive_cube_add(location=(self.position.x,self.position.y, 0), rotation=(0, 0, 0), radius=0.2)
 
 
