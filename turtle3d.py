@@ -155,19 +155,17 @@ def removeAllObjectsInScene():
 removeAllObjectsInScene()
 
 def createMeshes(name, vertex=[], edges=[], faces=[]):
-    profile_mesh = bpy.data.meshes.new(name+'_Mesh')
-    ob = bpy.data.objects.new(name, profile_mesh)
+    me = bpy.data.meshes.new(name+'_Mesh')
+    ob = bpy.data.objects.new(name, me)
     ob.show_name = True
     ob.data.show_extra_indices = True
-    profile_mesh.from_pydata(vertex, edges, faces)
+    me.from_pydata(vertex, edges, faces)
     # Update mesh with new data
-    profile_mesh.update()
-    profile_object = bpy.data.objects.new(name, profile_mesh)
-    profile_object.data = profile_mesh
-    scene = bpy.context.scene
-    scene.objects.link(profile_object)
+    me.update()
+    ob = bpy.data.objects.new(name, me)
+    ob.data = me
     # Link object to scene
-    # bpy.context.scene.objects.link(ob)
+    bpy.context.scene.objects.link(ob)
     return ob
 
 # probando que la tortuga funciona perfectamente.
@@ -216,9 +214,9 @@ def getEdges(como='open'):
     #         if (i < len(vertices)):
     #             aristas.append([i,i+1])
     #         else:
-    #             aristas.append([len(vertices),0])
+    #             aristas.append(i,0)
 
-getEdges()
+getEdges('open')
 obName = 'objeto'
 # si hacemos caras no le pasamos aristas y si hacemos aristas no le pasamos caras:
 ob = createMeshes(obName, vertices, aristas, [])
