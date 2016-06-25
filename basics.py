@@ -140,6 +140,13 @@ def viewOnlyThisNumberLayer(number):
             # disable first current layer:
             layers[current_layer] = False
 
+def activeObjectLayerOnlyThisNumber(layer):
+    for l in range(len(bpy.context.scene.layers)):
+        if l ==  layer:
+            bpy.context.scene.layers[1] = True
+        else:
+            bpy.context.scene.layers[1] = False
+
 # remove all objects in the current scene:
 def removeAllObjectsInScene():
     # blender 2.75a have 20 layers
