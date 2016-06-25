@@ -43,14 +43,10 @@ class Turtle(object):
         # el tipo de huevo:
         bpy.ops.mesh.primitive_cube_add(location=(self.currentPosition), rotation=(self.direction), radius=0.2)
         #posiciones.append([self.currentPosition.x,self.currentPosition.y, self.currentPosition.z])
-    def walk(self, whenput=False, steps=0.51):
-        if whenput:
-            self.putEgg()
-        self.currentPosition.x += steps * self.direction.x
-        self.currentPosition.y += steps * self.direction.y
-        self.currentPosition.z += steps * self.direction.z
-        if not whenput:
-            self.putEgg()
+    def walk(self, steps=0.51):
+        self.currentPosition.x += (steps * self.direction.x)
+        self.currentPosition.y += (steps * self.direction.y)
+        self.currentPosition.z += (steps * self.direction.z)
 
 # Funcion que muestra posicion y direction a la que apunta la tortuga
 def whereAreTheTurtle(obj):
@@ -61,48 +57,54 @@ def whereAreTheTurtle(obj):
 
 
 # Para probar como funciona puedes descomentar esto:
-# def hide(ob):
-#     ob.hide = True
-#
-# def unhide(ob):
-#     ob.hide = False
-#
-# def selectAll():
-#     bpy.ops.object.select_all(action='SELECT')
-#
-# def deselectAll():
-#     bpy.ops.object.select_all(action='DESELECT')
-#
-# def exitEditMode():
-#     if bpy.context.mode != 'OBJECT':
-#         bpy.ops.object.mode_set(mode='OBJECT')
-#
-# def activeObjectLayerOnlyThisNumber(layer):
-#     for l in range(len(bpy.context.scene.layers)):
-#         if l ==  layer:
-#             bpy.context.scene.layers[1] = True
-#         else:
-#             bpy.context.scene.layers[1] = False
-#
-# def removeAllObjectsInScene():
-#     # blender 2.75a have 20 layers
-#     for i in range(20):
-#         activeObjectLayerOnlyThisNumber(i)
-#         exitEditMode()
-#         deselectAll()
-#         for ob in bpy.data.objects:
-#             unhide(ob)
-#         selectAll()
-#         bpy.ops.object.delete(use_global=False)
-#     # return to 0 initial layer standar in blender:
-#     activeObjectLayerOnlyThisNumber(0)
-#
-# removeAllObjectsInScene()
-# startpos = [0,0,0]
-# startdir = [0,math.radians(90),0]
-# tortuga = Turtle(startpos, startdir)
-# tortuga.walk()
-# tortuga.walk()
-# tortuga.rotTurtleFromZ(90)
-# tortuga.rotTurtleFromX(90)
-# tortuga.walk()
+def hide(ob):
+    ob.hide = True
+
+def unhide(ob):
+    ob.hide = False
+
+def selectAll():
+    bpy.ops.object.select_all(action='SELECT')
+
+def deselectAll():
+    bpy.ops.object.select_all(action='DESELECT')
+
+def exitEditMode():
+    if bpy.context.mode != 'OBJECT':
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+def activeObjectLayerOnlyThisNumber(layer):
+    for l in range(len(bpy.context.scene.layers)):
+        if l ==  layer:
+            bpy.context.scene.layers[1] = True
+        else:
+            bpy.context.scene.layers[1] = False
+
+def removeAllObjectsInScene():
+    # blender 2.75a have 20 layers
+    for i in range(20):
+        activeObjectLayerOnlyThisNumber(i)
+        exitEditMode()
+        deselectAll()
+        for ob in bpy.data.objects:
+            unhide(ob)
+        selectAll()
+        bpy.ops.object.delete(use_global=False)
+    # return to 0 initial layer standar in blender:
+    activeObjectLayerOnlyThisNumber(0)
+
+removeAllObjectsInScene()
+startpos = [0,0,0]
+startdir = [0,1,0]
+tortuga = Turtle(startpos, startdir)
+tortuga.putEgg()
+tortuga.walk()
+tortuga.putEgg()
+tortuga.walk()
+tortuga.putEgg()
+tortuga.rotTurtleFromZ(90)
+tortuga.walk()
+tortuga.putEgg()
+tortuga.rotTurtleFromZ(180)
+tortuga.walk()
+tortuga.putEgg()
