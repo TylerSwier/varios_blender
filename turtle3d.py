@@ -200,11 +200,11 @@ posiciones = tortuga.putEgg()
 #######################
 # creando la geometria:
 #######################
-# las coordenadas de cada vertice:
-# vertices = [[-1,0,0],[-1,1,0],[0,1,-1],[0,0,0]]
+### las coordenadas de cada vertice:
+### vertices = [[-1,0,0],[-1,1,0],[0,1,-1],[0,0,0]]
 vertices = posiciones
-# de que vertice a que vertice hace el edge:
-# aristas = [[0,1],[1,2],[2,3],[3,0]] # el id de cada vertice para ese edge
+### de que vertice a que vertice hace el edge:
+### aristas = [[0,1],[1,2],[2,3],[3,0]] # el id de cada vertice para ese edge
 aristas = []
 def getEdges(como='open'):
     if (como == 'open'):
