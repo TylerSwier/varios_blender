@@ -104,7 +104,9 @@ class Turtle3D(object):
         posiciones.append([self.position.x, self.position.y, self.position.z])
         return posiciones
 
-# fin de la tortuga
+# fin de la libreria turtle.py
+# the end library turtle.py
+###################################################################################
 
 ###############################
 ### PARA PROBAR LA TORTUGA: ###
