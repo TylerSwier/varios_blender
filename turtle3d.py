@@ -71,22 +71,22 @@ class Turtle3D(object):
         self.direction.y = newy
     # para que se mas facil usar la tortuga aqui creamos una serie de
     # atajos, de este modo no tenemos que tener tan presente en  que eje roramos:
-    def turnLeft(self):
-        self.rotateZ(90)
-    def turnRight(self):
-        self.rotateZ(-90)
-    def turnUp(self):
-        self.rotateX(90)
-    def turnDown(self):
-        self.rotateX(-90)
+    def seeLeft(self, angle=90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+        self.rotateZ(angle)
+    def seeRight(self, angle=-90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+        self.rotateZ(angle)
+    def seeUp(self, angle=90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+        self.rotateX(angle)
+    def seeDown(self, angle=-90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+        self.rotateX(angle)
     # caminar en la direccion en la que este mirando la tortuga:
-    def walk(self, strength=1):
+    def walkFordward(self, strength=1):
         self.position.x += strength * self.direction.x
         self.position.y += strength * self.direction.y
         self.position.z += strength * self.direction.z
     # caminar en la direccion en la que este mirando la tortuga y poniendo huevos primero
     # en x numero de pasos:
-    def walkStep(self, strength=1, steps=10):
+    def walkFordwardStep(self, strength=1, steps=10):
         for i in range(steps):
             self.putEgg()
             self.position.x += strength * self.direction.x
@@ -97,7 +97,10 @@ class Turtle3D(object):
         print("Poniendo huevo en:")
         print("Location: " + str(self.position.x) + str(self.position.y) + str(self.position.z))
         print("Direction: " + str(self.direction.x) + str(self.direction.y) + str(self.direction.z))
-        bpy.ops.mesh.primitive_cube_add(location=(self.position.x,self.position.y, self.position.z), rotation=(self.direction.x, self.direction.y, self.direction.z), radius=0.2)
+        # rotObjEgg = [self.direction.x, self.direction.y, self.direction.z]
+        rotObjEgg = [0,0,0]
+        bpy.ops.mesh.primitive_cube_add(location=(self.position.x,self.position.y, self.position.z), \
+        rotation=(rotObjEgg), radius=0.2)
         posiciones.append([self.position.x, self.position.y, self.position.z])
         return posiciones
 
@@ -178,23 +181,34 @@ initloc = [0,0,0]
 direct = math.radians(90)
 initdir = [0,direct,0]
 tortuga = Turtle3D(initloc,initdir)
-posiciones = tortuga.putEgg()
-tortuga.walk(0.5)
-posiciones = tortuga.putEgg()
-tortuga.turnUp()
-tortuga.walk(0.5)
-posiciones = tortuga.putEgg()
-tortuga.turnDown()
-tortuga.walk(0.5)
-posiciones = tortuga.putEgg()
-tortuga.turnLeft()
-tortuga.walk(0.5)
-posiciones = tortuga.putEgg()
-tortuga.turnRight()
-tortuga.walk(0.5)
-posiciones = tortuga.putEgg()
-tortuga.walk(0.5)
-posiciones = tortuga.putEgg()
+def circle(turtle, rotation):
+    steps = int(360 / rotation)
+    for i in range(steps):
+        turtle.putEgg()
+        turtle.walkFordward()
+        turtle.seeUp(60)
+        turtle.walkFordward()
+        turtle.seeUp(-60+i)
+        turtle.seeLeft(rotation)
+
+circle(tortuga, 10)
+# posiciones = tortuga.putEgg()
+# tortuga.walkFordward(0.5)
+# posiciones = tortuga.putEgg()
+# tortuga.seeUp()
+# tortuga.walkFordward(0.5)
+# posiciones = tortuga.putEgg()
+# tortuga.seeDown()
+# tortuga.walkFordward(0.5)
+# posiciones = tortuga.putEgg()
+# tortuga.seeLeft()
+# tortuga.walkFordward(0.5)
+# posiciones = tortuga.putEgg()
+# tortuga.seeRight()
+# tortuga.walkFordward(0.5)
+# posiciones = tortuga.putEgg()
+# tortuga.walkFordward(0.5)
+# posiciones = tortuga.putEgg()
 #######################
 # creando la geometria:
 #######################
