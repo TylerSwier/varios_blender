@@ -183,17 +183,27 @@ initloc = [0,0,0]
 direct = math.radians(90)
 initdir = [0,direct,0]
 tortuga = Turtle3D(initloc,initdir)
-def circle(turtle, rotation):
-    steps = int(360 / rotation)
-    for i in range(steps):
-        turtle.putEgg()
-        turtle.walkFordward()
-        turtle.seeUp(60)
-        turtle.walkFordward()
-        turtle.seeUp(-60+i)
-        turtle.seeLeft(rotation)
+def muelle(loop, rx, ry, rz):
+    steps = int(360 / rz)
+    for l in range(loop):
+        for i in range(steps):
+            tortuga.walkFordward()
+            tortuga.rotateX(rx)
+            tortuga.rotateY(ry)
+            tortuga.rotateZ(rz)
+            tortuga.putEgg()
+            tortuga.rotateX(-rx)
+            tortuga.rotateY(-ry)
 
-circle(tortuga, 10)
+muelle(10, 2, 2, 10)
+# def circle(turtle, rotation):
+#     steps = int(360 / rotation)
+#     for i in range(steps):
+#         turtle.putEgg()
+#         turtle.seeLeft(rotation)
+#         turtle.walkFordward()
+#
+# circle(tortuga, 10)
 # posiciones = tortuga.putEgg()
 # tortuga.walkFordward(0.5)
 # posiciones = tortuga.putEgg()
