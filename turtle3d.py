@@ -194,8 +194,8 @@ def muelle(loop, rx, ry, rz):
             tortuga.putEgg()
             tortuga.walkFordward()
             tortuga.rotateZ(rz)
-    tortuga.rotateX(-altura) # <- con este controlo la altura
-    tortuga.rotateY(-altura) # <- con este controlo la altura
+    tortuga.rotateX(-altura) # <- con este dejo a la tortuga como estaba
+    tortuga.rotateY(-altura) # <- con este dejo a la tortuga como estaba
 
 muelle(10, 0, 0, 10)
 # def circle(turtle, rotation):
