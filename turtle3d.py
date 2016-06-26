@@ -185,18 +185,21 @@ initdir = [0,direct,0]
 tortuga = Turtle3D(initloc,initdir)
 def muelle(loop, rx, ry, rz):
     steps = int(360 / rz)
+    tortuga.rotateX(3) # <- con este controlo la altura
+    tortuga.rotateY(-ry) # para que comience contrarestado
+    tortuga.rotateZ(-rz) # para que comience contrarestado
     for l in range(loop):
         for i in range(steps):
+            tortuga.putEgg()
             tortuga.walkFordward()
             tortuga.rotateX(rx)
             tortuga.rotateY(ry)
             tortuga.rotateZ(rz)
-            tortuga.putEgg()
-            # contrarrestar la rotaciones anteriores:
+            # contrarrestar la rotaciones anteriores otra vez:
             tortuga.rotateX(-(rx))
             tortuga.rotateY(-(ry))
 
-muelle(10, 2, 2, 10)
+muelle(10, 0, 1, 10)
 # def circle(turtle, rotation):
 #     steps = int(360 / rotation)
 #     for i in range(steps):
