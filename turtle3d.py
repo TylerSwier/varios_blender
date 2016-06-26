@@ -192,8 +192,9 @@ def muelle(loop, rx, ry, rz):
             tortuga.rotateY(ry)
             tortuga.rotateZ(rz)
             tortuga.putEgg()
-            tortuga.rotateX(-rx)
-            tortuga.rotateY(-ry)
+            # contrarrestar la rotaciones anteriores:
+            tortuga.rotateX(-(rx))
+            tortuga.rotateY(-(ry))
 
 muelle(10, 2, 2, 10)
 # def circle(turtle, rotation):
