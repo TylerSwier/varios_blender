@@ -160,3 +160,24 @@ def removeAllObjectsInScene():
         bpy.ops.object.delete(use_global=False)
     # return to 0 initial layer standar in blender:
     activeObjectLayerOnlyThisNumber(0)
+    
+def createMeshes(name, tipo='none', vertex=[], edges=[], faces=[]):
+    mesh = bpy.data.meshes.new(name+'_Mesh')
+    ob = bpy.data.objects.new(name, mesh)
+    ob.show_name = True
+    ob.data.show_extra_indices = True
+    # si se hacen edges no se especifican facer
+    # y si se hace faces no se especifican edges:
+    mesh.from_pydata(vertex, edges, faces)
+    # Update mesh with new data
+    mesh.update()
+    ob.data = mesh
+    # Link object to scene
+    bpy.context.scene.objects.link(ob)
+    if tipo == 'convex':
+        deselectAll()
+        selectByName(ob.name)
+        enterEditMode()
+        bpy.ops.mesh.convex_hull()
+        exitEditMode()
+    return ob
