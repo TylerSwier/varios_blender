@@ -71,13 +71,13 @@ class Turtle3D(object):
         self.direction.y = newy
     # para que se mas facil usar la tortuga aqui creamos una serie de
     # atajos, de este modo no tenemos que tener tan presente en  que eje roramos:
-    def seeLeft(self, angle=90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+    def turnLeft(self, angle=90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
         self.rotateZ(angle)
-    def seeRight(self, angle=-90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+    def turnRight(self, angle=-90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
         self.rotateZ(angle)
-    def seeUp(self, angle=90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+    def turnUp(self, angle=90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
         self.rotateX(angle)
-    def seeDown(self, angle=-90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
+    def turnDown(self, angle=-90): #<- si se especifican grandos pues eso, sino los defaults correspondientes
         self.rotateX(angle)
     # caminar en la direccion en la que este mirando la tortuga:
     def walkFordward(self, strength=1):
@@ -202,23 +202,23 @@ muelle(10, 0, 0, 10)
 #     steps = int(360 / rotation)
 #     for i in range(steps):
 #         turtle.putEgg()
-#         turtle.seeLeft(rotation)
+#         turtle.turnLeft(rotation)
 #         turtle.walkFordward()
 #
 # circle(tortuga, 10)
 # posiciones = tortuga.putEgg()
 # tortuga.walkFordward(0.5)
 # posiciones = tortuga.putEgg()
-# tortuga.seeUp()
+# tortuga.turnUp()
 # tortuga.walkFordward(0.5)
 # posiciones = tortuga.putEgg()
-# tortuga.seeDown()
+# tortuga.turnDown()
 # tortuga.walkFordward(0.5)
 # posiciones = tortuga.putEgg()
-# tortuga.seeLeft()
+# tortuga.turnLeft()
 # tortuga.walkFordward(0.5)
 # posiciones = tortuga.putEgg()
-# tortuga.seeRight()
+# tortuga.turnRight()
 # tortuga.walkFordward(0.5)
 # posiciones = tortuga.putEgg()
 # tortuga.walkFordward(0.5)
