@@ -3,8 +3,8 @@ import bmesh
 
 # version v01 tested in blender 2.77
 # for import this library in blender put this file in:
-# blender-version/version/scripts/modules/turtle
-# from turtle.basics import *
+# blender-version/version/scripts/modules/zlibs
+# from zlibs.basics import *
 
 '''
 2016 Jorge Hernandez - Melendez
