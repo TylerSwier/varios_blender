@@ -1,13 +1,13 @@
 import bpy
 import bmesh
 
-# version v00 tested in blender 2.75a
+# version v01 tested in blender 2.77
 # for import this library in blender put this file in:
-# blender-version/version/scripts/modules/zblibs
-# from zblibs.basics import *
+# blender-version/version/scripts/modules/turtle
+# from turtle.basics import *
 
 '''
-2015 Jorge Hernandez - Melendez
+2016 Jorge Hernandez - Melendez
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bpy.app.debug = True
 
-def obIsFirstObjectSelected():
+def getObjectSelected():
     if len(bpy.context.selected_objects) > 0:
         ob = bpy.context.object
         return ob
@@ -63,7 +63,7 @@ def selectAllInEditMode(ob):
     deselectAllInEditMode(ob)
     bpy.ops.mesh.select_all(action='SELECT')
 
-def whathVertexIsSelected(ob):
+def whatVertexIsSelected(ob):
     current_mode = ob.mode
     if ob.mode != 'EDIT':
         enterEditMode()
@@ -116,7 +116,6 @@ def deleteVertexsSelected(ob):
     # restore mode:
     bpy.ops.object.mode_set(mode=current_mode)
 
-    
 def hide(ob):
     ob.hide = True
 
@@ -135,7 +134,7 @@ def viewOnlyThisNumberLayer(number):
                 layers[i] = False
             # after active layer
             for i in range(len(layers)):
-                if i == number:       
+                if i == number:
                     layers[i] = True
             # disable first current layer:
             layers[current_layer] = False
@@ -160,8 +159,8 @@ def removeAllObjectsInScene():
         bpy.ops.object.delete(use_global=False)
     # return to 0 initial layer standar in blender:
     activeObjectLayerOnlyThisNumber(0)
-    
-def createMeshes(name, tipo='none', vertex=[], edges=[], faces=[]):
+
+def createMeshes(name, vertex=[], edges=[], faces=[], tipo='none'):
     mesh = bpy.data.meshes.new(name+'_Mesh')
     ob = bpy.data.objects.new(name, mesh)
     ob.show_name = True
