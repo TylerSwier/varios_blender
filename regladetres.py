@@ -31,10 +31,10 @@ bl_info = {
 import bpy 
 from bpy.props import * 
 
-bpy.types.Scene.etxt1 = StringProperty(name="", description="Si A", maxlen= 1024, default="Si A frame/es") 
-bpy.types.Scene.etxt2 = StringProperty(name="", description="Es B", maxlen= 1024, default="Son B minutos") 
-bpy.types.Scene.etxt3 = StringProperty(name="", description="Entonces C es X", maxlen= 1024, default="Cuantos minutors seran C frames?")
-bpy.types.Scene.etxt4 = StringProperty(name="", attr="res", description="resultado", maxlen= 1024, default="resultado de X") 
+bpy.types.Scene.etxt1 = StringProperty(name="", description="Si A", maxlen= 1024, default="Si A (cantidad)") 
+bpy.types.Scene.etxt2 = StringProperty(name="", description="Son B", maxlen= 1024, default="Son B (cantidad)") 
+bpy.types.Scene.etxt3 = StringProperty(name="", description="Entonces C son", maxlen= 1024, default="Cuanto sera C?")
+bpy.types.Scene.etxt4 = StringProperty(name="", attr="res", description="resultado", maxlen= 1024, default="C son...") 
 
 class reglaDeTres(bpy.types.Panel): 
     bl_label = "Regla de tres simple v00:" 
@@ -54,9 +54,11 @@ class reglaDeTres(bpy.types.Panel):
         col1.prop(context.scene,"etxt2") 
         
         col1.prop(context.scene,"etxt3")         
-        col1 = split.column() 
+        
+        col1.operator("calcular.calcular", text='Calcular')
         col1.prop(context.scene,"etxt4") 
-        col1.operator("calcular.calcular", text='Calcular') 
+        col1 = split.column() 
+         
          
 def calcular(): 
     resultado = str( float(bpy.context.scene.etxt3) * float(bpy.context.scene.etxt2) / float(bpy.context.scene.etxt1) ) 
