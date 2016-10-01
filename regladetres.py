@@ -19,14 +19,9 @@ bl_info = {
     "name": "regladetres", 
     "description": "Regla de tres simple", 
     "author": "Jorge Hernandez - Melenedez", 
-    "version": (0,0), 
-    "blender": (2, 64, 0), 
-    "api": 31236, 
-    "location": "", 
-    "warning": "", 
-    "wiki_url": "", 
-    "tracker_url": "", 
-    "category": ""} 
+    "version": (0,1), 
+    "blender": (2, 78, 0)
+} 
 
 import bpy 
 from bpy.props import * 
@@ -37,10 +32,11 @@ bpy.types.Scene.etxt3 = StringProperty(name="", description="Entonces C son", ma
 bpy.types.Scene.etxt4 = StringProperty(name="", attr="res", description="resultado", maxlen= 1024, default="") 
 
 class reglaDeTres(bpy.types.Panel): 
-    bl_label = "Regla de tres simple v00:" 
+    bl_label = "Regla de tres simple v01:" 
     bl_space_type = "VIEW_3D" 
     #bl_region_type = "TOOL_PROPS" 
     bl_region_type = "TOOLS" 
+    bl_category = "Regla de tres"
 
     def draw(self, context): 
         layout = self.layout 
