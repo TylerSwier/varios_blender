@@ -58,10 +58,7 @@ class reglaDeTres(bpy.types.Panel):
         col1 = row1.column() 
         col1.operator("calcular.calcular", text='Calcular')
         col2.prop(context.scene,"etxt3")
-        col2.label(text=bpy.context.scene.etxt4)
-        
-        
-        
+        col2.label(text=bpy.context.scene.etxt4) 
         col1 = split.column() 
 
          
