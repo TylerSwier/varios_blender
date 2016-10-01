@@ -34,7 +34,6 @@ bpy.types.Scene.etxt4 = StringProperty(name="", attr="res", description="resulta
 class reglaDeTres(bpy.types.Panel): 
     bl_label = "Regla de tres simple v01:" 
     bl_space_type = "VIEW_3D" 
-    #bl_region_type = "TOOL_PROPS" 
     bl_region_type = "TOOLS" 
     bl_category = "Regla de tres"
 
