@@ -58,7 +58,7 @@ class reglaDeTres(bpy.types.Panel):
         col1 = row1.column() 
         col1.operator("calcular.calcular", text='Calcular')
         col2.prop(context.scene,"etxt3")
-        col2.label(text="Resultado: " + bpy.context.scene.etxt4)
+        col2.label(text=bpy.context.scene.etxt4)
         
         
         
@@ -75,7 +75,7 @@ class botonAccion(bpy.types.Operator):
     bl_description = "Calculandora de regla de tres simple" 
     def execute(self, context): 
         try: 
-            bpy.context.scene.etxt4 = calcular() 
+            bpy.context.scene.etxt4 = "Resultado: " + calcular() 
         except: 
             bpy.context.scene.etxt3 = "Solo son validos valores numericos!!" 
         return{'FINISHED'} 
