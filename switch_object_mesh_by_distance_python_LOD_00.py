@@ -24,16 +24,17 @@ def get_distance():
 # main loop:
 scene = bpy.context.scene
 def my_handler(scene):
-    
     print("Frame Change", scene.frame_current)
     dist = get_distance()
-    if ( dist > 5 ):
+    if ( dist > 4 ):
         cubo2.data = forma.data
         print("se cambio la forma")
     else:
         cubo2.data = cuboMotion.data
+
     
     
 if not my_handler.__name__ in [funcion.__name__ for funcion in bpy.app.handlers.frame_change_pre]:
     print("no esta")
+    bpy.app.handlers.render_post.append(my_handler)
     bpy.app.handlers.frame_change_pre.append(my_handler)
