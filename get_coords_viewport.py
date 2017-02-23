@@ -28,4 +28,4 @@ for area in bpy.context.screen.areas: # iterate through areas in current screen
                 loc = convert_matrix_to_location(space.region_3d.view_matrix)
                 
 # test create cube in viewport position:
-bpy.ops.mesh.primitive_cube_add(view_align=False, enter_editmode=False, location=(loc), layers=(False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+bpy.ops.mesh.primitive_cube_add(view_align=False, enter_editmode=False, location=(loc), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
