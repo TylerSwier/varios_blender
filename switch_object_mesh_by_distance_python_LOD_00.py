@@ -30,6 +30,8 @@ def my_handler(scene):
     if ( dist > 5 ):
         cubo2.data = forma.data
         print("se cambio la forma")
+    else:
+        cubo2.data = cuboMotion.data
     
     
 if not my_handler.__name__ in [funcion.__name__ for funcion in bpy.app.handlers.frame_change_pre]:
