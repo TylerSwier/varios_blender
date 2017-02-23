@@ -22,7 +22,7 @@ def convert_matrix_to_location(matrix):
     )
     return output
 
-# Get coords from viewport (this return matrix 4x4):
+# Get coords from viewport (space.region_3d.view_matrix return matrix 4x4):
 for area in bpy.context.screen.areas: # iterate through areas in current screen
     if area.type == 'VIEW_3D':
         for space in area.spaces: # iterate through spaces in current VIEW_3D area
