@@ -6,7 +6,7 @@ cuboMotion = bpy.data.objects['Camera']
 cubo2 = bpy.data.objects['Cube.001']
 forma = bpy.data.objects['forma']
 
-objetos = [cuboMotion, cubo2]
+objetos = [bpy.data.objects['Camera'], cubo2]
 
 cubo2.data = bpy.data.objects['Cube'].data
 
