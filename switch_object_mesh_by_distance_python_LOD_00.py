@@ -2,13 +2,13 @@ import bpy
 from math import sqrt # para calcular la distancia
 
 
-cuboMotion = bpy.data.objects['Cube']
+cuboMotion = bpy.data.objects['Camera']
 cubo2 = bpy.data.objects['Cube.001']
 forma = bpy.data.objects['forma']
 
 objetos = [cuboMotion, cubo2]
 
-cubo2.data = cuboMotion.data
+cubo2.data = bpy.data.objects['Cube'].data
 
 
 def get_distance():
@@ -26,11 +26,11 @@ scene = bpy.context.scene
 def my_handler(scene):
     print("Frame Change", scene.frame_current)
     dist = get_distance()
-    if ( dist > 4 ):
+    if ( dist > 5 ):
         cubo2.data = forma.data
         print("se cambio la forma")
     else:
-        cubo2.data = cuboMotion.data
+        cubo2.data = bpy.data.objects['Cube'].data
 
     
     
