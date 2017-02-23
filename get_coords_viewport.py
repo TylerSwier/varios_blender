@@ -1,5 +1,7 @@
 import bpy
 
+# Sources that helped me: http://stackoverflow.com/questions/9028398/change-viewport-angle-in-blender-using-python
+
 def convert_matrix_to_location(matrix):
     """ From 4x4 matrix, calculate camera location """
     t = (matrix[0][3], matrix[1][3], matrix[2][3])
