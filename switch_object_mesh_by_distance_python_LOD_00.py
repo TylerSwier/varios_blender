@@ -36,5 +36,5 @@ def my_handler(scene):
     
 if not my_handler.__name__ in [funcion.__name__ for funcion in bpy.app.handlers.frame_change_pre]:
     print("no esta")
-    bpy.app.handlers.render_post.append(my_handler)
+    #bpy.app.handlers.render_post.append(my_handler)
     bpy.app.handlers.frame_change_pre.append(my_handler)
