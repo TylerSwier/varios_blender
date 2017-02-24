@@ -6,7 +6,7 @@ import apt
 
 # instrucciones obtenidas de: https://wiki.blender.org/index.php/Dev:Doc/Building_Blender/Linux/Ubuntu/CMake
 # probado en Ubuntu 16.04 xenial
-# v00
+version = "01"
 
 blenderDir="blender"
 # entrando al home del usuario actual:
@@ -21,10 +21,10 @@ if ( os.path.isdir(lastBlendDir) ):
     print("Entrando en " + lastBlendDir)
     os.chdir(lastBlendDir)
     #print os.getcwd()
-    if ( os.path.isdir(blenderDir) != False ):
+    if ( os.path.isdir(blenderDir) == False ):
         print("haciendo git clone...")
         # si no existe el directorio blender es que nunca se compilo aqui
-        #subprocess.call(["git", "clone", "https://git.blender.org/blender.git"], shell=False)
+        subprocess.call(["git", "clone", "https://git.blender.org/blender.git"], shell=False)
         print("Entrando en " + blenderDir)
         os.chdir(blenderDir)
         #print os.getcwd()
@@ -77,3 +77,12 @@ if ( os.path.isdir(lastBlendDir) ):
                 print "Para agregar blender al path es necesario el password de root: "
                 subprocess.call(["sudo", "ln", "-sf" , homeuser+"/"+lastBlendDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blender"], shell=False)
                 exitMenu = True
+    else:
+        print("Posiblemente ya este compilado. Ahora lo actualizaremos...")
+        os.chdir(blenderDir)
+        subprocess.call(["git", "pull", "--rebase"], shell=False)
+        subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase" "origin", "master",], shell=False)
+        subprocess.call(["make", "update"], shell=False)
+        subprocess.call("make", shell=False)
+
+print("Gracias por usar mi script version: "+version+", de auto-compilacion de blender!")
