@@ -81,7 +81,7 @@ if ( os.path.isdir(lastBlendDir) ):
         print("Posiblemente ya este compilado. Ahora lo actualizaremos...")
         os.chdir(blenderDir)
         subprocess.call(["git", "pull", "--rebase"], shell=False)
-        subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase" "origin", "master",], shell=False)
+        subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase", "origin", "master"], shell=False)
         subprocess.call(["make", "update"], shell=False)
         subprocess.call("make", shell=False)
 
