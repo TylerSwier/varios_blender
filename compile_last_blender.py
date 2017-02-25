@@ -99,4 +99,4 @@ if ( os.path.isdir(lastBlendDir) ):
         subprocess.call(["make", "update"], shell=False)
         subprocess.call("make", shell=False)
 
-print("Gracias por usar mi script version: "+version+", de auto-compilacion de blender!")
+print("Thanks for use my script version: "+version)
