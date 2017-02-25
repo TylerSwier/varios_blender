@@ -24,10 +24,12 @@ if ( os.path.isdir(lastBlendDir) ):
     if ( os.path.isdir(blenderDir) == False ):
         print("haciendo git clone...")
         # si no existe el directorio blender es que nunca se compilo aqui
-        # blender normal:
+        # blender:
         subprocess.call(["git", "clone", "https://git.blender.org/blender.git"], shell=False)
         # To clone the Blender sources with addons and translations included:
         #subprocess.call(["git", "clone", "git://git.blender.org/blender.git"], shell=False)
+        # mantaflow:
+        #subprocess.call(["git", "clone", "https://github.com/sebbas/BlenderMantaflow.git"], shell=False)
         print("Entrando en " + blenderDir)
         os.chdir(blenderDir)
         #print os.getcwd()
