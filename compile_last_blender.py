@@ -30,6 +30,7 @@ if ( os.path.isdir(lastBlendDir) ):
         #subprocess.call(["git", "clone", "git://git.blender.org/blender.git"], shell=False)
         # mantaflow:
         #subprocess.call(["git", "clone", "https://github.com/sebbas/BlenderMantaflow.git"], shell=False)
+        #blenderDir = "BlenderMantaflow"
         print("Entrando en " + blenderDir)
         os.chdir(blenderDir)
         #print os.getcwd()
