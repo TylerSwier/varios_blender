@@ -22,7 +22,7 @@ if ( os.path.isdir(lastBlendDir) ):
     print("########## Entr in " + lastBlendDir + " ##########")
     os.chdir(lastBlendDir)
     #print os.getcwd()
-    if ( os.path.isdir(blenderDir) != False ):
+    if ( os.path.isdir(blenderDir) == False ):
         print("########## Git clone... ##########")
         # si no existe el directorio blender es que nunca se compilo aqui
         if (lastBlendDir == "blender"):
