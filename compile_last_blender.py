@@ -92,7 +92,7 @@ if ( os.path.isdir(lastBlendDir) ):
                 subprocess.call(["sudo", "ln", "-sf" , homeuser+"/"+lastBlendDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blender"], shell=False)
                 exitMenu = True
     else:
-        print("########## Already compiled, now upgrade... ##########")
+        print("########## Previously compiled here, now upgrade... ##########")
         os.chdir(blenderDir)
         subprocess.call(["git", "pull", "--rebase"], shell=False)
         subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase", "origin", "master"], shell=False)
