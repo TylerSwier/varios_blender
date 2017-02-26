@@ -2,7 +2,7 @@
 import os.path
 import subprocess
 import platform
-import apt
+import apt # <-- for this work: apt-get install python-apt
 import sys
 
 # Based in: https://wiki.blender.org/index.php/Dev:Doc/Building_Blender/Linux/Ubuntu/CMake
@@ -16,7 +16,7 @@ import sys
 # chmod +x myscript.py
 # ./myscript.py --mantaflow
 
-version = "03"
+version = "04"
 
 #print(sys.argv[1])
 arguments = sys.argv
@@ -79,6 +79,12 @@ def checkSymLink():
             if (blenderDir == "BlenderMantaflow"):
                 subprocess.call(["sudo", "ln", "-sf" , homeUser+"/"+lastBlendDir+"/"+mantaDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blenderMantaflow"], shell=False)
                 exitMenu = True
+
+if not os.path.exists(lastBlendDir):
+    os.makedirs(lastBlendDir)
+    print("########## Enter in " + lastBlendDir + " ##########")
+    os.chdir(lastBlendDir)
+
 
 if ( os.path.isdir(lastBlendDir) ):
     print("########## Enter in " + lastBlendDir + " ##########")
