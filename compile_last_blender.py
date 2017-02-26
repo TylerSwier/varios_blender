@@ -7,12 +7,18 @@ import sys
 
 # Based in: https://wiki.blender.org/index.php/Dev:Doc/Building_Blender/Linux/Ubuntu/CMake
 # Tested in Ubuntu 16.04 xenial
+
+# Usage:
+# for compile blender:
+# chmod +x myscript.py
+# ./myscript.py
+# And for compile Mantaflow build;
+# chmod +x myscript.py
+# ./myscript.py --mantaflow
+
 version = "03"
 
 #print(sys.argv[1])
-
-
-
 arguments = sys.argv
 #print(arguments)
 if (len(arguments) > 1):
