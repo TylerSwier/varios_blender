@@ -3,39 +3,102 @@ import os.path
 import subprocess
 import platform
 import apt
+import sys
 
-# instrucciones obtenidas de: https://wiki.blender.org/index.php/Dev:Doc/Building_Blender/Linux/Ubuntu/CMake
-# probado en Ubuntu 16.04 xenial
-version = "02"
+# Based in: https://wiki.blender.org/index.php/Dev:Doc/Building_Blender/Linux/Ubuntu/CMake
+# Tested in Ubuntu 16.04 xenial
+version = "03"
 
-blenderDir="blender"
-#blenderDir = "BlenderMantaflow"
-# entrando al home del usuario actual:
-homeuser = os.environ['HOME']
-os.chdir(homeuser)
-# el directorio donde me gusta guardar los blenders:
+#print(sys.argv[1])
+
+
+
+arguments = sys.argv
+#print(arguments)
+if (len(arguments) > 1):
+    if (arguments[1] == "--mantaflow"):
+        print("\n\n########## Target to compile: Blender + Mantaflow ##########")
+        blenderDir = "BlenderMantaflow"
+    else:
+        print("\n\n########## Target to compile: Blender ##########")
+        blenderDir="blender"
+else:
+    print("\n\n########## Target to compile: Blender ##########")
+    blenderDir="blender"
+
+homeUser = os.environ['HOME']
+os.chdir(homeUser)
 lastBlendDir = ".lastblender"
 #print os.getcwd()
 
 
+def checkSymLink():
+    exitMenu = False
+    pwd = os.getcwd()
+    while (exitMenu == False):
+        if (blenderDir == "blender"):
+            existe = os.path.islink("/usr/local/bin/blender")  # si no hay link lo hacemos
+        if (blenderDir == "BlenderMantaflow"):
+            existe = os.path.islink("/usr/local/bin/blenderMantaflow")  # si no hay link lo hacemos
+
+        if existe:
+            print("Previous Symbolic link exist!" )
+            entrada = raw_input("Upgrade link (y/n): ")
+            if entrada == "y" or entrada == "Y":
+                print "########## updating link... ########## "
+                print "########## for this action need root password: "
+
+                if (blenderDir == "blender"):
+                    subprocess.call(["sudo", "ln", "-sf" , homeUser+"/"+lastBlendDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blender"], shell=False)
+                    exitMenu = True
+
+                if (blenderDir == "BlenderMantaflow"):
+                    subprocess.call(["sudo", "ln", "-sf" , homeUser+"/"+lastBlendDir+"/"+mantaDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blenderMantaflow"], shell=False)
+                    exitMenu = True
+
+            elif entrada == "n" or entrada == "N":
+                print "########## keep link. ##########"
+                exitMenu = True
+            else:
+                print "Only are avalidable this options:  y Y n N"
+                exitMenu = False
+        else:
+            print "########## Making Symbolic link -> in to path ##########"
+            print "########## for this action need root password: "
+
+            if (blenderDir == "blender"):
+                subprocess.call(["sudo", "ln", "-sf" , homeUser+"/"+lastBlendDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blender"], shell=False)
+                exitMenu = True
+
+            if (blenderDir == "BlenderMantaflow"):
+                subprocess.call(["sudo", "ln", "-sf" , homeUser+"/"+lastBlendDir+"/"+mantaDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blenderMantaflow"], shell=False)
+                exitMenu = True
+
 if ( os.path.isdir(lastBlendDir) ):
-    print("########## Entr in " + lastBlendDir + " ##########")
+    print("########## Enter in " + lastBlendDir + " ##########")
     os.chdir(lastBlendDir)
+
+    if (blenderDir == "BlenderMantaflow"):
+        mantaDir = 'MantaflowBuild'
+        if not os.path.exists(mantaDir):
+            os.makedirs(mantaDir)
+            print("########## Enter in " + mantaDir + " ##########")
+            os.chdir(mantaDir)
+        else:
+            os.chdir(mantaDir)
+
     #print os.getcwd()
     if ( os.path.isdir(blenderDir) == False ):
         print("########## Git clone... ##########")
         # si no existe el directorio blender es que nunca se compilo aqui
         if (blenderDir == "blender"):
-            # blender:
             subprocess.call(["git", "clone", "https://git.blender.org/blender.git"], shell=False)
             # To clone the Blender sources with addons and translations included:
             #subprocess.call(["git", "clone", "git://git.blender.org/blender.git"], shell=False)
-        elif (blenderDir == "BlenderMantaflow"):
-            # mantaflow:
-            #subprocess.call(["git", "clone", "https://github.com/sebbas/BlenderMantaflow.git"], shell=False)
-            pass
+        elif (blenderDir == "BlenderMantaflow"): # mantaflow:
+            subprocess.call(["git", "clone", "https://github.com/sebbas/BlenderMantaflow.git"], shell=False)
 
-        print("########## Entr in " + blenderDir + " ##########")
+        print("########## Enter in " + blenderDir + " ##########")
         os.chdir(blenderDir)
         #print os.getcwd()
 
@@ -53,11 +116,11 @@ if ( os.path.isdir(lastBlendDir) ):
             else:
                 print("########## All dependeces are ok ##########")
 
-        if (lastBlendDir == "blender"):
+        if (blenderDir == "blender"):
             subprocess.call(["git", "submodule", "update", "--init", "--recursive"], shell=False)
             subprocess.call(["git", "submodule", "foreach", "git", "checkout", "master"], shell=False)
             subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase", "origin", "master"], shell=False)
-        elif (lastBlendDir == "BlenderMantaflow"):
+        elif (blenderDir == "BlenderMantaflow"): # mantaflow:
             subprocess.call(["git", "submodule", "foreach", "git", "checkout", "master"], shell=False)
             subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase", "origin", "master"], shell=False)
 
@@ -68,29 +131,8 @@ if ( os.path.isdir(lastBlendDir) ):
         print("########## Compiling... ##########")
         subprocess.call("make", shell=False)
 
-        exitMenu = False
-        pwd = os.getcwd()
-        while (exitMenu == False):
-            existe = os.path.islink("/usr/local/bin/blender")  # si no hay link lo hacemos
-            if existe:
-                print "Symbolic link /usr/local/bin/blender exist -> " + os.readlink('/usr/local/bin/blender')
-                entrada = raw_input("Upgrade this? (y/n): ")
-                if entrada == "y" or entrada == "Y":
-                    print "########## updating link... ########## "
-                    print "########## for this action need root password: "
-                    subprocess.call(["sudo", "ln", "-sf" , homeuser+"/"+lastBlendDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blender"], shell=False)
-                    exitMenu = True
-                elif entrada == "n" or entrada == "N":
-                    print "########## keep link. ##########"
-                    exitMenu = True
-                else:
-                    print "Only are avalidable this options:  y Y n N"
-                    exitMenu = False
-            else:
-                print "########## Making Symbolic link -> in to path ##########"
-                print "########## for this action need root password: "
-                subprocess.call(["sudo", "ln", "-sf" , homeuser+"/"+lastBlendDir+"/"+"build_linux/bin/blender", "/usr/local/bin/blender"], shell=False)
-                exitMenu = True
+        checkSymLink()
+
     else:
         print("########## Previously compiled here, now upgrade... ##########")
         os.chdir(blenderDir)
@@ -98,5 +140,6 @@ if ( os.path.isdir(lastBlendDir) ):
         subprocess.call(["git", "submodule", "foreach", "git", "pull", "--rebase", "origin", "master"], shell=False)
         subprocess.call(["make", "update"], shell=False)
         subprocess.call("make", shell=False)
+        checkSymLink()
 
 print("Thanks for use my script version: "+version)
