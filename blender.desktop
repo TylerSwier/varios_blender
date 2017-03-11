@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Blender
+Comment="3D Software"
+Exec=blender %U
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Icon=/home/jorge/.lastblender/blender-2.78c-linux-glibc219-x86_64/icons/scalable/apps/blender.svg
+StartupNotify=true
+StartupWMClass=Blender
