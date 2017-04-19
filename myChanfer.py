@@ -43,6 +43,8 @@ class game_modeling(bpy.types.Panel):
         row.operator("set.bevel", text="Set")
         row.operator("unset.bevel", text="Unset")
         #
+        col.operator("add.smooth", text="Add Smooth")
+        #
         col.label(text="Similar to EdgeSplit:")
         mesh = bpy.data.meshes[bpy.context.active_object.name]
         sub1 = col.column()
@@ -61,6 +63,20 @@ class addBevel(bpy.types.Operator):
             bpy.ops.object.modifier_add(type='BEVEL')
             ob.modifiers["Bevel"].limit_method = 'WEIGHT'
         return {'FINISHED'}
+
+class addSmooth(bpy.types.Operator):
+    bl_idname = "add.smooth"
+    bl_label = "Add Smooth"
+    bl_description = "Add Smooth Modifier if not have"
+    def execute(self, context):
+        ob = bpy.context.active_object
+        if "Subsurf" not in ob.modifiers:
+            bpy.ops.object.modifier_add(type='SUBSURF')
+            ob.modifiers["Subsurf"].levels = 2
+            ob.modifiers["Subsurf"].show_only_control_edges = True
+        return {'FINISHED'}
+    
+
 
 
 class setBevel(bpy.types.Operator):
