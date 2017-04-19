@@ -77,8 +77,6 @@ class addSmooth(bpy.types.Operator):
             ob.modifiers["Subsurf"].levels = 2
             ob.modifiers["Subsurf"].show_only_control_edges = True
         return {'FINISHED'}
-    
-
 
 
 class setBevel(bpy.types.Operator):
@@ -86,7 +84,10 @@ class setBevel(bpy.types.Operator):
     bl_label = "Set"
     bl_description = "Set to vertex/edges/faces one weight bevel"
     def execute(self, context):
-        bpy.ops.transform.edge_bevelweight(value=1)
+        if bpy.context.mode == 'EDIT_MESH':
+            bpy.ops.transform.edge_bevelweight(value=1)
+        else:
+            self.report({'INFO'}, "This option only work in edit mode!")
         return {'FINISHED'}
 
 class UnsetBevel(bpy.types.Operator):
@@ -94,7 +95,10 @@ class UnsetBevel(bpy.types.Operator):
     bl_label = "UnSet"
     bl_description = "UnSet weight bevel"
     def execute(self, context):
-        bpy.ops.transform.edge_bevelweight(value=-1)
+        if bpy.context.mode == 'EDIT_MESH':
+            bpy.ops.transform.edge_bevelweight(value=-1)
+        else:
+            self.report({'INFO'}, "This option only work in edit mode!")
         return {'FINISHED'}
         
 
