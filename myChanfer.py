@@ -27,10 +27,12 @@ bpy.types.Scene.my_prop_1 = bpy.props.BoolProperty()
 #bpy.types.Scene.my_prop_1 = bpy.context.selected_objects[0].data.use_auto_smooth
 
 class game_modeling(bpy.types.Panel):
-    bl_category = "Tools"
+    bl_label = "Chanfer"
+    bl_category = "Chanfer"
+    #bl_category = "Tools"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
-    bl_context = "mesh_edit"
+    #bl_context = "mesh_edit"
     bl_label = "Game WorkFlow"
     def draw(self, context):
         layout = self.layout
