@@ -36,6 +36,7 @@ class game_modeling(bpy.types.Panel):
     bl_label = "Game WorkFlow"
     def draw(self, context):
         layout = self.layout
+        ob = bpy.context.active_object
         col = layout.column(align=True)
         col.label(text="Set / Unset bevels:")
         #
@@ -47,13 +48,17 @@ class game_modeling(bpy.types.Panel):
         #
         col.operator("add.smooth", text="Add Smooth")
         #
+        col.label(text="Shading:")
+        row = col.row(align=True)
+        row.operator("object.shade_smooth", text="Smooth")
+        row.operator("object.shade_flat", text="Flat")
+        #
         col.label(text="Similar to EdgeSplit:")
         mesh = bpy.data.meshes[bpy.context.active_object.name]
         sub1 = col.column()
         sub1.prop(mesh, "use_auto_smooth")
         sub1.active = mesh.use_auto_smooth and not mesh.has_custom_normals
         sub1.prop(mesh, "auto_smooth_angle", text="Angle")
-
 
 class addBevel(bpy.types.Operator):
     bl_idname = "add.bevel"
@@ -78,7 +83,6 @@ class addSmooth(bpy.types.Operator):
             ob.modifiers["Subsurf"].show_only_control_edges = True
         return {'FINISHED'}
 
-
 class setBevel(bpy.types.Operator):
     bl_idname = "set.bevel"
     bl_label = "Set"
@@ -100,7 +104,6 @@ class UnsetBevel(bpy.types.Operator):
         else:
             self.report({'INFO'}, "This option only work in edit mode!")
         return {'FINISHED'}
-        
 
 # Registration
 def register():
