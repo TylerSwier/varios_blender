@@ -15,16 +15,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 bl_info = {
-    "name": "Modeling for Games",
+    "name": "Chanfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> chanfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
     "version": (0, 1),
     "blender": (2, 78),
-    "location": "Left Toolbar > Tools"
+    "category": "User",
+    #"location": "Left Toolbar > Tools"
+    "location": "Left Toolbar > Chanfer"
 }
-
-bpy.types.Scene.my_prop_1 = bpy.props.BoolProperty()
-#bpy.types.Scene.my_prop_1 = bpy.context.selected_objects[0].data.use_auto_smooth
 
 class game_modeling(bpy.types.Panel):
     bl_label = "Chanfer"
@@ -60,6 +59,7 @@ class game_modeling(bpy.types.Panel):
         sub1.active = mesh.use_auto_smooth and not mesh.has_custom_normals
         sub1.prop(mesh, "auto_smooth_angle", text="Angle")
 
+
 class addBevel(bpy.types.Operator):
     bl_idname = "add.bevel"
     bl_label = "Add Bevel"
@@ -68,6 +68,8 @@ class addBevel(bpy.types.Operator):
         ob = bpy.context.active_object
         if "Bevel" not in ob.modifiers:
             bpy.ops.object.modifier_add(type='BEVEL')
+            ob.modifiers["Bevel"].width = 0.04
+            ob.modifiers["Bevel"].segments = 2
             ob.modifiers["Bevel"].limit_method = 'WEIGHT'
         return {'FINISHED'}
 
@@ -82,6 +84,7 @@ class addSmooth(bpy.types.Operator):
             ob.modifiers["Subsurf"].levels = 2
             ob.modifiers["Subsurf"].show_only_control_edges = True
         return {'FINISHED'}
+
 
 class setBevel(bpy.types.Operator):
     bl_idname = "set.bevel"
@@ -104,6 +107,7 @@ class UnsetBevel(bpy.types.Operator):
         else:
             self.report({'INFO'}, "This option only work in edit mode!")
         return {'FINISHED'}
+
 
 # Registration
 def register():
