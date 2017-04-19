@@ -68,7 +68,7 @@ class addBevel(bpy.types.Operator):
         ob = bpy.context.active_object
         if "Bevel" not in ob.modifiers:
             bpy.ops.object.modifier_add(type='BEVEL')
-            ob.modifiers["Bevel"].width = 0.04
+            ob.modifiers["Bevel"].width = 0.05
             ob.modifiers["Bevel"].segments = 2
             ob.modifiers["Bevel"].limit_method = 'WEIGHT'
         return {'FINISHED'}
