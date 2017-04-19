@@ -35,7 +35,7 @@ class game_modeling(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         col = layout.column(align=True)
-        col.label(text="Set/Unset bevels:")
+        col.label(text="Set / Unset bevels:")
         #
         col.operator("add.bevel", text="Add Bevel")
         #
