@@ -15,19 +15,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 bl_info = {
-    "name": "Chanfer",
-    "description": "Similar to 3dmax WorkFlow: LowPoly -> chanfer + turbosmooth = HightPoly",
+    "name": "Chamfer",
+    "description": "Similar to 3dmax WorkFlow: LowPoly -> chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
     "version": (0, 1),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
-    "location": "Left Toolbar > Chanfer"
+    "location": "Left Toolbar > Chamfer"
 }
 
 class game_modeling(bpy.types.Panel):
-    bl_label = "Chanfer"
-    bl_category = "Chanfer"
+    bl_label = "Chamfer"
+    bl_category = "Chamfer"
     #bl_category = "Tools"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
