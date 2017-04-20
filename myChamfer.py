@@ -27,6 +27,8 @@ bl_info = {
 }
 
 class game_modeling(bpy.types.Panel):
+    B = False
+    S = False
     bl_label = "Chamfer"
     bl_category = "Chamfer"
     #bl_category = "Tools"
@@ -65,19 +67,19 @@ class game_modeling(bpy.types.Panel):
 def newElementMenu(self, context):
     ob = bpy.context.active_object
     mod = ob.modifiers["Bevel"]
-    if not hasattr(self.layout, 'width'):
+    if self.B == False:
         self.layout.prop(mod, "width", text="Bevel width")
-    if not hasattr(self.layout, 'segments'):
         self.layout.prop(mod, "segments", text="Bevel segments")
-    if not hasattr(self.layout, 'profile'):
         self.layout.prop(mod, "profile", text="Bevel profile")
+        self.B = True
 
 def newElementMenuSmooth(self, context):
     ob = bpy.context.active_object
     mod = ob.modifiers["Subsurf"]
-    if not hasattr(self.layout, 'levels'):
+    if self.S == False:
         self.layout.prop(mod, "levels", text="Smooth levels")
         #self.layout.prop(mod, "render_levels", text="Smooth Render levels")
+        self.S = True
 
 class addBevel(bpy.types.Operator):
     bl_idname = "add.bevel"
