@@ -94,6 +94,11 @@ class setBevel(bpy.types.Operator):
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
             bpy.ops.transform.edge_bevelweight(value=1)
+            bpy.ops.mesh.mark_sharp()
+            ob = bpy.context.active_object
+            mesh = bpy.data.meshes[ob.name]
+            mesh.use_auto_smooth = True
+            ob.data.auto_smooth_angle = 180
         else:
             self.report({'INFO'}, "This option only work in edit mode!")
         return {'FINISHED'}
@@ -105,6 +110,7 @@ class UnsetBevel(bpy.types.Operator):
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
             bpy.ops.transform.edge_bevelweight(value=-1)
+            bpy.ops.mesh.mark_sharp(clear=True)
         else:
             self.report({'INFO'}, "This option only work in edit mode!")
         return {'FINISHED'}
