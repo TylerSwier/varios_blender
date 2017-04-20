@@ -66,6 +66,12 @@ def newElementMenu(self, context):
     self.layout.prop(mod, "width", text="Bevel width")
     self.layout.prop(mod, "segments", text="Bevel segments")
 
+def newElementMenuSmooth(self, context):
+    ob = bpy.context.active_object
+    mod = ob.modifiers["Subsurf"]
+    self.layout.prop(mod, "levels", text="Smooth levels")
+    #self.layout.prop(mod, "render_levels", text="Smooth Render levels")
+
 class addBevel(bpy.types.Operator):
     bl_idname = "add.bevel"
     bl_label = "Add Bevel"
@@ -93,6 +99,7 @@ class addSmooth(bpy.types.Operator):
             bpy.ops.object.modifier_add(type='SUBSURF')
             ob.modifiers["Subsurf"].levels = 2
             ob.modifiers["Subsurf"].show_only_control_edges = True
+            bpy.types.game_modeling.append(newElementMenuSmooth)
         return {'FINISHED'}
 
 
