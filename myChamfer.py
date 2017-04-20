@@ -99,7 +99,7 @@ class addSmooth(bpy.types.Operator):
 class setBevel(bpy.types.Operator):
     bl_idname = "set.bevel"
     bl_label = "Set"
-    bl_description = "Set to vertex/edges/faces one weight bevel"
+    bl_description = "Set to edges (preferably without faces) one weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
             bpy.ops.transform.edge_bevelweight(value=1)
