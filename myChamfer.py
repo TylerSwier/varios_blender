@@ -53,6 +53,7 @@ class game_modeling(bpy.types.Panel):
         row.operator("object.shade_flat", text="Flat")
         #
         col.label(text="Similar to EdgeSplit:")
+        # este es mejor que edge split porque no separa los vertices:
         mesh = bpy.data.meshes[bpy.context.active_object.name]
         sub1 = col.column()
         sub1.prop(mesh, "use_auto_smooth")
