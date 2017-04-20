@@ -1,4 +1,6 @@
 import bpy
+import bmesh
+
 
 '''
 Copyright (c) 2012 Jorge Hernandez - Melendez
@@ -117,9 +119,18 @@ class addSmooth(bpy.types.Operator):
 class setBevel(bpy.types.Operator):
     bl_idname = "set.bevel"
     bl_label = "Set"
-    bl_description = "Set to edges (preferably without faces) one weight bevel and sharp"
+    bl_description = "Set to (edges or faces) one weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
+            # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
+            me = bpy.context.object.data
+            bm = bmesh.from_edit_mesh(me)
+            faces = []
+            for face in bm.faces:
+                if face.select:
+                    faces.append(repr(face.index))
+            if (len(faces) > 0 and len(faces) < len(bm.faces) ): # si son caras (y no son todas las caras del objeto):
+                bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
             bpy.ops.transform.edge_bevelweight(value=1)
             bpy.ops.mesh.mark_sharp()
             ob = bpy.context.active_object
