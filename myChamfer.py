@@ -75,7 +75,10 @@ def newElementMenu(self, context):
 
 def newElementMenuSmooth(self, context):
     ob = bpy.context.active_object
-    mod = ob.modifiers["Subsurf"]
+    try:
+        mod = ob.modifiers["Subsurf"]
+    except KeyError:
+        pass
     if self.S == False:
         self.layout.prop(mod, "levels", text="Smooth levels")
         #self.layout.prop(mod, "render_levels", text="Smooth Render levels")
