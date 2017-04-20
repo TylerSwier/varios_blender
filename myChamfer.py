@@ -1,7 +1,6 @@
 import bpy
 import bmesh
 
-
 '''
 Copyright (c) 2012 Jorge Hernandez - Melendez
 This program is free software: you can redistribute it and/or modify
