@@ -70,6 +70,7 @@ class addBevel(bpy.types.Operator):
             bpy.ops.object.modifier_add(type='BEVEL')
             ob.modifiers["Bevel"].width = 0.05
             ob.modifiers["Bevel"].segments = 2
+            ob.modifiers["Bevel"].profile = 1
             ob.modifiers["Bevel"].limit_method = 'WEIGHT'
         return {'FINISHED'}
 
