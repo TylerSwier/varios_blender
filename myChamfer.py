@@ -65,6 +65,7 @@ def newElementMenu(self, context):
     mod = ob.modifiers["Bevel"]
     self.layout.prop(mod, "width", text="Bevel width")
     self.layout.prop(mod, "segments", text="Bevel segments")
+    self.layout.prop(mod, "profile", text="Bevel profile")
 
 def newElementMenuSmooth(self, context):
     ob = bpy.context.active_object
