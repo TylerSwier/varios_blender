@@ -59,6 +59,11 @@ class game_modeling(bpy.types.Panel):
         sub1.active = mesh.use_auto_smooth and not mesh.has_custom_normals
         sub1.prop(mesh, "auto_smooth_angle", text="Angle")
 
+# este es el elemento que voy a incluir nuevo en mi ui:
+def newElementMenu(self, context):
+    ob = bpy.context.active_object
+    mod = ob.modifiers["Bevel"]
+    self.layout.prop(mod, "width", text="Bevel width")
 
 class addBevel(bpy.types.Operator):
     bl_idname = "add.bevel"
@@ -72,6 +77,9 @@ class addBevel(bpy.types.Operator):
             ob.modifiers["Bevel"].segments = 2
             ob.modifiers["Bevel"].profile = 1
             ob.modifiers["Bevel"].limit_method = 'WEIGHT'
+            # Si le ponemos un bevel tambien externalizamos el width para mayor comodidad:
+            # bpy.types.game_modeling.prepend(newElementMenu)
+            bpy.types.game_modeling.append(newElementMenu)
         return {'FINISHED'}
 
 class addSmooth(bpy.types.Operator):
