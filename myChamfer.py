@@ -26,11 +26,6 @@ bl_info = {
     "location": "Left Toolbar > Chamfer"
 }
 
-# los elementos nuevos de mi ui al externalizarlos a veces hacia
-# varias veces el append. Para prevenir esto hice estas variables:
-elemento1 = False
-elemento2 = False
-
 class game_modeling(bpy.types.Panel):
     bl_label = "Chamfer"
     bl_category = "Chamfer"
@@ -70,17 +65,19 @@ class game_modeling(bpy.types.Panel):
 def newElementMenu(self, context):
     ob = bpy.context.active_object
     mod = ob.modifiers["Bevel"]
-    self.layout.prop(mod, "width", text="Bevel width")
-    self.layout.prop(mod, "segments", text="Bevel segments")
-    self.layout.prop(mod, "profile", text="Bevel profile")
-    elemento1 = True
+    if not hasattr(self.layout, 'width'):
+        self.layout.prop(mod, "width", text="Bevel width")
+    if not hasattr(self.layout, 'segments'):
+        self.layout.prop(mod, "segments", text="Bevel segments")
+    if not hasattr(self.layout, 'profile'):
+        self.layout.prop(mod, "profile", text="Bevel profile")
 
 def newElementMenuSmooth(self, context):
     ob = bpy.context.active_object
     mod = ob.modifiers["Subsurf"]
-    self.layout.prop(mod, "levels", text="Smooth levels")
-    #self.layout.prop(mod, "render_levels", text="Smooth Render levels")
-    elemento2 = True
+    if not hasattr(self.layout, 'levels'):
+        self.layout.prop(mod, "levels", text="Smooth levels")
+        #self.layout.prop(mod, "render_levels", text="Smooth Render levels")
 
 class addBevel(bpy.types.Operator):
     bl_idname = "add.bevel"
@@ -96,8 +93,7 @@ class addBevel(bpy.types.Operator):
             ob.modifiers["Bevel"].limit_method = 'WEIGHT'
             # Si le ponemos un bevel tambien externalizamos el width para mayor comodidad:
             # bpy.types.game_modeling.prepend(newElementMenu)
-            if elemento1 == False:
-                bpy.types.game_modeling.append(newElementMenu)
+            bpy.types.game_modeling.append(newElementMenu)
         return {'FINISHED'}
 
 class addSmooth(bpy.types.Operator):
@@ -110,8 +106,7 @@ class addSmooth(bpy.types.Operator):
             bpy.ops.object.modifier_add(type='SUBSURF')
             ob.modifiers["Subsurf"].levels = 2
             ob.modifiers["Subsurf"].show_only_control_edges = True
-            if elemento2 == False:
-                bpy.types.game_modeling.append(newElementMenuSmooth)
+            bpy.types.game_modeling.append(newElementMenuSmooth)
         return {'FINISHED'}
 
 
