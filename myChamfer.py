@@ -16,7 +16,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
     "name": "Chamfer",
-    "description": "Similar to 3dmax WorkFlow: LowPoly -> chamfer + turbosmooth = HightPoly",
+    "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
     "version": (0, 1),
     "blender": (2, 78),
