@@ -18,7 +18,7 @@ bl_info = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 1),
+    "version": (0, 2),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
