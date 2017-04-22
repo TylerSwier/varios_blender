@@ -198,7 +198,7 @@ class UnsetBevel(bpy.types.Operator):
 class Grid(bpy.types.Operator):
     bl_idname = "grid.toggle"
     bl_label = "grid"
-    bl_description = "Show/Hide grid"
+    bl_description = "Hide/Show grid"
     def execute(self, context):
         if bpy.context.space_data.show_floor:
             bpy.context.space_data.show_floor = False
