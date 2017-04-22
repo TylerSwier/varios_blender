@@ -19,7 +19,7 @@ bl_info = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 2),
+    "version": (0, 3),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -45,7 +45,8 @@ class game_modeling(bpy.types.Panel):
         col.operator("add.bevel", text="Add Bevel")
         #
         row = col.row(align=True)
-        row.operator("set.bevel", text="Set")
+        row.operator("set.edges", text="Edges")
+        row.operator("set.faces", text="Faces")
         row.operator("unset.bevel", text="Unset")
         #
         col.operator("add.smooth", text="Add Smooth")
@@ -107,6 +108,9 @@ class addSmooth(bpy.types.Operator):
     bl_description = "Add Smooth Modifier if not have"
     def execute(self, context):
         ob = bpy.context.active_object
+        if "Bevel" not in ob.modifiers:
+            self.report({'INFO'}, "Smooth modifier need to add Bevel first!")
+            return {'FINISHED'}
         if "Subsurf" not in ob.modifiers:
             bpy.ops.object.modifier_add(type='SUBSURF')
             ob.modifiers["Subsurf"].levels = 2
@@ -114,10 +118,36 @@ class addSmooth(bpy.types.Operator):
             bpy.types.game_modeling.append(newElementMenuSmooth)
         return {'FINISHED'}
 
+class setBevelE(bpy.types.Operator):
+    bl_idname = "set.edges"
+    bl_label = "Set to Edges"
+    bl_description = "Set to (edges or faces) one weight bevel and sharp"
+    def execute(self, context):
+        if bpy.context.mode == 'EDIT_MESH':
+            # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
+            me = bpy.context.object.data
+            bm = bmesh.from_edit_mesh(me)
+            edges = []
+            for edge in bm.edges:
+                if edge.select:
+                    edges.append(repr(edge.index))
+            if len(edges) < 1 or bpy.context.tool_settings.mesh_select_mode[1] == False: # si son caras (y no son todas las caras del objeto):
+                self.report({'INFO'}, "This option is only for Edges!")
+                return {'FINISHED'}
+                #bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
+            bpy.ops.transform.edge_bevelweight(value=1)
+            bpy.ops.mesh.mark_sharp()
+            ob = bpy.context.active_object
+            mesh = bpy.data.meshes[ob.name]
+            mesh.use_auto_smooth = True
+            ob.data.auto_smooth_angle = 180
+        else:
+            self.report({'INFO'}, "This option only work in edit mode!")
+        return {'FINISHED'}
 
-class setBevel(bpy.types.Operator):
-    bl_idname = "set.bevel"
-    bl_label = "Set"
+class setBevelF(bpy.types.Operator):
+    bl_idname = "set.faces"
+    bl_label = "Set to Faces"
     bl_description = "Set to (edges or faces) one weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
@@ -128,8 +158,10 @@ class setBevel(bpy.types.Operator):
             for face in bm.faces:
                 if face.select:
                     faces.append(repr(face.index))
-            if (len(faces) > 0 and len(faces) < len(bm.faces) ): # si son caras (y no son todas las caras del objeto):
-                bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
+            if len(faces) < 1 or bpy.context.tool_settings.mesh_select_mode[2] == False: # si son caras (y no son todas las caras del objeto):
+                self.report({'INFO'}, "This option is only for Faces!")
+                return {'FINISHED'}
+            bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
             bpy.ops.transform.edge_bevelweight(value=1)
             bpy.ops.mesh.mark_sharp()
             ob = bpy.context.active_object
