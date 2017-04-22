@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 6),
+    "version": (0, 7),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -161,7 +161,8 @@ class setBevelF(bpy.types.Operator):
             if len(faces) < 1 or bpy.context.tool_settings.mesh_select_mode[2] == False: # si son caras (y no son todas las caras del objeto):
                 self.report({'WARNING'}, "This option is only for Faces!")
                 return {'FINISHED'}
-            bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
+            if len(faces) != len(bm.faces):
+                bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
             bpy.ops.transform.edge_bevelweight(value=1)
             bpy.ops.mesh.mark_sharp()
             ob = bpy.context.active_object
