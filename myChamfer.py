@@ -50,12 +50,12 @@ class game_modeling(bpy.types.Panel):
         row.operator("unset.bevel", text="Unset")
         #
         col.operator("add.smooth", text="Add Subsurf")
-        col.operator("grid.toggle", text="Hide/Show Grid")
         #
         col.label(text="Shading:")
         row = col.row(align=True)
         row.operator("object.shade_smooth", text="Smooth")
         row.operator("object.shade_flat", text="Flat")
+        col.operator("grid.toggle", text="Hide/Show Grid")
         #
         col.label(text="Similar to EdgeSplit:")
         # este es mejor que edge split porque no separa los vertices:
