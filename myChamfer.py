@@ -121,7 +121,7 @@ class addSmooth(bpy.types.Operator):
 class setBevelE(bpy.types.Operator):
     bl_idname = "set.edges"
     bl_label = "Set to Edges"
-    bl_description = "Set to (edges or faces) one weight bevel and sharp"
+    bl_description = "Set to edges weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
             # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
@@ -148,7 +148,7 @@ class setBevelE(bpy.types.Operator):
 class setBevelF(bpy.types.Operator):
     bl_idname = "set.faces"
     bl_label = "Set to Faces"
-    bl_description = "Set to (edges or faces) one weight bevel and sharp"
+    bl_description = "Set to faces weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
             # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
