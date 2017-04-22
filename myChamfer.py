@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 5),
+    "version": (0, 6),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -81,7 +81,7 @@ def newElementMenuSmooth(self, context):
     except KeyError:
         pass
     if self.S == False:
-        self.layout.prop(mod, "levels", text="Smooth levels")
+        self.layout.prop(mod, "levels", text="Subsurf levels")
         #self.layout.prop(mod, "render_levels", text="Smooth Render levels")
         self.S = True
 
