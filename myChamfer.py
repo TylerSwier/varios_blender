@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 9),
+    "version": (1, 0),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -50,6 +50,9 @@ class game_modeling(bpy.types.Panel):
         row.operator("unset.bevel", text="Unset")
         #
         col.operator("add.smooth", text="Add Subsurf")
+        row = col.row(align=True)
+        row.operator("add.crease", text="Add Crease")
+        row.operator("clear.crease", text="Clear Crease")
         #
         col.label(text="Shading:")
         row = col.row(align=True)
@@ -194,7 +197,6 @@ class UnsetBevel(bpy.types.Operator):
             self.report({'WARNING'}, "This option only work in edit mode!")
         return {'FINISHED'}
 
-
 class Grid(bpy.types.Operator):
     bl_idname = "grid.toggle"
     bl_label = "grid"
@@ -210,6 +212,21 @@ class Grid(bpy.types.Operator):
             bpy.context.space_data.show_axis_y = True
         return {'FINISHED'}
 
+class addCrease(bpy.types.Operator):
+    bl_idname = "add.crease"
+    bl_label = "addcrease"
+    bl_description = "Add full hard crease (for example in boundaries)"
+    def execute(self, context):
+        bpy.ops.transform.edge_crease(value=1)
+        return {'FINISHED'}
+
+class clearCrease(bpy.types.Operator):
+    bl_idname = "clear.crease"
+    bl_label = "clearcrease"
+    bl_description = "Remove creases"
+    def execute(self, context):
+        bpy.ops.transform.edge_crease(value=-1)
+        return {'FINISHED'}
 
 # Registration
 def register():
