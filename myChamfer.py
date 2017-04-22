@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 7),
+    "version": (0, 8),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -125,22 +125,26 @@ class setBevelE(bpy.types.Operator):
     bl_description = "Set to edges weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
-            # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
-            me = bpy.context.object.data
-            bm = bmesh.from_edit_mesh(me)
-            edges = []
-            for edge in bm.edges:
-                if edge.select:
-                    edges.append(repr(edge.index))
-            if len(edges) < 1 or bpy.context.tool_settings.mesh_select_mode[1] == False: # si son caras (y no son todas las caras del objeto):
-                self.report({'WARNING'}, "This option is only for Edges!")
-                return {'FINISHED'}
-            bpy.ops.transform.edge_bevelweight(value=1)
-            bpy.ops.mesh.mark_sharp()
             ob = bpy.context.active_object
-            mesh = bpy.data.meshes[ob.name]
-            mesh.use_auto_smooth = True
-            ob.data.auto_smooth_angle = 180
+            if "Subsurf" in ob.modifiers:
+                # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
+                me = bpy.context.object.data
+                bm = bmesh.from_edit_mesh(me)
+                edges = []
+                for edge in bm.edges:
+                    if edge.select:
+                        edges.append(repr(edge.index))
+                if len(edges) < 1 or bpy.context.tool_settings.mesh_select_mode[1] == False: # si son caras (y no son todas las caras del objeto):
+                    self.report({'WARNING'}, "This option is only for Edges!")
+                    return {'FINISHED'}
+                bpy.ops.transform.edge_bevelweight(value=1)
+                bpy.ops.mesh.mark_sharp()
+                mesh = bpy.data.meshes[ob.name]
+                mesh.use_auto_smooth = True
+                ob.data.auto_smooth_angle = 180
+            else:
+                self.report({'WARNING'}, "You need add Subsurf first!")
+                return {'FINISHED'}
         else:
             self.report({'WARNING'}, "This option only work in edit mode!")
         return {'FINISHED'}
@@ -151,24 +155,28 @@ class setBevelF(bpy.types.Operator):
     bl_description = "Set to faces weight bevel and sharp"
     def execute(self, context):
         if bpy.context.mode == 'EDIT_MESH':
-            # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
-            me = bpy.context.object.data
-            bm = bmesh.from_edit_mesh(me)
-            faces = []
-            for face in bm.faces:
-                if face.select:
-                    faces.append(repr(face.index))
-            if len(faces) < 1 or bpy.context.tool_settings.mesh_select_mode[2] == False: # si son caras (y no son todas las caras del objeto):
-                self.report({'WARNING'}, "This option is only for Faces!")
-                return {'FINISHED'}
-            if len(faces) != len(bm.faces):
-                bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
-            bpy.ops.transform.edge_bevelweight(value=1)
-            bpy.ops.mesh.mark_sharp()
             ob = bpy.context.active_object
-            mesh = bpy.data.meshes[ob.name]
-            mesh.use_auto_smooth = True
-            ob.data.auto_smooth_angle = 180
+            if "Subsurf" in ob.modifiers:
+                # determinar si solo es un edge loop o un edge o si son caras seleccionadas:
+                me = bpy.context.object.data
+                bm = bmesh.from_edit_mesh(me)
+                faces = []
+                for face in bm.faces:
+                    if face.select:
+                        faces.append(repr(face.index))
+                if len(faces) < 1 or bpy.context.tool_settings.mesh_select_mode[2] == False: # si son caras (y no son todas las caras del objeto):
+                    self.report({'WARNING'}, "This option is only for Faces!")
+                    return {'FINISHED'}
+                if len(faces) != len(bm.faces):
+                    bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
+                bpy.ops.transform.edge_bevelweight(value=1)
+                bpy.ops.mesh.mark_sharp()
+                mesh = bpy.data.meshes[ob.name]
+                mesh.use_auto_smooth = True
+                ob.data.auto_smooth_angle = 180
+            else:
+                self.report({'WARNING'}, "You need add Subsurf first!")
+                return {'FINISHED'}
         else:
             self.report({'WARNING'}, "This option only work in edit mode!")
         return {'FINISHED'}
