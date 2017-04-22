@@ -19,7 +19,7 @@ bl_info = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 3),
+    "version": (0, 4),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -49,7 +49,7 @@ class game_modeling(bpy.types.Panel):
         row.operator("set.faces", text="Faces")
         row.operator("unset.bevel", text="Unset")
         #
-        col.operator("add.smooth", text="Add Smooth")
+        col.operator("add.smooth", text="Add Subsurf")
         #
         col.label(text="Shading:")
         row = col.row(align=True)
@@ -109,12 +109,12 @@ class addSmooth(bpy.types.Operator):
     def execute(self, context):
         ob = bpy.context.active_object
         if "Bevel" not in ob.modifiers:
-            self.report({'INFO'}, "Smooth modifier need to add Bevel first!")
+            self.report({'INFO'}, "You need add Bevel first!")
             return {'FINISHED'}
         if "Subsurf" not in ob.modifiers:
             bpy.ops.object.modifier_add(type='SUBSURF')
             ob.modifiers["Subsurf"].levels = 2
-            ob.modifiers["Subsurf"].show_only_control_edges = True
+            # ob.modifiers["Subsurf"].show_only_control_edges = True
             bpy.types.game_modeling.append(newElementMenuSmooth)
         return {'FINISHED'}
 
@@ -134,7 +134,6 @@ class setBevelE(bpy.types.Operator):
             if len(edges) < 1 or bpy.context.tool_settings.mesh_select_mode[1] == False: # si son caras (y no son todas las caras del objeto):
                 self.report({'INFO'}, "This option is only for Edges!")
                 return {'FINISHED'}
-                #bpy.ops.mesh.region_to_loop() # si son caras con esto selecciono solo los contornos
             bpy.ops.transform.edge_bevelweight(value=1)
             bpy.ops.mesh.mark_sharp()
             ob = bpy.context.active_object
