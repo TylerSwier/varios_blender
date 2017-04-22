@@ -113,7 +113,8 @@ class addSmooth(bpy.types.Operator):
             return {'FINISHED'}
         if "Subsurf" not in ob.modifiers:
             bpy.ops.object.modifier_add(type='SUBSURF')
-            ob.modifiers["Subsurf"].levels = 2
+            ob.modifiers["Subsurf"].levels = 3
+            ob.modifiers["Subsurf"].render_levels = 3
             # ob.modifiers["Subsurf"].show_only_control_edges = True
             bpy.types.game_modeling.append(newElementMenuSmooth)
         return {'FINISHED'}
