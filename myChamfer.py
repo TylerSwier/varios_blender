@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (0, 8),
+    "version": (0, 9),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -50,6 +50,7 @@ class game_modeling(bpy.types.Panel):
         row.operator("unset.bevel", text="Unset")
         #
         col.operator("add.smooth", text="Add Subsurf")
+        col.operator("grid.toggle", text="Hide/Show Grid")
         #
         col.label(text="Shading:")
         row = col.row(align=True)
@@ -191,6 +192,22 @@ class UnsetBevel(bpy.types.Operator):
             bpy.ops.mesh.mark_sharp(clear=True)
         else:
             self.report({'WARNING'}, "This option only work in edit mode!")
+        return {'FINISHED'}
+
+
+class Grid(bpy.types.Operator):
+    bl_idname = "grid.toggle"
+    bl_label = "grid"
+    bl_description = "Show/Hide grid"
+    def execute(self, context):
+        if bpy.context.space_data.show_floor:
+            bpy.context.space_data.show_floor = False
+            bpy.context.space_data.show_axis_x = False
+            bpy.context.space_data.show_axis_y = False
+        else:
+            bpy.context.space_data.show_floor = True
+            bpy.context.space_data.show_axis_x = True
+            bpy.context.space_data.show_axis_y = True
         return {'FINISHED'}
 
 
