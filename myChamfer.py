@@ -73,7 +73,7 @@ class game_modeling(bpy.types.Panel):
 
         col = box.column(align=True)
         col.prop(context.scene, 'export_obj_path')
-        col.operator("export.select", text="Export Active Object")
+        col.operator("export.select", text="Export Selected Objects")
 
 # este es el elemento que voy a incluir nuevo en mi ui:
 def newElementMenu(self, context):
@@ -238,7 +238,7 @@ class clearCrease(bpy.types.Operator):
 class exportSelect(bpy.types.Operator):
     bl_idname = "export.select"
     bl_label = "exportSelect"
-    bl_description = "Export selected objects"
+    bl_description = "Export Active Object"
     def execute(self, context):
         ob = bpy.context.active_object
         path = bpy.context.scene.export_obj_path
