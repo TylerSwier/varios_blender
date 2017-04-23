@@ -14,12 +14,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+version = "1.4"
 
 bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (1, 3),
+    "version": (version),
     "blender": (2, 78),
     "category": "User",
     "location": "Left Toolbar > Chamfer"
@@ -32,7 +33,7 @@ class game_modeling(bpy.types.Panel):
     bl_category = "Chamfer"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
-    bl_label = "Game WorkFlow"
+    bl_label = "Game WorkFlow " +version
     def draw(self, context):
         layout = self.layout
         ob = bpy.context.active_object
@@ -249,10 +250,12 @@ class exportSelect(bpy.types.Operator):
         #path = bpy.path.abspath(bpy.context.scene.export_obj_path)
         if path:
             if path[0:2] != '//':
+                if path.endswith(('.obj','.fbx','.abc','.dae')):
+                    path = path[:-4]
                 # exportando en baja:
-                bpy.ops.export_scene.obj(filepath=path+ob.name+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                bpy.ops.export_scene.obj(filepath=path+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
                 # exportando en alta:
-                bpy.ops.export_scene.obj(filepath=path+ob.name+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                bpy.ops.export_scene.obj(filepath=path+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
             else:
                 self.report({'WARNING'}, "Please, Uncheck Relative Path in browser path, before export!")
         else:
@@ -268,7 +271,8 @@ def register():
       name = "",
       default = "",
       description = "Export Path: Define the path for export low and hight objs",
-      subtype = 'DIR_PATH'
+      #subtype = 'DIR_PATH'
+      subtype = 'FILE_PATH'
       )
 
 def unregister():
