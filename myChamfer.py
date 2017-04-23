@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (1, 2),
+    "version": (1, 3),
     "blender": (2, 78),
     "category": "User",
     "location": "Left Toolbar > Chamfer"
@@ -82,7 +82,7 @@ def newElementMenu(self, context):
     if self.B == False:
         self.layout.prop(mod, "width", text="Bevel width")
         self.layout.prop(mod, "segments", text="Bevel segments")
-        self.layout.prop(mod, "profile", text="Bevel profile")
+        self.layout.prop(mod, "profile", text="Bevel Out/Inward")
         self.B = True
 
 def newElementMenuSmooth(self, context):
