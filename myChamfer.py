@@ -1,5 +1,7 @@
 import bpy
 import bmesh
+import math
+from mathutils import Vector
 
 '''
 Copyright (c) 2012 Jorge Hernandez - Melendez
@@ -14,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
-version = "1.5"
+version = "1.6"
 
 bl_WARNING = {
     "name": "Chamfer",
@@ -73,6 +75,7 @@ class game_modeling(bpy.types.Panel):
         sub1.prop(mesh, "auto_smooth_angle", text="Angle")
 
         col = box.column(align=True)
+        col.prop(context.scene, 'explodeBool')
         col.prop(context.scene, 'export_obj_path')
         col.operator("export.select", text="Export Selected Objects")
 
@@ -240,6 +243,31 @@ class clearCrease(bpy.types.Operator):
         bpy.ops.transform.edge_crease(value=-1)
         return {'FINISHED'}
 
+def getCentroid():
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            ctx = bpy.context.copy()
+            ctx['area'] = area
+            bpy.ops.view3d.snap_cursor_to_selected(ctx)
+            return bpy.context.scene.cursor_location[:]
+
+# para guardar las coordenadas originales de cada objeto:
+originalCoords = []
+def explodeObjects(centroid):
+    centroid = Vector(centroid)
+    for ob in bpy.context.selected_objects:
+        # guardo las coordenadas iniciales para luego poder restaurarlas:
+        originalCoords.append([ob.name, ob.location.x, ob.location.y, ob.location.z ])
+        # calculamos la direccion:
+        direccion = ob.location - centroid
+        # la normalizamos para que todas las piezas se desplacen lo mismo:
+        direccion.normalize()
+        # calculo la fuerza en funcion de las dimensiones del objeto:
+        fuerza = ((ob.dimensions.x/2) + (ob.dimensions.y/2) + (ob.dimensions.z/2))
+        # trasladamos al objeto:
+        ob.location = direccion * fuerza
+    return originalCoords
+
 class exportSelect(bpy.types.Operator):
     bl_idname = "export.select"
     bl_label = "exportSelect"
@@ -253,10 +281,32 @@ class exportSelect(bpy.types.Operator):
                 if path[-1] != '/':
                     if path.endswith(('.obj','.fbx','.abc','.dae')):
                         path = path[:-4]
-                    # exportando en baja:
-                    bpy.ops.export_scene.obj(filepath=path+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
-                    # exportando en alta:
-                    bpy.ops.export_scene.obj(filepath=path+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                    if bpy.context.scene.explodeBool:
+                        # necesitamos el punto medio de todos los objetos para q sea el punto de partida
+                        # de lo que seria la explosion:
+                        centroid = getCentroid()
+                        # haciendo el explode y obteniendo las coords originales:
+                        coords = explodeObjects(centroid)
+
+                        # exportando en baja:
+                        bpy.ops.export_scene.obj(filepath=path+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                        # exportando en alta:
+                        bpy.ops.export_scene.obj(filepath=path+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+
+                        # restauramos las coordenadas como estaban:
+                        for i in coords:
+                            # parseo los datos para que sea mas sencillo:
+                            nombre = i[0]
+                            x = i[1]
+                            y = i[2]
+                            z = i[3]
+                            # reseteo a cada objeto a su posicion:
+                            bpy.data.objects[nombre].location = (x,y,z)
+                    else:
+                        # exportando en baja:
+                        bpy.ops.export_scene.obj(filepath=path+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                        # exportando en alta:
+                        bpy.ops.export_scene.obj(filepath=path+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
                 else:
                     self.report({'WARNING'}, "Bad File Name!")
             else:
@@ -270,13 +320,14 @@ class exportSelect(bpy.types.Operator):
 def register():
     bpy.utils.register_module(__name__)
     bpy.types.Scene.export_obj_path = bpy.props.StringProperty \
-      (
+     (
       name = "",
       default = "",
       description = "Export Path: Define the path for export low and hight objs",
       #subtype = 'DIR_PATH'
       subtype = 'FILE_PATH'
       )
+    bpy.types.Scene.explodeBool = bpy.props.BoolProperty(name="Explode",description="Explode for better bake",default = False)
 
 def unregister():
     bpy.utils.unregister_module(__name__)
