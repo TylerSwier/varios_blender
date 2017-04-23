@@ -17,13 +17,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
-version = "1.6"
 
-bl_WARNING = {
+bl_info = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (version),
+    "version": (1.7),
     "blender": (2, 78),
     "category": "User",
     "location": "Left Toolbar > Chamfer"
@@ -36,7 +35,7 @@ class game_modeling(bpy.types.Panel):
     bl_category = "Chamfer"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
-    bl_label = "Game WorkFlow " +version
+    bl_label = "Game WorkFlow 1.7"
     def draw(self, context):
         layout = self.layout
         ob = bpy.context.active_object
