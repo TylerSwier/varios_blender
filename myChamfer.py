@@ -19,7 +19,7 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 78),
     "category": "User",
     #"location": "Left Toolbar > Tools"
@@ -39,9 +39,10 @@ class game_modeling(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         ob = bpy.context.active_object
-        col = layout.column(align=True)
-        col.label(text="Set / Unset bevels:")
         #
+        box = layout.box()
+        col = box.column(align=True)
+        # col.label(text="Set / Unset bevels:")
         col.operator("add.bevel", text="Add Bevel")
         #
         row = col.row(align=True)
@@ -49,19 +50,26 @@ class game_modeling(bpy.types.Panel):
         row.operator("set.faces", text="Faces")
         row.operator("unset.bevel", text="Unset")
         #
+        col = col.column(align=True)
         col.operator("add.smooth", text="Add Subsurf")
-        row = col.row(align=True)
+        #
+        row = box.row(align=True)
         row.operator("add.crease", text="Add Crease")
         row.operator("clear.crease", text="Clear Crease")
         #
-        col.label(text="Shading:")
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row(align=True)
+        #
+        # col.label(text="Display:")
         row = col.row(align=True)
         row.operator("object.shade_smooth", text="Smooth")
         row.operator("object.shade_flat", text="Flat")
         col.operator("grid.toggle", text="Hide/Show Grid")
         #
-        col.label(text="Similar to EdgeSplit:")
+        # col.label(text="Similar to EdgeSplit:")
         # este es mejor que edge split porque no separa los vertices:
+        # Similar to EdgeSplit But without detaching vertices:
         mesh = bpy.data.meshes[bpy.context.active_object.name]
         sub1 = col.column()
         sub1.prop(mesh, "use_auto_smooth")
