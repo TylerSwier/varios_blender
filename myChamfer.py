@@ -82,7 +82,7 @@ def newElementMenu(self, context):
     if self.B == False:
         self.layout.prop(mod, "width", text="Bevel width")
         self.layout.prop(mod, "segments", text="Bevel segments")
-        self.layout.prop(mod, "profile", text="Bevel Out/Inward")
+        self.layout.prop(mod, "profile", text="Bevel Outside/Inside")
         self.B = True
 
 def newElementMenuSmooth(self, context):
