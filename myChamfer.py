@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
-version = "1.4"
+version = "1.5"
 
 bl_WARNING = {
     "name": "Chamfer",
@@ -250,12 +250,15 @@ class exportSelect(bpy.types.Operator):
         #path = bpy.path.abspath(bpy.context.scene.export_obj_path)
         if path:
             if path[0:2] != '//':
-                if path.endswith(('.obj','.fbx','.abc','.dae')):
-                    path = path[:-4]
-                # exportando en baja:
-                bpy.ops.export_scene.obj(filepath=path+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
-                # exportando en alta:
-                bpy.ops.export_scene.obj(filepath=path+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                if path[-1] != '/':
+                    if path.endswith(('.obj','.fbx','.abc','.dae')):
+                        path = path[:-4]
+                    # exportando en baja:
+                    bpy.ops.export_scene.obj(filepath=path+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                    # exportando en alta:
+                    bpy.ops.export_scene.obj(filepath=path+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                else:
+                    self.report({'WARNING'}, "Bad File Name!")
             else:
                 self.report({'WARNING'}, "Please, Uncheck Relative Path in browser path, before export!")
         else:
