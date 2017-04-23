@@ -111,6 +111,8 @@ class addBevel(bpy.types.Operator):
             # Si le ponemos un bevel tambien externalizamos el width para mayor comodidad:
             # bpy.types.game_modeling.prepend(newElementMenu)
             bpy.types.game_modeling.append(newElementMenu)
+        else:
+            bpy.types.game_modeling.append(newElementMenu)
         return {'FINISHED'}
 
 class addSmooth(bpy.types.Operator):
@@ -127,6 +129,8 @@ class addSmooth(bpy.types.Operator):
             ob.modifiers["Subsurf"].levels = 3
             ob.modifiers["Subsurf"].render_levels = 3
             # ob.modifiers["Subsurf"].show_only_control_edges = True
+            bpy.types.game_modeling.append(newElementMenuSmooth)
+        else:
             bpy.types.game_modeling.append(newElementMenuSmooth)
         return {'FINISHED'}
 
