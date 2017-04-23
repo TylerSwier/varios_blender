@@ -250,7 +250,7 @@ class exportSelect(bpy.types.Operator):
                 # exportando en alta:
                 bpy.ops.export_scene.obj(filepath=path+ob.name+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
             else:
-                self.report({'WARNING'}, "Uncheck Relative path in browse path before export please!")
+                self.report({'WARNING'}, "Please, Uncheck Relative Path in browser path, before export!")
         else:
             self.report({'WARNING'}, "You need specify one path first!")
         return {'FINISHED'}
