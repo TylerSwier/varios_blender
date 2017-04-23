@@ -19,10 +19,9 @@ bl_WARNING = {
     "name": "Chamfer",
     "description": "Similar to 3dmax WorkFlow: LowPoly -> smoothing groups + chamfer + turbosmooth = HightPoly",
     "author": "Jorge Hernandez - Melenedez",
-    "version": (1, 1),
+    "version": (1, 2),
     "blender": (2, 78),
     "category": "User",
-    #"location": "Left Toolbar > Tools"
     "location": "Left Toolbar > Chamfer"
 }
 
@@ -31,10 +30,8 @@ class game_modeling(bpy.types.Panel):
     S = False
     bl_label = "Chamfer"
     bl_category = "Chamfer"
-    #bl_category = "Tools"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
-    #bl_context = "mesh_edit"
     bl_label = "Game WorkFlow"
     def draw(self, context):
         layout = self.layout
@@ -60,13 +57,11 @@ class game_modeling(bpy.types.Panel):
         box = layout.box()
         col = box.column(align=True)
         row = col.row(align=True)
-        #
         # col.label(text="Display:")
         row = col.row(align=True)
         row.operator("object.shade_smooth", text="Smooth")
         row.operator("object.shade_flat", text="Flat")
         col.operator("grid.toggle", text="Hide/Show Grid")
-        #
         # col.label(text="Similar to EdgeSplit:")
         # este es mejor que edge split porque no separa los vertices:
         # Similar to EdgeSplit But without detaching vertices:
@@ -75,6 +70,10 @@ class game_modeling(bpy.types.Panel):
         sub1.prop(mesh, "use_auto_smooth")
         sub1.active = mesh.use_auto_smooth and not mesh.has_custom_normals
         sub1.prop(mesh, "auto_smooth_angle", text="Angle")
+
+        col = box.column(align=True)
+        col.prop(context.scene, 'export_obj_path')
+        col.operator("export.select", text="Export Active Object")
 
 # este es el elemento que voy a incluir nuevo en mi ui:
 def newElementMenu(self, context):
@@ -236,12 +235,41 @@ class clearCrease(bpy.types.Operator):
         bpy.ops.transform.edge_crease(value=-1)
         return {'FINISHED'}
 
+class exportSelect(bpy.types.Operator):
+    bl_idname = "export.select"
+    bl_label = "exportSelect"
+    bl_description = "Export selected objects"
+    def execute(self, context):
+        ob = bpy.context.active_object
+        path = bpy.context.scene.export_obj_path
+        #path = bpy.path.abspath(bpy.context.scene.export_obj_path)
+        if path:
+            if path[0:2] != '//':
+                # exportando en baja:
+                bpy.ops.export_scene.obj(filepath=path+ob.name+"_low.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=False, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+                # exportando en alta:
+                bpy.ops.export_scene.obj(filepath=path+ob.name+"_hight.obj", check_existing=True, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl", use_selection=True, use_animation=False, use_mesh_modifiers=True, use_edges=True, use_smooth_groups=True, use_smooth_groups_bitflags=False, use_normals=True, use_uvs=True, use_materials=False, use_triangles=False, use_nurbs=False, use_vertex_groups=True, use_blen_objects=True, group_by_object=False, group_by_material=False, keep_vertex_order=False, global_scale=1, path_mode='AUTO')
+            else:
+                self.report({'WARNING'}, "Uncheck Relative path in browse path before export please!")
+        else:
+            self.report({'WARNING'}, "You need specify one path first!")
+        return {'FINISHED'}
+
+
 # Registration
 def register():
     bpy.utils.register_module(__name__)
+    bpy.types.Scene.export_obj_path = bpy.props.StringProperty \
+      (
+      name = "",
+      default = "",
+      description = "Export Path: Define the path for export low and hight objs",
+      subtype = 'DIR_PATH'
+      )
 
 def unregister():
     bpy.utils.unregister_module(__name__)
+    del bpy.types.Scene.export_obj_path
 
 # This allows you to run the script directly from blenders text editor
 # to test the addon without having to install it.
