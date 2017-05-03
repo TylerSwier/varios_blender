@@ -326,9 +326,9 @@
               </ThemeGradientColors>
             </gradients>
             <panelcolors>
-              <ThemePanelColors header="#242526ff"
+              <ThemePanelColors header="#303131ff"
                                 back="#373839ff"
-                                show_header="FALSE"
+                                show_header="TRUE"
                                 show_back="FALSE">
               </ThemePanelColors>
             </panelcolors>
@@ -672,9 +672,9 @@
                              tab_back="#2c2d2ed9"
                              tab_outline="#373839">
             <panelcolors>
-              <ThemePanelColors header="#242526ff"
+              <ThemePanelColors header="#303131ff"
                                 back="#373839ff"
-                                show_header="FALSE"
+                                show_header="TRUE"
                                 show_back="FALSE">
               </ThemePanelColors>
             </panelcolors>
