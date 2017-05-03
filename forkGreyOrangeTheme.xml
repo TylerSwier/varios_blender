@@ -316,9 +316,9 @@
                               button_text="#ced2d9"
                               button_text_hi="#ced2d9"
                               tab_active="#373839"
-                              tab_inactive="#18191a"
+                              tab_inactive="#232727"
                               tab_back="#2c2d2ed9"
-                              tab_outline="#373839">
+                              tab_outline="#0c0c0c">
             <gradients>
               <ThemeGradientColors show_grad="FALSE"
                                    gradient="#3c3d40"
