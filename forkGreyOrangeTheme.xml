@@ -255,7 +255,7 @@
                    empty="#000000"
                    lamp="#00000028"
                    speaker="#000000"
-                   vertex="#CFCFCF"
+                   vertex="#cfcfcf"
                    vertex_select="#e69b4e"
                    vertex_size="3"
                    vertex_unreferenced="#404040"
@@ -875,8 +875,8 @@
       </ThemeOutliner>
     </outliner>
     <info>
-      <ThemeInfo info_selected="#1b1b1c"
-                 info_selected_text="#ced2d9"
+      <ThemeInfo info_selected="#98755c"
+                 info_selected_text="#000000"
                  info_error="#1b1b1c"
                  info_error_text="#f24949"
                  info_warning="#1b1b1c"
