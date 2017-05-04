@@ -255,7 +255,7 @@
                    empty="#000000"
                    lamp="#00000028"
                    speaker="#000000"
-                   vertex="#6d6d6d"
+                   vertex="#CFCFCF"
                    vertex_select="#e69b4e"
                    vertex_size="3"
                    vertex_unreferenced="#404040"
