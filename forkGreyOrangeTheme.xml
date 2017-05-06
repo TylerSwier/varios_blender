@@ -23,12 +23,12 @@
         </wcol_regular>
         <wcol_tool>
           <ThemeWidgetColors outline="#0d0d0d"
-                             inner="#3a3a3fff"
+                             inner="#272829ff"
                              inner_sel="#ba7e52ff"
                              item="#272829ff"
                              text="#bdbdbd"
                              text_sel="#000000"
-                             show_shaded="TRUE"
+                             show_shaded="FALSE"
                              shadetop="15"
                              shadedown="-15">
           </ThemeWidgetColors>
@@ -119,12 +119,12 @@
         </wcol_box>
         <wcol_menu>
           <ThemeWidgetColors outline="#0d0d0d"
-                             inner="#3a3a3fff"
+                             inner="#272829ff"
                              inner_sel="#494a4dff"
                              item="#ba7e52ff"
                              text="#bdbdbd"
                              text_sel="#000000"
-                             show_shaded="TRUE"
+                             show_shaded="FALSE"
                              shadetop="15"
                              shadedown="-15">
           </ThemeWidgetColors>
